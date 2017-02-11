@@ -23,16 +23,77 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="indicator">
-    <div class="indicator_header gauge">
-        <h3>demo</h3>
-    </div>
-    <div class="js-gauge gauge" id="demo"></div>
-    <script>
-        $('#demo').kumaGauge({
-            value: Math.floor(96.2),
-            showNeedle: false,
-            animationSpeed: 500,
-        });
-    </script>
-</div>
+@component('indicators.gauge')
+    @slot('gauge_id')
+        gauge1
+    @endslot
+    
+    @slot('value')
+        67
+    @endslot
+    
+    @slot('reverse')
+        false
+    @endslot
+    
+    @slot('gauge_title')
+        demo
+    @endslot
+
+@endcomponent
+@component('indicators.gauge')
+    @slot('gauge_id')
+        gauge2
+    @endslot
+    
+    @slot('value')
+        54
+    @endslot
+    
+    @slot('reverse')
+        true
+    @endslot
+    
+    @slot('gauge_title')
+        demo2
+    @endslot
+
+@endcomponent
+
+@component('indicators.gauge')
+    @slot('gauge_id')
+        gauge3
+    @endslot
+    
+    @slot('value')
+        10
+    @endslot
+    
+    @slot('reverse')
+        true
+    @endslot
+    
+    @slot('gauge_title')
+        demo3
+    @endslot
+
+@endcomponent
+
+@component('indicators.gauge')
+    @slot('gauge_id')
+        gauge4
+    @endslot
+    
+    @slot('value')
+        90
+    @endslot
+    
+    @slot('reverse')
+        true
+    @endslot
+    
+    @slot('gauge_title')
+        demo4
+    @endslot
+
+@endcomponent

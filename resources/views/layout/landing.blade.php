@@ -26,7 +26,7 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
     @include('layout.partials.htmlHeader')
-    @include('layout.partials.scripts')
+    
     <body>
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             @include('layout.partials.contentHeader')

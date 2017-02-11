@@ -26,11 +26,12 @@
 <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
         <div class="page-content">
-            
+            @include('pages.home')
         </div>
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-        <div class="page-content">
+        <div class="page-content center-block">
+            @include('indicators.dashboard')
         </div>
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-3">

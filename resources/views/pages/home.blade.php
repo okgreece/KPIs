@@ -34,5 +34,4 @@
     <div class="mdl-cell mdl-cell--4-col">
         @include('pages.partials.card', ['header' => "Δείτε τους δείκτες σε χάρτη", 'button' => 'GO', 'icon' => "map"])
     </div>
-
 </div>
