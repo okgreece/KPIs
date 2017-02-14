@@ -184,6 +184,13 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         //CRUD GENERATOR
         Appzcoder\CrudGenerator\CrudGeneratorServiceProvider::class,
+        //translatable models
+        Dimsav\Translatable\TranslatableServiceProvider::class,
+        //bootforms
+        AdamWathan\BootForms\BootFormsServiceProvider::class, 
+        //translatable models bootforms
+        Propaganistas\LaravelTranslatableBootForms\TranslatableBootFormsServiceProvider::class,
+        
         
 
     ],
@@ -239,7 +246,11 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         //debugbar
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        
+        //bootforms
+        'BootForm' => 'AdamWathan\BootForms\Facades\BootForm'::class,
+        //translatable models bootforms
+        'TranslatableBootForm' => Propaganistas\LaravelTranslatableBootForms\Facades\TranslatableBootForm::class,
+
     ],
 
 ];

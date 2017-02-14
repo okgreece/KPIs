@@ -4,21 +4,105 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "056f5625ca3cbfa1db02703c9b544e02",
-    "content-hash": "a3dc9fbb0013fd2bfedabc9e167679ff",
+    "hash": "9126a74790ac76a3b90efaff06aac4b3",
+    "content-hash": "78159416e783acc4dbf158484bb69ebb",
     "packages": [
         {
-            "name": "appzcoder/crud-generator",
-            "version": "v2.0.0",
+            "name": "adamwathan/bootforms",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/appzcoder/crud-generator.git",
-                "reference": "7b7d75aee6a0ef2bf457dd4ab975265ada3921af"
+                "url": "https://github.com/adamwathan/bootforms.git",
+                "reference": "25e737e646ecb1885394767c58d512a453da0faa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/appzcoder/crud-generator/zipball/7b7d75aee6a0ef2bf457dd4ab975265ada3921af",
-                "reference": "7b7d75aee6a0ef2bf457dd4ab975265ada3921af",
+                "url": "https://api.github.com/repos/adamwathan/bootforms/zipball/25e737e646ecb1885394767c58d512a453da0faa",
+                "reference": "25e737e646ecb1885394767c58d512a453da0faa",
+                "shasum": ""
+            },
+            "require": {
+                "adamwathan/form": "^0.8.11",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "3.7.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AdamWathan\\BootForms": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Wathan",
+                    "email": "adam.wathan@gmail.com"
+                }
+            ],
+            "description": "Just a Formbuilder with some Bootstrap specific conveniences. Remembers old input, retrieves error messages and handles all your boilerplate Bootstrap markup automatically.",
+            "time": "2017-01-31 13:16:40"
+        },
+        {
+            "name": "adamwathan/form",
+            "version": "v0.8.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adamwathan/form.git",
+                "reference": "b5a1e8af895a2daa22663508394633fd8ad99904"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adamwathan/form/zipball/b5a1e8af895a2daa22663508394633fd8ad99904",
+                "reference": "b5a1e8af895a2daa22663508394633fd8ad99904",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "illuminate/support": "4.*",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "3.7.*",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "AdamWathan\\Form": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Wathan",
+                    "email": "adam.wathan@gmail.com"
+                }
+            ],
+            "description": "A basic framework agnostic form building package with a few extra niceties like remembering old input and retrieving error messages.",
+            "time": "2017-01-31 13:18:04"
+        },
+        {
+            "name": "appzcoder/crud-generator",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/appzcoder/crud-generator.git",
+                "reference": "93ec6907d78cbadc381f56d054565f31ce46944b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/appzcoder/crud-generator/zipball/93ec6907d78cbadc381f56d054565f31ce46944b",
+                "reference": "93ec6907d78cbadc381f56d054565f31ce46944b",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +141,7 @@
                 "laravel",
                 "laravel crud generator"
             ],
-            "time": "2016-12-17 15:06:13"
+            "time": "2017-02-11 12:25:38"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -230,16 +314,16 @@
         },
         {
             "name": "benestar/asparagus",
-            "version": "0.4.2",
+            "version": "dev-obeuviz",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Benestar/asparagus.git",
-                "reference": "6299517dc28ace1e5934a0b09a2ac6d8a2910032"
+                "url": "https://github.com/larjohn/asparagus.git",
+                "reference": "a6563f58911e4762c985468fb92b77539e023118"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Benestar/asparagus/zipball/6299517dc28ace1e5934a0b09a2ac6d8a2910032",
-                "reference": "6299517dc28ace1e5934a0b09a2ac6d8a2910032",
+                "url": "https://api.github.com/repos/larjohn/asparagus/zipball/a6563f58911e4762c985468fb92b77539e023118",
+                "reference": "a6563f58911e4762c985468fb92b77539e023118",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +340,6 @@
                     "Asparagus\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GNU GPL v2+"
             ],
@@ -269,11 +352,65 @@
             "description": "SPARQL abstraction layer for PHP",
             "homepage": "https://github.com/benestar/Asparagus",
             "keywords": [
-                "Abstraction Layer",
-                "asparagus",
-                "sparql"
+                "SPARQL",
+                "abstraction layer",
+                "asparagus"
             ],
-            "time": "2016-01-21 17:22:45"
+            "support": {
+                "source": "https://github.com/larjohn/asparagus/tree/obeuviz"
+            },
+            "time": "2017-02-13 23:13:36"
+        },
+        {
+            "name": "dimsav/laravel-translatable",
+            "version": "v7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsav/laravel-translatable.git",
+                "reference": "1528422b825d1accd52f709238f6c7e27a6029de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsav/laravel-translatable/zipball/1528422b825d1accd52f709238f6c7e27a6029de",
+                "reference": "1528422b825d1accd52f709238f6c7e27a6029de",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.4.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.4.*",
+                "phpunit/phpunit": "~5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dimsav\\Translatable\\": "src/Translatable/"
+                },
+                "classmap": [
+                    "tests"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dimitrios Savvopoulos",
+                    "email": "ds@dimsav.com",
+                    "homepage": "http://dimsav.com"
+                }
+            ],
+            "description": "A Laravel package for multilingual models",
+            "keywords": [
+                "database",
+                "language",
+                "laravel",
+                "translation"
+            ],
+            "time": "2017-01-29 18:01:09"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -976,16 +1113,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.10",
+            "version": "v5.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4c8837046c998925972c8010bfac435c4be5facc"
+                "reference": "9cee8db07cfac13a3a49d17388c9ced4c52e17ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4c8837046c998925972c8010bfac435c4be5facc",
-                "reference": "4c8837046c998925972c8010bfac435c4be5facc",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9cee8db07cfac13a3a49d17388c9ced4c52e17ac",
+                "reference": "9cee8db07cfac13a3a49d17388c9ced4c52e17ac",
                 "shasum": ""
             },
             "require": {
@@ -1101,7 +1238,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-02-08 15:01:52"
+            "time": "2017-02-10 19:40:54"
         },
         {
             "name": "laravel/tinker",
@@ -1632,16 +1769,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.0.3",
+            "version": "v3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "5b8182cc0abb4b0ff290ba9df6c0e1323286013a"
+                "reference": "0bf561dfe75ba80441c22adecc0529056671a7d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/5b8182cc0abb4b0ff290ba9df6c0e1323286013a",
-                "reference": "5b8182cc0abb4b0ff290ba9df6c0e1323286013a",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/0bf561dfe75ba80441c22adecc0529056671a7d2",
+                "reference": "0bf561dfe75ba80441c22adecc0529056671a7d2",
                 "shasum": ""
             },
             "require": {
@@ -1679,7 +1816,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-02-03 21:57:31"
+            "time": "2017-02-10 20:20:03"
         },
         {
             "name": "paragonie/random_compat",
@@ -1728,6 +1865,56 @@
                 "random"
             ],
             "time": "2016-11-07 23:38:38"
+        },
+        {
+            "name": "propaganistas/laravel-translatable-bootforms",
+            "version": "1.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Propaganistas/Laravel-Translatable-Bootforms.git",
+                "reference": "790bac717a2aab108cf47c3ba2c43297ed7198c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Propaganistas/Laravel-Translatable-Bootforms/zipball/790bac717a2aab108cf47c3ba2c43297ed7198c9",
+                "reference": "790bac717a2aab108cf47c3ba2c43297ed7198c9",
+                "shasum": ""
+            },
+            "require": {
+                "adamwathan/bootforms": "^0.8",
+                "dimsav/laravel-translatable": "^5.0|^6.0|^7.0",
+                "illuminate/support": "^5.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.0",
+                "phpunit/phpunit": "^4.0|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Propaganistas\\LaravelTranslatableBootForms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Propaganistas",
+                    "email": "Propaganistas@users.noreply.github.com"
+                }
+            ],
+            "description": "Empowers adamwathan/bootforms with dimsav/laravel-translatable.",
+            "keywords": [
+                "bootforms",
+                "form",
+                "i18n",
+                "laravel",
+                "translatable"
+            ],
+            "time": "2017-01-30 20:01:14"
         },
         {
             "name": "psr/log",
@@ -1977,16 +2164,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.5",
+            "version": "v5.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "cd142238a339459b10da3d8234220963f392540c"
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/cd142238a339459b10da3d8234220963f392540c",
-                "reference": "cd142238a339459b10da3d8234220963f392540c",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
                 "shasum": ""
             },
             "require": {
@@ -2027,7 +2214,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29 10:02:40"
+            "time": "2017-02-13 07:52:53"
         },
         {
             "name": "symfony/class-loader",
@@ -4436,6 +4623,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "benestar/asparagus": 20,
         "easyrdf/easyrdf": 20
     },
     "prefer-stable": false,

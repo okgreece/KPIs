@@ -24,14 +24,12 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--4-col">
-        @include('pages.partials.card', ['header' => "Δείτε όλους τους Δείκτες", 'button' => 'GO', 'icon' => "equalizer"])
-    </div>
-    <div class="mdl-cell mdl-cell--4-col">
-        @include('pages.partials.card', ['header' => "Χρονική εξέλιξη δεικτών", 'button' => 'GO', 'icon' => "timeline"])
-    </div>
-    <div class="mdl-cell mdl-cell--4-col">
-        @include('pages.partials.card', ['header' => "Δείτε τους δείκτες σε χάρτη", 'button' => 'GO', 'icon' => "map"])
-    </div>
+<div class="mdl-grid home">
+    
+    @include('pages.partials.card', ['header' => "Δείτε όλους τους Δείκτες", 'button' => 'GO', 'icon' => "equalizer"])
+
+    @include('pages.partials.card', ['header' => "Χρονική εξέλιξη δεικτών", 'button' => 'GO', 'icon' => "timeline"])
+
+    @include('pages.partials.card', ['header' => "Δείτε τους δείκτες σε χάρτη", 'button' => 'GO', 'icon' => "map"])
+
 </div>

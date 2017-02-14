@@ -23,77 +23,95 @@
  * THE SOFTWARE.
  */
 ?>
+@include('indicators.gauge_script')
+<div class="mdl-grid dashboard">
+    
+
 @component('indicators.gauge')
-    @slot('gauge_id')
+    @slot('indicator_id')
         gauge1
     @endslot
     
-    @slot('value')
+    @slot('indicator_value')
         67
     @endslot
     
-    @slot('reverse')
+    @slot('indicator_reverse')
         false
     @endslot
     
-    @slot('gauge_title')
+    @slot('indicator_title')
         demo
+    @endslot
+    @slot('indicator_description')
+        demo description
     @endslot
 
 @endcomponent
 @component('indicators.gauge')
-    @slot('gauge_id')
+    @slot('indicator_id')
         gauge2
     @endslot
     
-    @slot('value')
+    @slot('indicator_value')
         54
     @endslot
     
-    @slot('reverse')
+    @slot('indicator_reverse')
         true
     @endslot
     
-    @slot('gauge_title')
+    @slot('indicator_title')
         demo2
+    @endslot
+    @slot('indicator_description')
+        demo description
     @endslot
 
 @endcomponent
 
 @component('indicators.gauge')
-    @slot('gauge_id')
+    @slot('indicator_id')
         gauge3
     @endslot
     
-    @slot('value')
+    @slot('indicator_value')
         10
     @endslot
     
-    @slot('reverse')
+    @slot('indicator_reverse')
         true
     @endslot
     
-    @slot('gauge_title')
+    @slot('indicator_title')
         demo3
+    @endslot
+    @slot('indicator_description')
+        demo description
     @endslot
 
 @endcomponent
 
 @component('indicators.gauge')
-    @slot('gauge_id')
+    @slot('indicator_id')
         gauge4
     @endslot
     
-    @slot('value')
+    @slot('indicator_value')
         90
     @endslot
     
-    @slot('reverse')
-        true
+    @slot('indicator_reverse')
+        false
     @endslot
     
-    @slot('gauge_title')
+    @slot('indicator_title')
         demo4
+    @endslot
+    @slot('indicator_description')
+        demo description
     @endslot
 
 @endcomponent
+
+</div>

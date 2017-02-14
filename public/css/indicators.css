@@ -56,3 +56,23 @@ THE SOFTWARE.
 .card-icon{
     font-size: 120px;
 }
+
+.dashboard{
+    
+    margin: auto;
+    max-width:80%;
+}
+
+.home{
+    
+    margin: auto;
+    max-width:80%;
+}
+
+.indicator-card{
+    margin:20px auto;
+}
+
+.indicator-card > .mdl-card__media{
+    background-color:#0086B3;
+}

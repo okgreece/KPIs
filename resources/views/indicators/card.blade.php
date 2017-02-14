@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -23,28 +24,37 @@
  * THE SOFTWARE.
  */
 ?>
-<main class="mdl-layout__content">
-    <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-        <div class="page-content">
-            @include('pages.home')
+<div class="demo-card-wide mdl-card mdl-shadow--2dp indicator-card">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">{{$indicator_title}}</h2>
+  </div>
+    <div class="mdl-card__media">
+        <div id="{{$indicator_id}}">
+            
         </div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-        <div class="page-content">
-            @include('indicators.dashboard')
-        </div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-4">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-5">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-6">
-        <div class="page-content">
-        </div>
-    </section>
-</main>
+    </div>
+  <div class="mdl-card__supporting-text">
+    {{$indicator_description}}
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Compare
+    </a>
+    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Yearly Change
+    </a>
+  </div>
+  <div class="mdl-card__menu">
+    <!-- Right aligned menu below button -->
+    
+<button id="demo-menu-lower-right-{{$indicator_id}}"
+        class="mdl-button mdl-js-button mdl-button--icon">
+  <i class="material-icons">share</i>
+</button>
+<button id="demo-menu-lower-right-{{$indicator_id}}"
+        class="mdl-button mdl-js-button mdl-button--icon">
+  <i class="material-icons">code</i>
+</button>
+
+  </div>
+</div>

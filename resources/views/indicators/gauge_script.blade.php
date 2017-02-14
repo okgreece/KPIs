@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -23,28 +24,13 @@
  * THE SOFTWARE.
  */
 ?>
-<main class="mdl-layout__content">
-    <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
-        <div class="page-content">
-            @include('pages.home')
-        </div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
-        <div class="page-content">
-            @include('indicators.dashboard')
-        </div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-4">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-5">
-        <div class="page-content"><!-- Your content goes here --></div>
-    </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-6">
-        <div class="page-content">
-        </div>
-    </section>
-</main>
+<script>
+function gaugeColor(reverse){
+        if(reverse){
+            return ["#a9d70b", "#f9c802", "#ff0000"];
+        }
+        else{
+            return ["#ff0000", "#f9c802", "#a9d70b"];
+        }
+    }
+</script>
