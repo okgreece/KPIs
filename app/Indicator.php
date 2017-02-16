@@ -27,7 +27,7 @@ class Indicator extends Model
      *
      * @var array
      */
-    protected $fillable = ['indicator', 'group', 'enabled', 'type', 'nominator', 'denominator'];
+    protected $fillable = ['indicator', 'group', 'enabled', 'type', 'nominator', 'denominator', 'reverse'];
 
     public function nom(){
         return $this->hasOne("\App\Aggregator", "id", "nominator");

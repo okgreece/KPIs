@@ -41,7 +41,7 @@
                             <a href="{{route("groups.index")}}">Groups</a>
                         </li>
                         <li>
-                            <a href="{{route("aggregators.index")}}">Indicators</a>
+                            <a href="{{route("indicators.index")}}">Indicators</a>
                         </li>
                     </ul>
 

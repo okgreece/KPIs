@@ -19,8 +19,10 @@
     "vue-resource": "^1.0.3"
   },
   "dependencies": {
+    "dialog-polyfill": "^0.4.7",
     "laravel-elixir": "^6.0.0-15",
     "laravel-elixir-vue-2": "^0.2.0",
+    "mdl-selectfield": "^1.0.4",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   }

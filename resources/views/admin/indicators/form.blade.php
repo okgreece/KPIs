@@ -28,10 +28,11 @@
 <div class="form-group {{ $errors->has('group') ? 'has-error' : ''}}">
     {!! Form::label('group', 'Group', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('group', $groups, ['class' => 'form-control']) !!}
+        {!! Form::select('group', $groups, isset($indicator)?$indicator->group:null, ['class' => 'form-control']) !!}
         {!! $errors->first('group', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('enabled') ? 'has-error' : ''}}">
+</div>
+    <div class="form-group {{ $errors->has('enabled') ? 'has-error' : ''}}">
     {!! Form::label('enabled', 'Enabled', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         <div class="checkbox">
@@ -42,7 +43,21 @@
 </div>
         {!! $errors->first('enabled', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
+</div>
+    <div class="form-group {{ $errors->has('reverse') ? 'has-error' : ''}}">
+    {!! Form::label('reverse', 'Reverse', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-6">
+        <div class="checkbox">
+    <label>{!! Form::radio('reverse', '1') !!} Yes</label>
+</div>
+<div class="checkbox">
+    <label>{!! Form::radio('reverse', '0', true) !!} No</label>
+</div>
+        {!! $errors->first('reverse', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+    
+    <div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
     {!! Form::label('type', 'Type', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {!! Form::select('type', ['Percent', ' Number', ' Bar Chart'], null, ['class' => 'form-control']) !!}
@@ -51,13 +66,13 @@
 </div><div class="form-group {{ $errors->has('nominator') ? 'has-error' : ''}}">
     {!! Form::label('nominator', 'Nominator', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('nominator', $aggregators, ['class' => 'form-control']) !!}
+        {!! Form::select('nominator', $aggregators, isset($indicator)?$indicator->nominator:null, ['class' => 'form-control']) !!}
         {!! $errors->first('nominator', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('denominator') ? 'has-error' : ''}}">
     {!! Form::label('denominator', 'Denominator', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('denominator', $aggregators, ['class' => 'form-control']) !!}
+        {!! Form::select('denominator', $aggregators, isset($indicator)?$indicator->denominator:null, ['class' => 'form-control']) !!}
         {!! $errors->first('denominator', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

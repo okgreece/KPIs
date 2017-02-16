@@ -74,5 +74,35 @@ THE SOFTWARE.
 }
 
 .indicator-card > .mdl-card__media{
-    background-color:#0086B3;
+    background-color: white;
+    height:150px;
+}
+
+.kpi-odometer{
+    margin:auto;
+   font-size: 60px;
+   padding-right:20px;   
+   
+   float:right;
+}
+
+.odometer .odometer-inside:after {
+    content: "€"
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.form-button{
+    position:relative;
+    bottom: 20px;
+    right:20px;
+}
+
+.form{
+    margin:auto;
+    width:80%;
 }

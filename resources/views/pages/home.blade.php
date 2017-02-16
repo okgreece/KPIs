@@ -26,10 +26,16 @@
 ?>
 <div class="mdl-grid home">
     
-    @include('pages.partials.card', ['header' => "Δείτε όλους τους Δείκτες", 'button' => 'GO', 'icon' => "equalizer"])
+    @include('pages.partials.card', ['header' => "Watch KPIs", 'button' => 'GO', 'icon' => "equalizer" , 'href' => "#tab-2"])
 
-    @include('pages.partials.card', ['header' => "Χρονική εξέλιξη δεικτών", 'button' => 'GO', 'icon' => "timeline"])
+    @include('pages.partials.card', ['header' => "KPIs over time", 'button' => 'GO', 'icon' => "timeline", 'href' => "#tab-3"])
 
-    @include('pages.partials.card', ['header' => "Δείτε τους δείκτες σε χάρτη", 'button' => 'GO', 'icon' => "map"])
-
+    @include('pages.partials.card', ['header' => "Map Overlay", 'button' => 'GO', 'icon' => "map", 'href' => "#tab-4"])
+    
 </div>
+<script>
+    function clickTab(tab){
+        mytab = $(tab);
+        mytab.click();
+    }
+</script>

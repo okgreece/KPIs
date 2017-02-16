@@ -11,10 +11,6 @@
   |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
 Route::get('/admin', 'AdminController@index');
@@ -25,4 +21,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/groups', 'Admin\\GroupsController');
     Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
 });
+Route::get('/', 'DashboardController@index');
+
+Route::get('/dashboard', 'DashboardController@dashboard');
+
+Route::get('/phases', 'DashboardController@phases');
+
+Route::get('/years', 'DashboardController@years');
 

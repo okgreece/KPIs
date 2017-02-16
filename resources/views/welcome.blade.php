@@ -1,3 +1,3 @@
 @extends('layout.landing')
 
-@section('page_title', 'Δείκτες Απόδοσης')
+@section('page_title', 'KPIs')

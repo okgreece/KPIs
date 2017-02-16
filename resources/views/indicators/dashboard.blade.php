@@ -23,95 +23,21 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.gauge_script')
-<div class="mdl-grid dashboard">
+@include('indicators.templates.gauge_script')
+@include('indicators.templates.number_script')
+@include('indicators.templates.form')
+<div class="dashboard">
+    <div class="grid">
+        
     
-
-@component('indicators.gauge')
-    @slot('indicator_id')
-        gauge1
-    @endslot
-    
-    @slot('indicator_value')
-        67
-    @endslot
-    
-    @slot('indicator_reverse')
-        false
-    @endslot
-    
-    @slot('indicator_title')
-        demo
-    @endslot
-    @slot('indicator_description')
-        demo description
-    @endslot
-
-@endcomponent
-@component('indicators.gauge')
-    @slot('indicator_id')
-        gauge2
-    @endslot
-    
-    @slot('indicator_value')
-        54
-    @endslot
-    
-    @slot('indicator_reverse')
-        true
-    @endslot
-    
-    @slot('indicator_title')
-        demo2
-    @endslot
-    @slot('indicator_description')
-        demo description
-    @endslot
-
-@endcomponent
-
-@component('indicators.gauge')
-    @slot('indicator_id')
-        gauge3
-    @endslot
-    
-    @slot('indicator_value')
-        10
-    @endslot
-    
-    @slot('indicator_reverse')
-        true
-    @endslot
-    
-    @slot('indicator_title')
-        demo3
-    @endslot
-    @slot('indicator_description')
-        demo description
-    @endslot
-
-@endcomponent
-
-@component('indicators.gauge')
-    @slot('indicator_id')
-        gauge4
-    @endslot
-    
-    @slot('indicator_value')
-        90
-    @endslot
-    
-    @slot('indicator_reverse')
-        false
-    @endslot
-    
-    @slot('indicator_title')
-        demo4
-    @endslot
-    @slot('indicator_description')
-        demo description
-    @endslot
-
-@endcomponent
-
+    <div class="row">
+      
+        <div class="card-panel teal center-align">
+          <span class="white-text">Select an organization to start.
+          </span>
+        </div>
+      
+    </div>
+        </div>
+            
 </div>

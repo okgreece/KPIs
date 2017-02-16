@@ -30,30 +30,12 @@ class IndicatorsController extends Controller
      */
     public function create()
     {
-        
-        $groups = \App\Group::all();
-        $group_select = array();
-        foreach ($groups as $group) {
-            $key = $group->id;
-            $value = $group->title;
-            $group_select = array_add($group_select, $key, $value);
-        }
-        
-        $aggregators = \App\Aggregator::all();
-        $aggregators_select = array();
-        foreach ($aggregators as $aggregator) {
-            $key = $aggregator->id;
-            $value = $aggregator->title;
-            $aggregators_select = array_add($aggregators_select, $key, $value);
-        }
-
         return view('admin.indicators.create', 
                 [
-                    "groups"=>$group_select,
-                    "aggregators" => $aggregators_select,
+                    "groups"=>$this->groups(),
+                    "aggregators" => $this->aggregators(),
                 ]);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -77,6 +59,7 @@ class IndicatorsController extends Controller
             'group' =>'required|integer',
             'type' =>'required|integer',
             'enabled' =>'required|boolean',
+            'reverse' =>'required|boolean',
         ]);
         
         $indicator = Indicator::create($requestData);
@@ -120,8 +103,13 @@ class IndicatorsController extends Controller
     public function edit($id)
     {
         $indicator = Indicator::findOrFail($id);
-
-        return view('admin.indicators.edit', compact('indicator'));
+        
+        return view('admin.indicators.edit', compact('indicator'),
+                [
+                    "groups"=>$this->groups(),
+                    "aggregators" => $this->aggregators(),
+                ]);
+                
     }
 
     /**
@@ -144,10 +132,11 @@ class IndicatorsController extends Controller
             'el_description' => 'required|max:400',
             'nominator' =>'required|integer',
             'denominator' =>'required|integer',
-            'code' =>'required',
+            //'code' =>'required',
             'group' =>'required|integer',
             'type' =>'required|integer',
             'enabled' =>'required|boolean',
+            'reverse' =>'required|boolean',
         ]);
         
         $indicator = Indicator::findOrFail($id);
@@ -184,7 +173,58 @@ class IndicatorsController extends Controller
         return redirect('admin/indicators');
     }
     
+    public function groups()
+    {
+        $groups = \App\Group::all();
+        $group_select = array();
+        foreach ($groups as $group) {
+            $key = $group->id;
+            $value = $group->title;
+            $group_select = array_add($group_select, $key, $value);
+        }
+        return $group_select;
+    }
+    
+    public function aggregators()
+    {
+        $aggregators = \App\Aggregator::all();
+        $aggregators_select = array();
+        foreach ($aggregators as $aggregator) {
+            $key = $aggregator->id;
+            $value = $aggregator->title;
+            $aggregators_select = array_add($aggregators_select, $key, $value);
+        }
+        return $aggregators_select;
+    }
+    
     public function value(Request $request){
+        
+        $indicatorCode = $request->indicatorCode;
+        $indicatorID = $request->indicatorID;
+        $aggregator = new AggregatorsController;
+        $indicator = Indicator::find($indicatorID);
+        $request["aggregatorID"] = $indicator->nominator;
+        $nominator = $aggregator->value($request)->getData();
+        $request["aggregatorID"] = $indicator->denominator;
+        $denominator = $aggregator->value($request)->getData();
+        $result = $nominator / $denominator;
+        return response()->json($result);
+    }
+       
+    public function lineup(Request $request){
+        $indicatorCode = $request->indicatorCode;
+        $indicatorID = $request->indicatorID;
+        $aggregator = new AggregatorsController;
+        $indicator = Indicator::find($indicatorID);
+        $request["aggregatorID"] = $indicator->nominator;
+        $nominator = $aggregator->value($request)->getData();
+        $request["aggregatorID"] = $indicator->denominator;
+        $denominator = $aggregator->value($request)->getData();
+        $result = $nominator / $denominator;
+        return response()->json($result);
+    }
+    
+    public function enabled(Request $request){
         $indicatorCode = $request->indicatorCode;
         $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;

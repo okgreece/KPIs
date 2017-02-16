@@ -18,6 +18,7 @@ class CreateIndicatorsTable extends Migration
             $table->integer('group');
             $table->boolean('enabled');
             $table->string('type');
+            $table->boolean('reverse');
             $table->integer('nominator');
             $table->integer('denominator');
             $table->timestamps();

@@ -23,22 +23,19 @@
  * THE SOFTWARE.
  */
 ?>
-<!-- Simple header with scrollable tabs. -->
-<header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-        <!-- Title -->
-        <span class="mdl-layout-title"></span>
-    </div>
-    <!-- Tabs -->
-    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-        <a id="tab-1" href="#scroll-tab-1" class="mdl-layout__tab is-active">Home</a>
-        <a id="tab-2" href="#scroll-tab-2" class="mdl-layout__tab">Dashboard</a>
-        <a id="tab-3" href="#scroll-tab-3" class="mdl-layout__tab">Compare</a>
-        <a id="tab-4" href="#scroll-tab-4" class="mdl-layout__tab">Yearly Change</a>
-        <a id="tab-5" href="#scroll-tab-5" class="mdl-layout__tab">About</a>
-    </div>
-</header>
-   
-<div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Menu</span>
-</div>
+@include('indicators.templates.card')
+<script>
+    var el = $('#{{$indicator_id}}');
+    el.addClass('kpi-odometer');
+    od = new Odometer({
+    el: el[0],
+            value: 0.00,
+            // Any option (other than auto and selector) can be passed in here
+            format: '(,ddd).dd',
+            theme: 'default',
+            duration: 3000,
+            });
+    setTimeout(function(){
+    el[0].innerHTML = {{$indicator_value}};
+    }, 100);
+</script>

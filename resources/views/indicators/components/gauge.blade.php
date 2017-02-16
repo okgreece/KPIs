@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -24,17 +23,26 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.card')
+@component('indicators.templates.gauge')
 
-<script>
-      var g = new JustGage({
-        id: "{{$indicator_id}}",
-        value: {{$indicator_value}},
-        min: 0,
-        max: 100,
-        symbol: "%",
-        levelColors: gaugeColor({{$indicator_reverse}}),        
-        title: "{{$indicator_title}}"
-      });
-</script>
+    @slot('indicator_id')
+        {{"indicator" . $indicator["indicator"]->id}}
+    @endslot
 
+    @slot('indicator_value')
+        {{$indicator["value"]*100}}
+    @endslot
+
+    @slot('indicator_reverse')
+        {{$indicator["indicator"]->reverse}}
+    @endslot
+
+    @slot('indicator_title')
+        {{$indicator["indicator"]->title}}
+    @endslot
+
+    @slot('indicator_description')
+        {{$indicator["indicator"]->description}}
+    @endslot
+
+@endcomponent

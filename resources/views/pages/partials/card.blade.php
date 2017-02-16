@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="demo-card-event mdl-card mdl-shadow--2dp">
+<div class="demo-card-event mdl-card mdl-shadow--6dp">
   <div class="mdl-card__title mdl-card--expand">
     <h4>
       {{$header}}
@@ -32,7 +32,7 @@
     <i class="material-icons card-icon">{{$icon}}</i>  
   </div>
   <div class="mdl-card__actions mdl-card--border">
-    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+    <a onclick="clickTab('{{$href}} span')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       {{$button}}
     </a>
 <!--    <div class="mdl-layout-spacer"></div>
