@@ -28,16 +28,24 @@
 @include('indicators.templates.form')
 <div class="dashboard">
     <div class="grid">
-        
-    
-    <div class="row">
-      
-        <div class="card-panel teal center-align">
-          <span class="white-text">Select an organization to start.
-          </span>
+        <div class="row">
+            <div class="card-panel teal center-align">
+                <span class="white-text">Select an organization to start.
+                </span>
+            </div>
         </div>
-      
     </div>
-        </div>
-            
 </div>
+<script>
+    function yearly(id){
+        clickTab("#tab-4 span");
+        $(".evolution").html("");
+        var organization = $("#organization-select option:selected")[0].value;
+        document.getElementById("organization-select-year").value = organization;
+        updateYear();
+        var phase = $("#phase-select option:selected")[0].value;
+        document.getElementById("phase-select").value = phase;
+        document.getElementById("indicator-select-year").value = id;
+        evolution(organization, id, phase);
+    }
+</script>

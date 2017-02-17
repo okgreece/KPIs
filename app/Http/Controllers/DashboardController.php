@@ -35,6 +35,12 @@ class DashboardController extends Controller
         ]);
     }
     
+    public function evolution(){
+        $values = $this->getYearly();
+        $chart = $this->getYearlyChart($values);
+        return view('indicators/time', ["chart" => $chart]);
+    }
+    
     private static $prefixes = array(
         'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
         'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
@@ -142,7 +148,7 @@ class DashboardController extends Controller
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         
         $labels = $sparql->query($query);
-//       / dd($query);
+
         $years = [];
         foreach($labels as $label){
             $path = parse_url($label->year, PHP_URL_PATH);
@@ -164,4 +170,136 @@ class DashboardController extends Controller
         $indicator = new Admin\IndicatorsController;
         return $indicator->value($request)->getData();
     }
+    
+    public function getYearly(){
+        $request = request();
+        $years = $this->years()->years;
+        $values = [];
+        foreach($years as $year){
+            $request->request->set('year', $year["value"]);        
+            $value = $this->getValue($request);
+            array_push($values, ["year"=>$year["label"], "value" => $value]);            
+        }
+        return response()->json($values);
+    }
+    
+    
+   public function y($array){
+       return $array["year"];
+   }
+   
+   public $color_palette = [
+       "red",
+       "yellow",
+       "blue",
+       "green"
+   ];
+   
+   public function chartTransform($data){
+        $request = request();
+        $indicator = \App\Indicator::find($request->indicatorID);
+        $values = collect(json_decode($data->content()));
+        
+        if($indicator->type == 0){
+            $multiplier = 100;
+            $yaxis = "Percent";
+        }
+        else{
+            $multiplier = 1;
+            $yaxis = "Euro per citizen";
+        }
+        
+        $labels = $values->map(function($item, $key){
+            return $item->year;
+        })->all();
+        $series = $values->map(function($item, $key) use ($multiplier){
+            return $item->value * $multiplier;
+        })->all();      
+        
+        $dataset = [
+                "label" => $indicator->title,
+                "fill" => false,
+                "lineTension" => "0.1",
+                "type" => "bar",
+                'backgroundColor' => "rgba(38, 185, 154, 0.31)",
+                'borderColor' => "rgba(38, 185, 154, 0.7)",
+                "pointBorderColor" => "rgba(38, 185, 154, 0.7)",
+                "pointBackgroundColor" => "rgba(38, 185, 154, 0.7)",
+                "pointHoverBackgroundColor" => "#fff",
+                "pointHoverBorderColor" => "rgba(220,220,220,1)",
+                'data' => $series,
+            ];
+        $result = ["labels" => $labels, "datasets" => $dataset];
+        return response()->json($result);
+   }
+    
+    public function getYearlyChart($data){
+        
+        $object = collect(json_decode($this->chartTransform($data)->content()));
+        
+        $labels = $object["labels"];
+        $datasets = $object["datasets"];
+        $chartjs = app()->chartjs
+        ->name('line')
+        ->type('bar')
+        ->labels($labels)
+        ->datasets([
+            $datasets,
+        ])
+        ->options([
+            "legend"=> [
+                "display" => true,
+                "position" => "bottom",
+            ]
+        ]);
+
+        return $chartjs;
+    }
+/*    
+    
+    var response = {!! $values->content() !!}
+    var SeriesLabels = $.map(response, function(el) { return el.year; })
+    var Series = $.map(response, function(el) { return el.value; })
+
+    
+    var label = "Δείκτης Συνολικών Εσόδων ανα Κάτοικο";
+    var data = {
+        labels: SeriesLabels,
+        datasets: [
+            {
+                label: label,
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: "#" + colors[1],
+                borderColor: "#" + colors[1],
+                borderColor: "#" + colors[1],
+                        borderCapStyle: "butt",
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: "miter",
+                pointBorderColor: "#" + colors[1],
+                pointBorderColor: "#" + colors[1],
+                        pointBackgroundColor: "#" + colors[1],
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "#" + colors[1],
+                pointHoverBorderColor: "#" + colors[1],
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: Series
+            }]
+    };
+    var options = {
+        graphTitleFontSize: 18,
+        graphTitle: "MyTitle",
+        responsive: false};
+
+    var myLineChart = new Chart(ctx, {
+        type: "line",
+        data: data,
+        options: options
+    });
+ * 
+ */
 }

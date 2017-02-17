@@ -37,6 +37,13 @@ THE SOFTWARE.
 .demo-card-event > .mdl-card__title {
   align-items: flex-start;
 }
+.demo-card-event > .mdl-card__title-text {
+  align-items: null;
+  margin:auto;
+}
+.demo-cart-event:hover{
+    color:yellow!important;
+}
 .demo-card-event > .mdl-card__title > h4 {
   margin-top: 0;
 }
@@ -55,6 +62,7 @@ THE SOFTWARE.
 }
 .card-icon{
     font-size: 120px;
+    margin:auto;
 }
 
 .dashboard{

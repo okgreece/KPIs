@@ -36,17 +36,16 @@
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-3">
         <div class="page-content">
-            @include('indicators.yearly')
+            @include('indicators.compare')
         </div>
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-4">
         <div class="page-content">
-            @include('indicators.compare')
+            @include('indicators.yearly')
         </div>
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-5">
         <div class="page-content">
-            
         </div>
     </section>
 </main>

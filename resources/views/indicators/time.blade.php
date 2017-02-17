@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -24,8 +23,13 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.templates.form_year')
-<div class="evolution">
+
+    
+
+<div class="mdl-grid">
+    <div style="width:60%; margin:auto;">
+        {!! $chart->render() !!}
+    </div>
+   
 </div>
-
-
+   

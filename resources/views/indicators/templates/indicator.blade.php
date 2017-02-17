@@ -24,8 +24,10 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.templates.form_year')
-<div class="evolution">
-</div>
-
+<select id="indicator-select-year">     
+ @foreach(\App\Indicator::all() as $indicator)
+    <option value="{{$indicator->id}}">{{$indicator->title}}</option>
+ @endforeach
+</select>
+<label>Indicator</label>
 

@@ -190,6 +190,8 @@ return [
         AdamWathan\BootForms\BootFormsServiceProvider::class, 
         //translatable models bootforms
         Propaganistas\LaravelTranslatableBootForms\TranslatableBootFormsServiceProvider::class,
+        //chartjs
+        Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
         
         
 

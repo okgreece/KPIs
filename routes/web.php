@@ -29,3 +29,5 @@ Route::get('/phases', 'DashboardController@phases');
 
 Route::get('/years', 'DashboardController@years');
 
+Route::get('/evolution', 'DashboardController@evolution');
+
