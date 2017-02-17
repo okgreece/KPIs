@@ -23,9 +23,6 @@
  * THE SOFTWARE.
  */
 ?>
-
-    
-
 <div class="mdl-grid">
     <div style="width:60%; margin:auto;">
         {!! $chart->render() !!}

@@ -35,3 +35,4 @@
 <script src="/js/palette.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+<script src="/js/plugins/chartjs-plugin-zoom-master/chartjs-plugin-zoom.min.js"></script>

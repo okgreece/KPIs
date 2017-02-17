@@ -167,7 +167,9 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
-
+        //lang detector
+       // Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */

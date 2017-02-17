@@ -31,3 +31,5 @@ Route::get('/years', 'DashboardController@years');
 
 Route::get('/evolution', 'DashboardController@evolution');
 
+Route::get('/update', 'DashboardController@update');
+

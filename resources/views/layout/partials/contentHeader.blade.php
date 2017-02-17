@@ -39,6 +39,6 @@
     </div>
 </header>
    
-<div class="mdl-layout__drawer">
+<!--<div class="mdl-layout__drawer">
     <span class="mdl-layout-title">Menu</span>
-</div>
+</div>-->
