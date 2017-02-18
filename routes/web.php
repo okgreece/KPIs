@@ -33,3 +33,6 @@ Route::get('/evolution', 'DashboardController@evolution');
 
 Route::get('/update', 'DashboardController@update');
 
+Route::get('/dimension', 'DashboardController@dimension');
+
+Route::get('/compare', 'DashboardController@compare');

@@ -24,8 +24,9 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.templates.form_compare')
-<div class="compare">
-    
-</div>
-
+<select id="organization-select-compare">     
+ @foreach($organizations as $organization)
+    <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
+ @endforeach
+</select>
+<label>Organization</label>

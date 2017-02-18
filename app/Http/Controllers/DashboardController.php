@@ -39,6 +39,60 @@ class DashboardController extends Controller {
         $chart = $this->getYearlyChart($values);
         return view('indicators/time', ["chart" => $chart]);
     }
+    
+    public function dimension(){
+        $request = request();
+        $dimension = $request->dimension;
+        if($dimension == "year"){
+            return $this->years();
+        }
+        elseif($dimension == "phase"){
+            return $this->phases();
+            
+        }
+        elseif($dimension == "indicatorID"){
+            return view("indicators.templates.indicator");
+        }
+        elseif($dimension == "organization"){
+            $organizations = $this->organizations();
+            return view("indicators.templates.organization", ["organizations"=>$organizations]);
+        }
+        
+    }
+    
+    public function free(){
+        $request = request();
+        $dimension = $request->free;
+        if($dimension == "year"){
+            return $this->years()->years;
+        }
+        elseif($dimension == "phase"){
+            return $this->phases()->phases;
+            
+        }
+        elseif($dimension == "indicatorID"){
+            return $this->indicators();
+            
+        }
+        elseif($dimension == "organization"){
+            return $this->organizations();            
+        }
+        
+    }
+    
+    public function indicators(){
+        $labels = \App\Indicator::all()->map(function($item, $key) {
+                    return $item->title;
+                })->all();
+        $values = \App\Indicator::all()->map(function($item, $key) {
+            return $item->id;
+        })->all();
+        $indicators = [
+            "labels" => $labels,
+            "values" => $values
+        ];
+        return $indicators;
+    }
 
     private static $prefixes = array(
         'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
@@ -98,12 +152,18 @@ class DashboardController extends Controller {
 
     public function phases() {
         $request = request();
-        $organization = $request->organization;
+        if(isset($request->organization)){
+            $organization = '<' . $request->organization . '>';
+        }
+        else{
+            $organization = "?organization";
+        }
+        
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $lang = "en";
         $queryBuilder->selectDistinct("?phase", "?label")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
-                ->also('obeu-dimension:organization', '<' . $organization . '>')
+                ->also('obeu-dimension:organization', $organization )
                 ->also('qb:structure', '?dsd')
                 ->where('?dsd', 'qb:component', '?component')
                 ->where('?component', 'qb:dimension', "?dimension")
@@ -120,6 +180,9 @@ class DashboardController extends Controller {
         $labels = $sparql->query($query);
         $phases = [];
         foreach ($labels as $label) {
+            if($label->label->getValue() == "Reserved"){
+                continue;
+            }
             Cache::forever($label->phase, $label->label->getValue());
             array_push($phases, ["label" => $label->label->getValue(), "value" => $label->phase]);
         }
@@ -129,12 +192,18 @@ class DashboardController extends Controller {
 
     public function years() {
         $request = request();
-        $organization = $request->organization;
+        if(isset($request->organization)){
+            $organization = '<' . $request->organization . '>';
+        }
+        else{
+            $organization = "?organization";
+        }
+        
         $queryBuilder = new QueryBuilder(self::$prefixes);
 
         $queryBuilder->selectDistinct("?year")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
-                ->also('obeu-dimension:organization', '<' . $organization . '>')
+                ->also('obeu-dimension:organization', $organization)
                 ->also('qb:structure', '?dsd')
                 ->also('?dimension', '?year')
                 ->where('?dsd', 'qb:component', '?component')
@@ -179,13 +248,6 @@ class DashboardController extends Controller {
         }
         return response()->json($values);
     }
-
-    public $color_palette = [
-        "red",
-        "yellow",
-        "blue",
-        "green"
-    ];
 
     public function chartTransform($data) {
         $request = request();
@@ -237,14 +299,55 @@ class DashboardController extends Controller {
                 "display" => true,
                 "position" => "bottom",
             ],
-            "zoom" => [
-                "enabled" => true,
-                "mode" => 'xy',
+        ]);
+
+        return $chartjs;
+    }
+    
+    public function chartCompareTransform($data) {
+        
+        $values = collect(json_decode($data->content()));
+        
+        $labels = $values->map(function($item, $key) {
+        
+                    return $item->label;
+                })->all();
+        $series = $values->map(function($item, $key){
+         
+                    return $item->value;
+                })->all();
+        
+        $dataset = [
+            "label" => $labels,
+            "fill" => false,
+            "lineTension" => "0.1",
+            "type" => "bar",
+            'backgroundColor' => "rgba(38, 185, 154, 0.3)",
+            'borderColor' => "rgba(38, 185, 154, 0.7)",
+            'data' => $series,
+        ];
+        $result = ["labels" => $labels, "datasets" => $dataset];
+        return response()->json($result);
+    }
+    
+    public function getCompareChart($data) {
+
+        $object = collect(json_decode($this->chartCompareTransform($data)->content()));
+
+        $labels = $object["labels"];
+        $datasets = $object["datasets"];
+        $chartjs = app()->chartjs
+                ->name('compareGraph')
+                ->type('bar')
+                ->labels($labels)
+                ->datasets([
+                    $datasets,
+                ])
+                ->options([
+            "legend" => [
+                "display" => true,
+                "position" => "bottom",
             ],
-//            "pan" => [
-//                "enabled" => true,
-//                "mode" => 'xy',
-//            ],
         ]);
 
         return $chartjs;
@@ -255,52 +358,26 @@ class DashboardController extends Controller {
         $object = collect(json_decode($this->chartTransform($values)->content()));
         return $object;
     }
-
-    /*
-
-      var response = {!! $values->content() !!}
-      var SeriesLabels = $.map(response, function(el) { return el.year; })
-      var Series = $.map(response, function(el) { return el.value; })
-
-
-      var label = "Δείκτης Συνολικών Εσόδων ανα Κάτοικο";
-      var data = {
-      labels: SeriesLabels,
-      datasets: [
-      {
-      label: label,
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: "#" + colors[1],
-      borderColor: "#" + colors[1],
-      borderColor: "#" + colors[1],
-      borderCapStyle: "butt",
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: "miter",
-      pointBorderColor: "#" + colors[1],
-      pointBorderColor: "#" + colors[1],
-      pointBackgroundColor: "#" + colors[1],
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: "#" + colors[1],
-      pointHoverBorderColor: "#" + colors[1],
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: Series
-      }]
-      };
-      var options = {
-      graphTitleFontSize: 18,
-      graphTitle: "MyTitle",
-      responsive: false};
-
-      var myLineChart = new Chart(ctx, {
-      type: "line",
-      data: data,
-      options: options
-      });
-     * 
-     */
+    
+    public function compare(){
+        $request = request();
+        $free = $request->free;
+        $concepts = $this->free();
+        foreach($request->dimensions as $dimension){
+            $request->request->set($dimension["dimension"], $dimension["value"] );
+        }
+        $values = [];
+        foreach($concepts as $element){
+            $request->request->set($free, $element["value"]->getUri()?:$element["value"] );
+            //dd($request);
+            array_push($values, [
+                "label" => $element["label"],
+                "value" => $this->getValue($request),
+            ]);            
+        } 
+        $data = response()->json($values);
+        
+        $chart = $this->getCompareChart($data);
+        return view("indicators/compare_graph", ["chart" => $chart]);
+    }
 }

@@ -173,7 +173,16 @@ class AggregatorsController extends Controller {
         $organization = $request->organization? : "http://el.dbpedia.org/resource/Δήμος_Αθηναίων";
         $notations = $this->notations($request);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-        $included = $sparql->query($this->query($notations[0], $organization, $year, $phase))[0]->sum->getValue();
+        $query_result = $sparql->query($this->query($notations[0], $organization, $year, $phase));
+        //dd(isset($query_result[0]->sum));
+        if(isset($query_result[0]->sum)) {
+            //dd(isset($query_result[0]->sum));
+            $included = $query_result[0]->sum->getValue();
+        }
+        else{
+            //dd(isset($query_result[0]->sum));
+            return response()->json(0);
+        }
         if (!empty($notations[1])) {
             $excluded = $sparql->query($this->query($notations[1], $organization, $year, $phase))[0]->sum->getValue();
         } else {

@@ -207,7 +207,7 @@ class IndicatorsController extends Controller
         $nominator = $aggregator->value($request)->getData();
         $request["aggregatorID"] = $indicator->denominator;
         $denominator = $aggregator->value($request)->getData();
-        $result = $nominator / $denominator;
+        $result = $denominator != 0 ? $nominator / $denominator : 0;
         return response()->json($result);
     }
        

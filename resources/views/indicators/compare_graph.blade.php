@@ -22,10 +22,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */
-?>
-@include('indicators.templates.form_compare')
-<div class="compare">
-    
+ */?>
+<div class="mdl-grid">
+    <div style="width:60%; margin:auto;">
+        {!! $chart->render() !!}
+    </div>
 </div>
+
 
