@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -23,19 +24,8 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.templates.card')
-<script>
-    var el = $('#{{$indicator_id}}');
-    el.addClass('kpi-odometer');
-    od = new Odometer({
-    el: el[0],
-            value: 0.00,
-            // Any option (other than auto and selector) can be passed in here
-            format: '(,ddd).dd',
-            theme: 'default',
-            duration: 5000,
-            });
-    
-    el[0].innerHTML = {{$indicator_value}};
-    
-</script>
+@include('indicators.templates.form_radar')
+<div class="radar">
+</div>
+
+

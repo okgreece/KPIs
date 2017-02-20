@@ -46,6 +46,11 @@
     </section>
     <section class="mdl-layout__tab-panel" id="scroll-tab-5">
         <div class="page-content">
+            @include('indicators.radar')
+        </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+        <div class="page-content">
         </div>
     </section>
 </main>

@@ -36,3 +36,7 @@ Route::get('/update', 'DashboardController@update');
 Route::get('/dimension', 'DashboardController@dimension');
 
 Route::get('/compare', 'DashboardController@compare');
+
+Route::get('/radar', 'DashboardController@radar');
+
+Route::get('/updateRadar', 'DashboardController@updateRadar');

@@ -39,59 +39,43 @@ class DashboardController extends Controller {
         $chart = $this->getYearlyChart($values);
         return view('indicators/time', ["chart" => $chart]);
     }
-    
-    public function dimension(){
+
+    public function dimension() {
         $request = request();
         $dimension = $request->dimension;
-        if($dimension == "year"){
+        if ($dimension == "year") {
             return $this->years();
-        }
-        elseif($dimension == "phase"){
+        } elseif ($dimension == "phase") {
             return $this->phases();
-            
-        }
-        elseif($dimension == "indicatorID"){
+        } elseif ($dimension == "indicatorID") {
             return view("indicators.templates.indicator");
-        }
-        elseif($dimension == "organization"){
+        } elseif ($dimension == "organization") {
             $organizations = $this->organizations();
-            return view("indicators.templates.organization", ["organizations"=>$organizations]);
+            return view("indicators.templates.organization", ["organizations" => $organizations]);
         }
-        
     }
-    
-    public function free(){
+
+    public function free() {
         $request = request();
         $dimension = $request->free;
-        if($dimension == "year"){
+        if ($dimension == "year") {
             return $this->years()->years;
-        }
-        elseif($dimension == "phase"){
+        } elseif ($dimension == "phase") {
             return $this->phases()->phases;
-            
-        }
-        elseif($dimension == "indicatorID"){
+        } elseif ($dimension == "indicatorID") {
             return $this->indicators();
-            
+        } elseif ($dimension == "organization") {
+            return $this->organizations();
         }
-        elseif($dimension == "organization"){
-            return $this->organizations();            
-        }
-        
     }
-    
-    public function indicators(){
-        $labels = \App\Indicator::all()->map(function($item, $key) {
-                    return $item->title;
-                })->all();
-        $values = \App\Indicator::all()->map(function($item, $key) {
-            return $item->id;
-        })->all();
-        $indicators = [
-            "labels" => $labels,
-            "values" => $values
-        ];
-        return $indicators;
+
+    public function indicators() {
+        $indicators = \App\Indicator::all();
+        $result = [];
+        foreach ($indicators as $indicator) {
+            array_push($result, ["label" => $indicator->title, "value" => $indicator->id]);
+        }
+        return $result;
     }
 
     private static $prefixes = array(
@@ -111,8 +95,7 @@ class DashboardController extends Controller {
         $candidates = $sparql->query($this->organizationsQuery());
         $organizations = [];
         foreach ($candidates as $candidate) {
-
-            array_push($organizations, ["label" => $this->getLabel($candidate->organization), "value" => $candidate->organization, "population" => 10000000]);
+            array_push($organizations, ["label" => $this->getLabel($candidate->organization), "value" => $candidate->organization]);
         }
 
         return $organizations;
@@ -124,15 +107,12 @@ class DashboardController extends Controller {
 
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
-                ->also('obeu-dimension:organization', '?organization');
+                ->also('obeu-dimension:organization', '?organization')
+                ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης'");
 
         $query = $queryBuilder->getSPARQL();
 
         return $query;
-    }
-
-    public function getPopulation() {
-        
     }
 
     public function getLabel($uri) {
@@ -144,7 +124,7 @@ class DashboardController extends Controller {
 
         $query = $queryBuilder->getSPARQL();
 
-        $sparql = new \EasyRdf_Sparql_Client("http://el.dbpedia.org/sparql");
+        $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         $label = $sparql->query($query)[0]->label->getValue();
         Cache::forever($uri, $label);
         return $label;
@@ -152,18 +132,17 @@ class DashboardController extends Controller {
 
     public function phases() {
         $request = request();
-        if(isset($request->organization)){
+        if (isset($request->organization)) {
             $organization = '<' . $request->organization . '>';
-        }
-        else{
+        } else {
             $organization = "?organization";
         }
-        
+
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $lang = "en";
         $queryBuilder->selectDistinct("?phase", "?label")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
-                ->also('obeu-dimension:organization', $organization )
+                ->also('obeu-dimension:organization', $organization)
                 ->also('qb:structure', '?dsd')
                 ->where('?dsd', 'qb:component', '?component')
                 ->where('?component', 'qb:dimension', "?dimension")
@@ -180,7 +159,7 @@ class DashboardController extends Controller {
         $labels = $sparql->query($query);
         $phases = [];
         foreach ($labels as $label) {
-            if($label->label->getValue() == "Reserved"){
+            if ($label->label->getValue() == "Reserved") {
                 continue;
             }
             Cache::forever($label->phase, $label->label->getValue());
@@ -192,13 +171,12 @@ class DashboardController extends Controller {
 
     public function years() {
         $request = request();
-        if(isset($request->organization)){
+        if (isset($request->organization)) {
             $organization = '<' . $request->organization . '>';
-        }
-        else{
+        } else {
             $organization = "?organization";
         }
-        
+
         $queryBuilder = new QueryBuilder(self::$prefixes);
 
         $queryBuilder->selectDistinct("?year")
@@ -222,6 +200,7 @@ class DashboardController extends Controller {
             $pathFragments = explode('/', $path);
             $end = end($pathFragments);
             array_push($years, ["label" => $end, "value" => $label->year]);
+            Cache::forever($label->year, $end);
         }
 
         return view('indicators.templates.year', ["years" => $years]);
@@ -299,26 +278,30 @@ class DashboardController extends Controller {
                 "display" => true,
                 "position" => "bottom",
             ],
-        ]);
+            "scales" => [
+                "ticks" => [
+                    "beginAtZero" => true,
+                ],
+        ]]);
 
         return $chartjs;
     }
-    
+
     public function chartCompareTransform($data) {
-        
+
         $values = collect(json_decode($data->content()));
-        
+
         $labels = $values->map(function($item, $key) {
-        
+
                     return $item->label;
                 })->all();
-        $series = $values->map(function($item, $key){
-         
+        $series = $values->map(function($item, $key) {
+
                     return $item->value;
                 })->all();
-        
+        $request = request();
         $dataset = [
-            "label" => $labels,
+            "label" => cache($request->dimensions[0]["value"] . Cookie::get('locale')) . " " . cache($request->dimensions[1]["value"] . Cookie::get('locale')) . " " . cache($request->dimensions[2]["value"] . Cookie::get('locale')),
             "fill" => false,
             "lineTension" => "0.1",
             "type" => "bar",
@@ -329,7 +312,7 @@ class DashboardController extends Controller {
         $result = ["labels" => $labels, "datasets" => $dataset];
         return response()->json($result);
     }
-    
+
     public function getCompareChart($data) {
 
         $object = collect(json_decode($this->chartCompareTransform($data)->content()));
@@ -348,7 +331,18 @@ class DashboardController extends Controller {
                 "display" => true,
                 "position" => "bottom",
             ],
+            "scales" => [
+                "yAxes" => [
+                    [
+                        "ticks" => [
+
+                            "beginAtZero" => true,
+                        ]
+                    ]
+                ]
+            ]
         ]);
+
 
         return $chartjs;
     }
@@ -358,26 +352,99 @@ class DashboardController extends Controller {
         $object = collect(json_decode($this->chartTransform($values)->content()));
         return $object;
     }
-    
-    public function compare(){
+
+    public function compare() {
         $request = request();
         $free = $request->free;
         $concepts = $this->free();
-        foreach($request->dimensions as $dimension){
-            $request->request->set($dimension["dimension"], $dimension["value"] );
+        foreach ($request->dimensions as $dimension) {
+            $request->request->set($dimension["dimension"], $dimension["value"]);
         }
         $values = [];
-        foreach($concepts as $element){
-            $request->request->set($free, $element["value"]->getUri()?:$element["value"] );
-            //dd($request);
+        foreach ($concepts as $element) {
+            //dd($element);
+            $request->request->set($free, $free == "indicator" ? $element["value"]->getUri() : $element["value"] );
+
             array_push($values, [
                 "label" => $element["label"],
                 "value" => $this->getValue($request),
-            ]);            
-        } 
+            ]);
+        }
         $data = response()->json($values);
-        
+
         $chart = $this->getCompareChart($data);
         return view("indicators/compare_graph", ["chart" => $chart]);
     }
+
+    public function radarValues() {
+        $groups = \App\Group::all();
+        $request = request();
+        $radars = [];
+        foreach ($groups as $group) {
+            $indicators = \App\Indicator::where("group", "=", $group->id)->get();
+            $labels = [];
+            $data = [];
+            foreach ($indicators as $indicator) {
+                $request->request->set("indicatorID", $indicator->id);
+                array_push($labels, $indicator->title);
+                array_push($data, $this->getValue($request));
+            }
+            array_push($radars, ["label" => $group->title, "dataset" => ["labels" => $labels, "data" => $data]]);
+        }
+        return response()->json($radars);
+    }
+
+    public function radar() {
+        $radarValues = json_decode($this->radarValues()->content());
+        $charts = [];
+        $id = 0;
+        foreach ($radarValues as $dataset) {
+            $graph = $this->getRadarChart($dataset, $id);
+            array_push($charts, $graph);
+            $id++;
+            
+        }
+        return view("indicators.radar_graph", ["charts" => $charts]);
+    }
+    
+    public function updateRadar() {
+        $radarValues = json_decode($this->radarValues()->content());
+        $charts = [];
+        foreach ($radarValues as $dataset) {
+            $graph = $this->getRadarDataset($dataset);
+            array_push($charts, $graph);            
+        }
+        return response()->json($charts);
+    }
+    
+    public function getRadarDataset($data){
+        $request = request();
+        //dd($request);
+        $dataset = [                   
+                        "label" => $data->label . " " . cache($request->organization) . " " . cache($request->phase) . " " . cache($request->year),
+                        'backgroundColor' => "rgba(38, 185, 154, 0.3)",
+                        'borderColor' => "rgba(38, 185, 154, 0.7)",
+                        "pointBackgroundColor" => "rgba(179,181,198,1)",
+                        "pointBorderColor" => "#fff",
+                        "pointHoverBackgroundColor" => "#fff",
+                        "pointHoverBorderColor" => "rgba(179,181,198,1)",
+                        "data" => $data->dataset->data,
+                        ];
+                        return response()->json($dataset);
+    }
+
+    public function getRadarChart($data, $id) {
+        $labels = $data->dataset->labels;
+        $dataset = json_decode($this->getRadarDataset($data)->content());
+        $type = $id == 1 || $id == 2? "bar": "radar";
+        $chartjs = app()->chartjs
+                ->name('radarGraph' . $id)
+                ->type($type)
+                ->labels($labels)
+                ->datasets([
+                    $dataset,
+                    ]);                
+        return $chartjs;
+    }
+
 }

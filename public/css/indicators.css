@@ -77,7 +77,7 @@ THE SOFTWARE.
 }
 
 .indicator-card{
-    margin:20px auto;
+    margin:20px auto!important;
 }
 
 .indicator-card > .mdl-card__media{
@@ -85,12 +85,18 @@ THE SOFTWARE.
     height:150px;
 }
 
+.indicator-card > .card-content{
+    height:120px;
+}
+
 .kpi-odometer{
-    margin:auto;
+   margin:auto;
    font-size: 60px;
    padding-right:20px;   
+   position: absolute!important;
+   bottom: 70px!important;
+   right: 0px!important;
    
-   float:right;
 }
 
 .odometer .odometer-inside:after {
@@ -112,4 +118,8 @@ dialog {
 .form{
     margin:auto;
     width:80%;
+}
+
+.grey-text.text-darken-4:hover{
+    color: #26a69a!important;
 }

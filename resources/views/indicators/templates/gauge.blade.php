@@ -31,6 +31,9 @@
         min: 0,
         max: 100,
         symbol: "%",
+        decimals: 2,
+        startAnimationTime: 2000,
+        startAnimationType: "bounce",
         levelColors: gaugeColor({{$indicator_reverse}}),
     });
 </script>

@@ -165,12 +165,27 @@ class AggregatorsController extends Controller {
         'qb' => 'http://purl.org/linked-data/cube#',
         'skos' => 'http://www.w3.org/2004/02/skos/core#',
     );
+    
+    public function getRemote($organization, $property, $endpoint){
+        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder->select("?value")
+                ->where("<". $organization . ">", "<" . $property . ">", "?value");
+        $sparql = new \EasyRdf_Sparql_Client($endpoint);
+        $result = $sparql->query($queryBuilder)[0]->value->getValue();
+        return response()->json($result);        
+    }
 
     public function value(Request $request) {
-
-        $year = $request->year? : "http://reference.data.gov.uk/id/year/2005";
-        $phase = $request->phase? : "obeu-budgetphase:revised";
-        $organization = $request->organization? : "http://el.dbpedia.org/resource/Δήμος_Αθηναίων";
+        $organization = $request->organization;
+        $aggregator = \App\Aggregator::find($request->aggregatorID);
+        if($aggregator->code == "population" ){
+            $property = $aggregator->included;
+            $endpoint = $aggregator->codelist;
+            return $this->getRemote($organization, $property, $endpoint);
+        }
+        $year = $request->year;
+        $phase = $request->phase;
+        
         $notations = $this->notations($request);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $query_result = $sparql->query($this->query($notations[0], $organization, $year, $phase));

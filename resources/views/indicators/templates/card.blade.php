@@ -23,17 +23,17 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="demo-card-wide mdl-card mdl-shadow--2dp indicator-card">
-    <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">{{$indicator_title}}</h2>
+<div class="demo-card-wide mdl-card mdl-shadow--2dp indicator-card card">
+    <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4">{{$indicator_title}}
+            <i class="material-icons description-icon">info</i>
+        </span>
     </div>
-    <div class="mdl-card__media">
+    <div class="mdl-card__media activator">
         <div id="{{$indicator_id}}">
         </div>
     </div>
-    <div class="mdl-card__supporting-text">
-        {{$indicator_description}}
-    </div>
+
     <div class="mdl-card__actions mdl-card--border">
         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Compare
@@ -41,9 +41,6 @@
         <a onclick="yearly({{ltrim($indicator_id,"indicator")}})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
             Yearly Change
         </a>
-    </div>
-    <div class="mdl-card__menu">
-        <!-- Right aligned menu below button -->
         <button id="demo-menu-lower-right-{{$indicator_id}}"
                 class="mdl-button mdl-js-button mdl-button--icon">
             <i class="material-icons">share</i>
@@ -52,5 +49,13 @@
                 class="mdl-button mdl-js-button mdl-button--icon">
             <i class="material-icons">code</i>
         </button>
+    </div>
+
+
+    <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">Indicator Description<i class="material-icons right">close</i></span>
+        <div class="mdl-card__supporting-text">
+            {{$indicator_description}}
+        </div>
     </div>
 </div>
