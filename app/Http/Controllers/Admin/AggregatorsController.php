@@ -165,36 +165,46 @@ class AggregatorsController extends Controller {
         'qb' => 'http://purl.org/linked-data/cube#',
         'skos' => 'http://www.w3.org/2004/02/skos/core#',
     );
-    
-    public function getRemote($organization, $property, $endpoint){
+
+    public function getRemote($organization, $property, $endpoint) {
+        $sparql = new \EasyRdf_Sparql_Client($endpoint);
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $queryBuilder->select("?value")
-                ->where("<". $organization . ">", "<" . $property . ">", "?value");
-        $sparql = new \EasyRdf_Sparql_Client($endpoint);
-        $result = $sparql->query($queryBuilder)[0]->value->getValue();
-        return response()->json($result);        
+                ->where("<" . $organization . ">", "<" . $property . ">", "?value");
+        $query_result = $sparql->query($queryBuilder);
+        if (isset($query_result[0]->value)) {
+            $result = $query_result[0]->value->getValue();
+        } 
+        else {
+            $queryBuilder = new QueryBuilder(self::$prefixes);
+            $queryBuilder->select("?value")
+                    ->where("<" . $organization . ">", "<http://dbpedia.org/ontology/wikiPageRedirects>", "?redirect")
+                    ->where("?redirect", "<" . $property . ">", "?value" );
+            $query_result = $sparql->query($queryBuilder);
+            $result = $query_result[0]->value->getValue();
+        }
+        return response()->json($result);
     }
 
     public function value(Request $request) {
         $organization = $request->organization;
         $aggregator = \App\Aggregator::find($request->aggregatorID);
-        if($aggregator->code == "population" ){
+        if ($aggregator->code == "population") {
             $property = $aggregator->included;
             $endpoint = $aggregator->codelist;
             return $this->getRemote($organization, $property, $endpoint);
         }
         $year = $request->year;
         $phase = $request->phase;
-        
+
         $notations = $this->notations($request);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $query_result = $sparql->query($this->query($notations[0], $organization, $year, $phase));
         //dd(isset($query_result[0]->sum));
-        if(isset($query_result[0]->sum)) {
+        if (isset($query_result[0]->sum)) {
             //dd(isset($query_result[0]->sum));
             $included = $query_result[0]->sum->getValue();
-        }
-        else{
+        } else {
             //dd(isset($query_result[0]->sum));
             return response()->json(0);
         }
@@ -206,7 +216,7 @@ class AggregatorsController extends Controller {
         $result = (double) $included - (double) $excluded;
         return response()->json($result);
     }
-    
+
     public function groupedValue(Request $request) {
 
         $year = $request->year;
@@ -214,21 +224,20 @@ class AggregatorsController extends Controller {
         $organization = $request->organization;
         $notations = $this->notations($request);
         $order = $request->order;
-        
-        $group = $request->group ? explode(",",$request->group): [];
+
+        $group = $request->group ? explode(",", $request->group) : [];
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $included = $sparql->query($this->query($notations[0], $organization, $year, $phase, $order, $group));
         $fields = $included->getFields();
         $result = [];
-        foreach($included as $plus){
+        foreach ($included as $plus) {
             $elements = [];
-            foreach($fields as $field){
-                $element["field"] = $field; 
+            foreach ($fields as $field) {
+                $element["field"] = $field;
                 $element["value"] = $plus->$field->toRdfPhp()["value"];
                 array_push($elements, $element);
             }
             array_push($result, $elements);
-            
         }
         return response()->json($result);
     }
@@ -237,15 +246,14 @@ class AggregatorsController extends Controller {
 
         $aggregator = $request->aggregatorCode;
         $aggregatorID = $request->aggregatorID;
-        
+
         if ($aggregator != null) {
             $notations[0] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->included);
             $notations[1] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->excluded);
         } elseif ($aggregatorID != null) {
-            
+
             $notations[0] = explode(",", Aggregator::find($aggregatorID)->included);
             $notations[1] = explode(",", Aggregator::find($aggregatorID)->excluded);
-            
         } else {
             $notations[0] = explode(",", $request->included);
             $notations[1] = explode(",", $request->excluded);
@@ -292,7 +300,7 @@ class AggregatorsController extends Controller {
             $queryBuilder->orderBy($order);
         }
         $query = $queryBuilder->getSPARQL();
-       
+
         return $query;
     }
 

@@ -28,7 +28,7 @@
 @include('indicators.templates.form')
 <div class="dashboard">
     <div class="grid">
-        <div class="row">
+        <div id="dashboard-info" class="row">
             <div class="card-panel teal center-align">
                 <span class="white-text">Select an organization to start.
                 </span>

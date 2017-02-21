@@ -92,6 +92,13 @@
             </div>
            
         </div>
+        <div id="compare-progress" style="display: none"class='row'>
+
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+
+        </div>
 
     </div>
 
@@ -103,6 +110,7 @@
             {dimension:$("#fixed-select-2 option:selected")[0].value, value:$("#fixed-value-2 option:selected")[0].value},
             {dimension:$("#fixed-select-3 option:selected")[0].value, value:$("#fixed-value-3 option:selected")[0].value}
         ];
+        $("#compare-progress").show();
         var free = $("#fixed-select-3 option:enabled").val();
         $.ajax({
             type: "GET",
@@ -110,6 +118,7 @@
             data: {dimensions:dimensions, free:free},
             success: function (data) {
                 $(".compare").html(data);
+                $("#compare-progress").hide();
             }
         });
     }

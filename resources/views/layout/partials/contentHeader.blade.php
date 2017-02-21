@@ -25,7 +25,6 @@
 ?>
 <!-- Simple header with scrollable tabs. -->
 <header class="mdl-layout__header">
-    
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
         <a id="tab-1" href="#scroll-tab-1" class="mdl-layout__tab is-active">Home</a>

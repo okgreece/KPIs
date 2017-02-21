@@ -123,3 +123,15 @@ dialog {
 .grey-text.text-darken-4:hover{
     color: #26a69a!important;
 }
+
+.mdl-layout__header{
+    min-height: 0px!important;
+}
+
+.mdl-mini-footer{
+    padding: 10px 16px;
+}
+
+.footer-logo{
+    height: 50px;
+}

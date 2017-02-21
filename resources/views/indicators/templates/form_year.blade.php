@@ -74,18 +74,26 @@
             
         </div>
     </div>
+    <div id="year-progress" style="display: none" class='row'>
+
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+
+    </div>
 </div>
 <script>
     function evolution(organization = null, indicator = null, phase = null){
         if (organization == null) {
-            var organization = $("#organization-select-year option:selected")[0].value;
+            var organization = $("#organization-select-year option:selected").val();
         }
         if (indicator == null) {
-            var indicator = $("#indicator-select-year option:selected")[0].value;
+            var indicator = $("#indicator-select-year option:selected").val();
         }
         if (phase == null) {
-            var phase = $("#phase-year  #phase-select option:selected")[0].value;
+            var phase = $("#phase-year  select option:selected").val();
         }
+        $("#year-progress").show();
         $("#addSeries").removeClass("mdl-button--disabled");
         $.ajax({
             type: "GET",
@@ -93,8 +101,10 @@
             data: {organization: organization, indicatorID: indicator, phase: phase},
             success: function (data) {
                 $(".evolution").html(data);
+                $("#year-progress").hide();
             }
         });
+        organization,phase,indicator = null;
     }
     
     /*
@@ -121,21 +131,15 @@
     }
     
         
-    function addSeries(organization = null, indicator = null, phase = null){
+    function addSeries(){
         if($("#addSeries").hasClass("mdl-button--disabled")){
             return ;
-        }
-        if (organization == null) {
-            var organization = $("#organization-select-year option:selected")[0].value;
-        }
-        if (indicator == null) {
-            var indicator = $("#indicator-select-year option:selected")[0].value;
-        }
-        if (phase == null) {
-            var phase = $("#phase-year  #phase-select option:selected")[0].value;
-        }
-        
-       var chart = window.line;
+        }        
+        var organization = $("#organization-select-year option:selected").val();
+        var indicator = $("#indicator-select-year option:selected").val();
+        var phase = $("#phase-year  select option:selected").val();
+        $("#year-progress").show();
+        var chart = window.line;
         $.ajax({
             type: "GET",
             url: "update",
@@ -159,11 +163,11 @@
                     }
             };
             data.datasets.backgroundColor = hex2rgba_convert(colors[counter%palette_size], 30);
-            data.datasets.borderColor = hex2rgba_convert(colors[counter%palette_size], 70)
+            data.datasets.borderColor = hex2rgba_convert(colors[counter%palette_size], 100)
             chart.data.datasets.push(data.datasets);
             chart.update();
             counter++;
-            console.log(colors[counter%palette_size]);
+            $("#year-progress").hide();
         }
     });
     };

@@ -108,8 +108,8 @@ class DashboardController extends Controller {
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
-                ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης'");
-
+                ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
+                ->orderBy('?organization');
         $query = $queryBuilder->getSPARQL();
 
         return $query;
@@ -234,18 +234,18 @@ class DashboardController extends Controller {
         $values = collect(json_decode($data->content()));
 
         if ($indicator->type == 0) {
-            $multiplier = 100;
+            //    $multiplier = 100;
             $yaxis = "Percent";
         } else {
-            $multiplier = 1;
+            //    $multiplier = 1;
             $yaxis = "Euro per citizen";
         }
 
         $labels = $values->map(function($item, $key) {
                     return $item->year;
                 })->all();
-        $series = $values->map(function($item, $key) use ($multiplier) {
-                    return $item->value * $multiplier;
+        $series = $values->map(function($item, $key) {
+                    return $item->value;
                 })->all();
         $dataset = [
             "label" => cache($request->organization . Cookie::get('locale')) . " " . $indicator->title . " " . cache($request->phase) . Cookie::get('locale'),
@@ -253,7 +253,7 @@ class DashboardController extends Controller {
             "lineTension" => "0.1",
             "type" => "bar",
             'backgroundColor' => "rgba(38, 185, 154, 0.3)",
-            'borderColor' => "rgba(38, 185, 154, 0.7)",
+            'borderColor' => "rgba(38, 185, 154, 1)",
             'data' => $series,
         ];
         $result = ["labels" => $labels, "datasets" => $dataset];
@@ -279,10 +279,16 @@ class DashboardController extends Controller {
                 "position" => "bottom",
             ],
             "scales" => [
-                "ticks" => [
-                    "beginAtZero" => true,
-                ],
-        ]]);
+                "yAxes" => [
+                    [
+                        "ticks" => [
+
+                            "beginAtZero" => true,
+                        ]
+                    ]
+                ]
+            ]
+        ]);
 
         return $chartjs;
     }
@@ -306,7 +312,7 @@ class DashboardController extends Controller {
             "lineTension" => "0.1",
             "type" => "bar",
             'backgroundColor' => "rgba(38, 185, 154, 0.3)",
-            'borderColor' => "rgba(38, 185, 154, 0.7)",
+            'borderColor' => "rgba(38, 185, 154, 1)",
             'data' => $series,
         ];
         $result = ["labels" => $labels, "datasets" => $dataset];
@@ -402,48 +408,58 @@ class DashboardController extends Controller {
             $graph = $this->getRadarChart($dataset, $id);
             array_push($charts, $graph);
             $id++;
-            
         }
         return view("indicators.radar_graph", ["charts" => $charts]);
     }
-    
+
     public function updateRadar() {
         $radarValues = json_decode($this->radarValues()->content());
         $charts = [];
         foreach ($radarValues as $dataset) {
             $graph = $this->getRadarDataset($dataset);
-            array_push($charts, $graph);            
+            array_push($charts, $graph);
         }
         return response()->json($charts);
     }
-    
-    public function getRadarDataset($data){
+
+    public function getRadarDataset($data) {
         $request = request();
         //dd($request);
-        $dataset = [                   
-                        "label" => $data->label . " " . cache($request->organization) . " " . cache($request->phase) . " " . cache($request->year),
-                        'backgroundColor' => "rgba(38, 185, 154, 0.3)",
-                        'borderColor' => "rgba(38, 185, 154, 0.7)",
-                        "pointBackgroundColor" => "rgba(179,181,198,1)",
-                        "pointBorderColor" => "#fff",
-                        "pointHoverBackgroundColor" => "#fff",
-                        "pointHoverBorderColor" => "rgba(179,181,198,1)",
-                        "data" => $data->dataset->data,
-                        ];
-                        return response()->json($dataset);
+        $dataset = [
+            "label" => $data->label . " " . cache($request->organization) . " " . cache($request->phase) . " " . cache($request->year),
+            'backgroundColor' => "rgba(38, 185, 154, 0.3)",
+            'borderColor' => "rgba(38, 185, 154, 1)",
+            
+            "pointBackgroundColor" => "rgba(179,181,198,1)",
+            "pointBorderColor" => "#fff",
+            "pointHoverBackgroundColor" => "#fff",
+            "pointHoverBorderColor" => "rgba(179,181,198,1)",
+            "data" => $data->dataset->data,
+        ];
+        return response()->json($dataset);
     }
 
     public function getRadarChart($data, $id) {
         $labels = $data->dataset->labels;
         $dataset = json_decode($this->getRadarDataset($data)->content());
-        $type = $id == 1 || $id == 2? "bar": "radar";
+        $type = $id == 1 || $id == 2 ? "bar" : "radar";
+        $beginAtZero = ["yAxes" => [["ticks" => ["beginAtZero" => true]]]];
+        $scales = $id == 1 || $id == 2 ? $beginAtZero : false;
         $chartjs = app()->chartjs
                 ->name('radarGraph' . $id)
                 ->type($type)
                 ->labels($labels)
                 ->datasets([
                     $dataset,
-                    ]);                
+                ])
+                ->options([
+            "legend" => [
+                "display" => true,
+                "position" => "bottom",
+            ],
+            "scales" => $scales,
+        ]);
+        
         return $chartjs;
     }
 

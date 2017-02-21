@@ -30,7 +30,7 @@
     @endslot
 
     @slot('indicator_value')
-        {{$indicator["value"]*100}}
+        {{$indicator["value"]}}
     @endslot
 
     @slot('indicator_reverse')

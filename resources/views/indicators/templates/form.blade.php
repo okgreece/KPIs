@@ -76,18 +76,28 @@
             </button>
         </div>
     </div>
+    <div id="dashboard-progress" style="display: none"class='row'>
+
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+
+        </div>
 </div>
 <script>
     function indicators() {
         var organization = $("#organization-select option:selected")[0].value;
         var year = $("#year-select option:selected")[0].value;
         var phase = $("#phase-select option:selected")[0].value;
+        $("#dashboard-progress").show();
+        $("#dashboard-info").hide();
         $.ajax({
             type: "GET",
             url: "dashboard",
             data: {organization: organization, year: year, phase: phase},
             success: function (data) {
                 $(".dashboard").html(data);
+                $("#dashboard-progress").hide();
             }
         });
     }
