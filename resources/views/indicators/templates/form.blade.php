@@ -54,7 +54,7 @@
 </script>
 <div class='form'>
     <div class="row">
-        <div class="input-field col s3">
+        <div class="input-field col l3 m12">
             <select id="organization-select" onchange="update(this)">     
                 @foreach($organizations as $organization)
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
@@ -62,34 +62,27 @@
             </select>
             <label>Organization</label>
         </div>
-        <div id="phase" class="input-field col s3">
+        <div id="phase" class="input-field col l3 m12">
             <select>
             </select>
         </div>
-        <div id="year" class="input-field col s3">
+        <div id="year" class="input-field col l3 m12">
             <select>
             </select>
         </div>
-        <div class="input-field col s3 valign-wrapper">
-            <button onclick="indicators()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">Submit
+        <div class="input-field col l3 m12 valign-wrapper">
+            <button onclick="indicators()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">
                 <i class="material-icons right">send</i>
             </button>
         </div>
     </div>
-    <div id="dashboard-progress" style="display: none"class='row'>
-
-            <div class="progress">
-                <div class="indeterminate"></div>
-            </div>
-
-        </div>
 </div>
 <script>
     function indicators() {
         var organization = $("#organization-select option:selected")[0].value;
         var year = $("#year-select option:selected")[0].value;
         var phase = $("#phase-select option:selected")[0].value;
-        $("#dashboard-progress").show();
+        $(".progress").removeClass("progress-hidden");
         $("#dashboard-info").hide();
         $.ajax({
             type: "GET",
@@ -97,7 +90,7 @@
             data: {organization: organization, year: year, phase: phase},
             success: function (data) {
                 $(".dashboard").html(data);
-                $("#dashboard-progress").hide();
+                $(".progress").addClass("progress-hidden");
             }
         });
     }

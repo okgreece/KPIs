@@ -24,6 +24,8 @@
  * THE SOFTWARE.
  */
 ?>
+<div class="col m12 l4">
+    
 <div class="demo-card-event mdl-card mdl-shadow--6dp">
   
      <div class="mdl-card__title mdl-card__title-text">
@@ -47,3 +49,4 @@
     <i class="material-icons">event</i>-->
   </div>
 </div>
+    </div>

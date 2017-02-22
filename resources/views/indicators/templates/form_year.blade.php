@@ -47,7 +47,7 @@
 </script>
 <div class='form'>
     <div class="row">
-        <div class="input-field col s3">
+        <div class="input-field col m12 l3">
             <select id="organization-select-year" onchange="updateYear(this)">     
                 @foreach($organizations as $organization)
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
@@ -55,33 +55,36 @@
             </select>
             <label>Organization</label>
         </div>
-        <div id="phase-year" class="input-field col s3">
+        <div id="phase-year" class="input-field col m12 l3">
             <select>
             </select>
         </div>
-        <div id="indicator-year" class="input-field col s3">
+        <div id="indicator-year" class="input-field col m12 l3">
             @include('indicators.templates.indicator')
-        </div>
-        <div class="input-field col s3 valign-wrapper">
-            <button onclick="evolution()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">Submit
+        </div>  
+        <div class="input-field col l3 m12 valign-wrapper">
+            <button id="yearly-send" onclick="evolution()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">
                 <i class="material-icons right">send</i>
-            </button>
+                <div class="mdl-tooltip mdl-tooltip--large" for="yearly-send">Submit</div>
+            </button>  
             <button id="addSeries" onclick="addSeries()" class="mdl-button mdl-js-button mdl-button--disabled mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">add</i>
+                <div class="mdl-tooltip mdl-tooltip--large" for="add">Add new series</div>
+            </button>
+            <button id="yearly-change-line" onclick="changeToLine()" disabled class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
+                <i class="material-icons">timeline</i>
+                
+            </button>
+            <button id="yearly-change-bar" onclick="changeToBar()" disabled class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
+                <i class="material-icons">equalizer</i>
             </button>
         </div>
-        <div class="input-field col s3 valign-wrapper">
-            
-        </div>
     </div>
-    <div id="year-progress" style="display: none" class='row'>
-
-        <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-
+    
+        
+        
     </div>
-</div>
+    
 <script>
     function evolution(organization = null, indicator = null, phase = null){
         if (organization == null) {
@@ -93,15 +96,16 @@
         if (phase == null) {
             var phase = $("#phase-year  select option:selected").val();
         }
-        $("#year-progress").show();
-        $("#addSeries").removeClass("mdl-button--disabled");
+        $(".progress").removeClass("progress-hidden");
+        
         $.ajax({
             type: "GET",
             url: "evolution",
             data: {organization: organization, indicatorID: indicator, phase: phase},
             success: function (data) {
                 $(".evolution").html(data);
-                $("#year-progress").hide();
+                $("#addSeries").removeClass("mdl-button--disabled");
+                $(".progress").addClass("progress-hidden");
             }
         });
         organization,phase,indicator = null;
@@ -138,7 +142,7 @@
         var organization = $("#organization-select-year option:selected").val();
         var indicator = $("#indicator-select-year option:selected").val();
         var phase = $("#phase-year  select option:selected").val();
-        $("#year-progress").show();
+        $(".progress").removeClass("progress-hidden");
         var chart = window.line;
         $.ajax({
             type: "GET",
@@ -164,12 +168,39 @@
             };
             data.datasets.backgroundColor = hex2rgba_convert(colors[counter%palette_size], 30);
             data.datasets.borderColor = hex2rgba_convert(colors[counter%palette_size], 100)
-            chart.data.datasets.push(data.datasets);
+            chart.data.datasets.push(data.datasets);            
             chart.update();
             counter++;
-            $("#year-progress").hide();
+            $(".progress").addClass("progress-hidden");
         }
     });
     };
+    
+    function changeToLine(){
+        var chart = window.line;
+        chart.data.datasets.forEach(function (e){e.type = "line";});
+            var ctx =$("#line");
+            var newData = chart.data;
+            var options = chart.options;
+            chart.destroy();
+            chart = new Chart(ctx,{
+                type:"line",
+                data:newData,
+                options:options
+            });
+    }
+    function changeToBar(){
+        var chart = window.line;
+            chart.data.datasets.forEach(function (e){e.type = "bar";});
+            var ctx =$("#line");
+            var newData = chart.data;
+            var options = chart.options;
+            chart.destroy();
+            chart = new Chart(ctx,{
+                type:"bar",
+                data:newData,
+                options:options
+            });
+    }
 </script>
 

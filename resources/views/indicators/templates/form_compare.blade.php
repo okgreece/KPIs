@@ -86,22 +86,13 @@
         <div class="row">
             
             <div class="input-field col s12 m12 l12 center-align">
-                <button id="compare-submit-button" onclick="compare()" class="btn-floatin btn-large waves-effect waves-light" disabled type="submit" name="action">Submit
+                <button id="compare-submit-button" onclick="compare()" class="btn-floatin btn-large waves-effect waves-light" disabled type="submit" name="action">
                     <i class="material-icons right">send</i>
                 </button>
             </div>
            
         </div>
-        <div id="compare-progress" style="display: none"class='row'>
-
-            <div class="progress">
-                <div class="indeterminate"></div>
-            </div>
-
-        </div>
-
     </div>
-
 </div>
 <script>
     function compare() {
@@ -110,7 +101,7 @@
             {dimension:$("#fixed-select-2 option:selected")[0].value, value:$("#fixed-value-2 option:selected")[0].value},
             {dimension:$("#fixed-select-3 option:selected")[0].value, value:$("#fixed-value-3 option:selected")[0].value}
         ];
-        $("#compare-progress").show();
+        $(".progress").removeClass("progress-hidden");
         var free = $("#fixed-select-3 option:enabled").val();
         $.ajax({
             type: "GET",
@@ -118,7 +109,7 @@
             data: {dimensions:dimensions, free:free},
             success: function (data) {
                 $(".compare").html(data);
-                $("#compare-progress").hide();
+                $(".progress").addClass("progress-hidden");
             }
         });
     }

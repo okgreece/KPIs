@@ -25,12 +25,14 @@
  */
 ?>
 <div class="mdl-grid home">
-    
-    @include('pages.partials.card', ['header' => "Dashboard", 'button' => 'GO', 'icon' => "dashboard" , 'href' => "#tab-2"])
+    <div class="row">
+        @include('pages.partials.card', ['header' => "Dashboard", 'button' => 'GO', 'icon' => "dashboard" , 'href' => "#tab-2"])
 
     @include('pages.partials.card', ['header' => "KPIs over time", 'button' => 'GO', 'icon' => "timeline", 'href' => "#tab-4"])
 
     @include('pages.partials.card', ['header' => "Map Overlay", 'button' => 'GO', 'icon' => "map", 'href' => "#tab-5"])
+    </div>
+    
     
 </div>
 <script>

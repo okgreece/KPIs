@@ -54,7 +54,7 @@
 </script>
 <div class='form'>
     <div class="row">
-        <div class="input-field col s3">
+        <div class="input-field col l3 m12">
             <select id="organization-select-radar" onchange="update2(this)">     
                 @foreach($organizations as $organization)
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
@@ -62,57 +62,48 @@
             </select>
             <label>Organization</label>
         </div>
-        <div id="phase-radar" class="input-field col s3">
+        <div id="phase-radar" class="input-field col l3 m12">
             <select>
             </select>
         </div>
-        <div id="year-radar" class="input-field col s3">
+        <div id="year-radar" class="input-field col l3 m12">
             <select>
             </select>
         </div>
 
-        <div class="input-field col s3 valign-wrapper">
-            <button onclick="radar()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">Submit
+        <div class="input-field col l3 m12 valign-wrapper">
+            <button onclick="radar()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">
                 <i class="material-icons right">send</i>
             </button>
             <button id="addSeries2" onclick="addSeries2()" class="mdl-button mdl-js-button mdl-button--disabled mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">add</i>
             </button>
         </div>
-        <div class="input-field col s3 valign-wrapper">
-
-        </div>
-    </div>
-    <div id="radar-progress" style="display: none"class='row'>
-
-        <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
-
     </div>
 </div>
 <script>
     function radar(organization = null, indicator = null, phase = null){
-    if (organization == null) {
-    var organization = $("#organization-select-radar option:selected")[0].value;
-    }
-    if (phase == null) {
-    var phase = $("#phase-radar select option:selected")[0].value;
-    }
-    if (year == null) {
-    var year = $("#year-radar select option:selected")[0].value;
-    }
-    $("#radar-progress").show()
-    $("#addSeries2").removeClass("mdl-button--disabled");
-    $.ajax({
-    type: "GET",
-            url: "radar",
-            data: {organization: organization, year:year, phase: phase},
-            success: function (data) {
-            $(".radar").html(data);
-            $("#radar-progress").hide()
-            }
-    });
+        if (organization == null) {
+            var organization = $("#organization-select-radar option:selected")[0].value;
+        }
+        if (phase == null) {
+            var phase = $("#phase-radar select option:selected")[0].value;
+        }
+        if (year == null) {
+            var year = $("#year-radar select option:selected")[0].value;
+        }
+        $(".progress").removeClass("progress-hidden");
+        
+        $.ajax({
+        type: "GET",
+                url: "radar",
+                data: {organization: organization, year:year, phase: phase},
+                success: function (data) {
+                    $(".radar").html(data);
+                    $("#addSeries2").removeClass("mdl-button--disabled");
+                    $(".progress").addClass("progress-hidden");
+                }
+        });
     }
 
     /*
@@ -120,69 +111,63 @@
      */
 
     function addNulls(item, index, data){
-    var chart = window.line;
-    var diff = chart.data.labels.length - chart.data.datasets[index].data.length;
-    if (diff > 0){
-    var tempData = Array(diff).fill(null);
-    chart.data.datasets[index].data = tempData.concat(chart.data.datasets[index].data);
-    }
+        var chart = window.line;
+        var diff = chart.data.labels.length - chart.data.datasets[index].data.length;
+        if (diff > 0){
+            var tempData = Array(diff).fill(null);
+            chart.data.datasets[index].data = tempData.concat(chart.data.datasets[index].data);
+        }
     }
 
     //code taken from SO
     function hex2rgba_convert(hex, opacity){
-    r = parseInt(hex.substring(0, hex.length / 3), 16);
-    g = parseInt(hex.substring(hex.length / 3, 2 * hex.length / 3), 16);
-    b = parseInt(hex.substring(2 * hex.length / 3, 3 * hex.length / 3), 16);
-    result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
+        r = parseInt(hex.substring(0, hex.length / 3), 16);
+        g = parseInt(hex.substring(hex.length / 3, 2 * hex.length / 3), 16);
+        b = parseInt(hex.substring(2 * hex.length / 3, 3 * hex.length / 3), 16);
+        result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
     return result;
     }
 
 
     function addSeries2(organization = null, indicator = null, phase = null){
-    if ($("#addSeries2").hasClass("mdl-button--disabled")){
-    return;
-    }
-    if (organization == null) {
-    var organization = $("#organization-select-radar option:selected")[0].value;
-    }
-    if (year == null) {
-    var year = $("#year-radar  select option:selected")[0].value;
-    }
+        if ($("#addSeries2").hasClass("mdl-button--disabled")){
+            return;
+        }
+    
+        var organization = $("#organization-select-radar option:selected")[0].value;   
+        var year = $("#year-radar  select option:selected")[0].value;  
+        var phase = $("#phase-radar select option:selected")[0].value;  
+        $(".progress").removeClass("progress-hidden");
+        var counter3 = 0;
+        $.ajax({
+        type: "GET",
+                url: "updateRadar",
+                data: {organization: organization, year:year, phase: phase},
+                success: function (data) {
+                    $.each(data, function (){
 
-    if (phase == null) {
-    var phase = $("#phase-radar select option:selected")[0].value;
-    }
-    $("#radar-progress").show()
-    var counter3 = 0;
-    $.ajax({
-    type: "GET",
-            url: "updateRadar",
-            data: {organization: organization, year:year, phase: phase},
-            success: function (data) {
-            $.each(data, function (){
-
-            this.original.backgroundColor = hex2rgba_convert(colors[counter2 % palette_size], 30);
-            this.original.borderColor = hex2rgba_convert(colors[counter2 % palette_size], 100);
-            if (counter3 == 0){
-            var chart = window.radarGraph0;
-            }
-            else if (counter3 == 1){
-            var chart = window.radarGraph1;
-            }
-            else if (counter3 == 2){
-            var chart = window.radarGraph2;
-            }
-            else if (counter3 == 3){
-            var chart = window.radarGraph3;
-            }
-            counter3++;
-            chart.data.datasets.push(this.original);
-            chart.update();
-            });
-            counter2++;
-            $("#radar-progress").hide()
-            }
-    });
+                        this.original.backgroundColor = hex2rgba_convert(colors[counter2 % palette_size], 30);
+                        this.original.borderColor = hex2rgba_convert(colors[counter2 % palette_size], 100);
+                        if (counter3 == 0){
+                            var chart = window.radarGraph0;
+                        }
+                        else if (counter3 == 1){
+                            var chart = window.radarGraph1;
+                        }
+                        else if (counter3 == 2){
+                            var chart = window.radarGraph2;
+                        }
+                        else if (counter3 == 3){
+                            var chart = window.radarGraph3;
+                        }
+                        counter3++;
+                        chart.data.datasets.push(this.original);
+                        chart.update();
+                    });
+                    counter2++;
+                    $(".progress").addClass("progress-hidden");
+                }
+        });
     };
 </script>
 
