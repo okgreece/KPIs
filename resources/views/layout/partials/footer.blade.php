@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  */
 ?>
-<footer class="mdl-mini-footer">
+<footer class="mdl-mini-footer {{$screen_size}}">
     <div class="mdl-mini-footer__left-section">
     <div class="mdl-logo">
         <a href="//okfn.gr">
@@ -40,12 +40,4 @@
     <strong>Copyright © {{date("Y")}} <a href="http://www.okfn.gr">OKF GREECE</a>.</strong> 
       <span> KPIs application is developed partially by the <a href="http://openbudgets.eu/">OpenBudgets.eu</a> project. <a href="http://openbudgets.eu/">OpenBudgets.eu</a> has received funding from the European Union’s H2020 EU research and innovation programme under grant agreement <a href="http://cordis.europa.eu/project/rcn/194394_en.html">No 645833</a>.</span>
   </div>
-    
 </footer>
-<!-- Material JavaScripts -->
-<script src="/js/materialize.js"></script>
-<!-- Compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>   

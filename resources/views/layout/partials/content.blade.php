@@ -53,4 +53,5 @@
         <div class="page-content">
         </div>
     </section>
+    @include('layout.partials.footer', ["screen_size" => "mobile"])
 </main>
