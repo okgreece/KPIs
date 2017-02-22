@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -24,15 +23,28 @@
  * THE SOFTWARE.
  */
 ?>
-<!--here goes your scripts-->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.css" />
-<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://raw.githubusercontent.com/calvinmetcalf/leaflet-ajax/master/dist/leaflet.ajax.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
-<script src="/js/justgage.js"></script>
-<script src="/js/palette.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
-<script src="/js/plugins/chartjs-plugin-zoom-master/chartjs-plugin-zoom.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.page-cover').fadeOut(3000);
+    });
+</script>
+<div class="page-cover">
+    <div class="page-cover-wrapper">
+        
+        <div id="overlayLoading" class="preloader-wrapper big active">
+
+            <div class="spinner-layer spinner-blue-teal lighten-1-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <p class='cover-text'>Loading...</p>
+    </div>
+</div>
