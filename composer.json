@@ -24,6 +24,7 @@
         "doctrine/dbal": "^2.5",
         "easyrdf/easyrdf": "dev-okgreece",
         "fx3costa/laravelchartjs": "^2.2",
+        "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",

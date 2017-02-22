@@ -53,7 +53,7 @@ THE SOFTWARE.
   align-items: center;
 }
 .demo-card-event > .mdl-card__actions > .material-icons {
-  padding-right: 10px;
+  padding-right: 4px;
 }
 .demo-card-event > .mdl-card__title,
 .demo-card-event > .mdl-card__actions,
@@ -177,15 +177,30 @@ button{
     font-size: large;
 }
 
+.mdl-mini-footer{
+    display:block!important;
+}
+
 .mdl-mini-footer.mobile{
-    display:none;
+    display:none!important;
+}
+
+.fixed-action-btn{
+    bottom: 80px!important;
+    display: none;
+}
+
+.mdl-card__actions.mdl-card--border{
+    padding: 4px;
 }
 
 @media screen and (max-width: 500px) {
-    .mdl-mini-footer.large-screen{
-        display: none;
+    .mdl-mini-footer.mobile {
+        display: block!important;
     }
-    .mdl-mini-footer.mobile{
-        display: flex;
+    
+    .mdl-mini-footer.large-screen {
+        display: none!important;
     }
+    
 }

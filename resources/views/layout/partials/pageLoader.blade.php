@@ -25,7 +25,7 @@
 ?>
 <script>
     $(document).ready(function () {
-        $('.page-cover').fadeOut(3000);
+        $('.page-cover').fadeOut(1914);
     });
 </script>
 <div class="page-cover">

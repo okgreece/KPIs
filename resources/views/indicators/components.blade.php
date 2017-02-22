@@ -23,8 +23,7 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="mdl-grid">
-    
+<div class="mdl-grid">    
 @foreach($indicators as $indicator)
     @if($indicator["indicator"]->type == "0")
         @include('indicators.components.gauge')
@@ -36,5 +35,8 @@
         @include('indicators.components.barchart')
     @endif
 @endforeach
-
 </div>
+<script>
+    var osLinkR = "{{env('OS_VIEWER')}}" + "{!! $osLinkR !!}";
+    var osLinkE = "{{env('OS_VIEWER')}}" + "{!! $osLinkE !!}"; 
+</script>

@@ -49,8 +49,6 @@
             }
         });
     }
-
-
 </script>
 <div class='form'>
     <div class="row">
@@ -90,7 +88,10 @@
             data: {organization: organization, year: year, phase: phase},
             success: function (data) {
                 $(".dashboard").html(data);
+                $("#os-link-r")[0].href = osLinkR;
+                $("#os-link-e")[0].href = osLinkE;
                 $(".progress").addClass("progress-hidden");
+                $(".fixed-action-btn").show();
             }
         });
     }

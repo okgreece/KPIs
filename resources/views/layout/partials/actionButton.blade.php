@@ -23,16 +23,26 @@
  * THE SOFTWARE.
  */
 ?>
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-    @include('layout.partials.htmlHeader')    
-    <body>
-        @include('layout.partials.pageLoader')
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            @include('layout.partials.contentHeader')
-            @include('layout.partials.content')
-            @include('layout.partials.actionButton')
-            @include('layout.partials.footer', ["screen_size" => "large-screen"])
-        </div>
-    </body>
-</html>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large blue waves-effect waves-light">
+        <i class="large material-icons">more_vert</i>
+    </a>
+    <ul>
+        <li>
+            <a id="os-link-r" target="_blank" href="" class="btn-floating green waves-effect waves-light">
+                €
+            </a>
+            <div class="mdl-tooltip mdl-tooltip--large" for="os-link-r">
+                Revenue Data
+            </div>
+        </li>
+        <li>
+            <a id="os-link-e" target="_blank" href="" class="btn-floating red waves-effect waves-light">
+                €
+            </a>
+            <div class="mdl-tooltip mdl-tooltip--large" for="os-link-e">
+                Expenditure Data
+            </div>
+        </li>
+    </ul>
+</div>

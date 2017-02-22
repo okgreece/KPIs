@@ -31,7 +31,69 @@ class DashboardController extends Controller {
 
         return view('indicators/components', [
             "indicators" => $values,
+            "osLinkE" => $this->getOSLink("expenditure"),
+            "osLinkR" => $this->getOSLink("revenue"),
+            
         ]);
+    }
+    
+    public function getOSLink($operation){
+        $request = request();
+        $SPARQLdataset = $this->getDataset($operation);
+        if($SPARQLdataset != null){
+            $lastPart = $this->urlLast($SPARQLdataset);
+            $client = new \GuzzleHttp\Client();
+            try{
+                $result = $client->request("GET", env("RUDOLF"));
+            } catch (\GuzzleHttp\Exception\ConnectException $ex) {
+                return null;
+            }          
+            
+            $cubes = collect(json_decode($result->getBody()->getContents())->data);
+            $OSDataset = $cubes->filter(function ($cube) use ($lastPart){
+                return explode("__", $cube->name)[0] == $lastPart;
+                })->first();
+            if(isset($OSDataset)){
+                $query = [
+                  "lang" => "en",
+                    "measure" => "amount.sum",
+                    "groups[]" => "economicClassification.notation",
+                    "filters[budgetPhase.budgetPhase][]" => urlencode($request->phase),
+                    "visualizations[]" => "treemap"
+                     
+                ];
+                return $link = 
+                        $OSDataset->name
+                 //       . http_build_query($query);
+//&measure=amount.sum&groups%5B%5D=economicClassification.notation&filters%5BbudgetPhase.budgetPhase%5D%5B%5D=" . urlencode($request->phase) ."&order=amount.sum%7Cdesc&visualizations%5B%5D=Treemap";
+            ;}
+            else{
+                return null;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public function getDataset($operation){
+        $request = request();
+        $sparqlBuilder = new QueryBuilder(self::$prefixes);
+        $sparqlBuilder->selectDistinct("?dataset")
+                ->where("?dataset", 'rdf:type', 'qb:DataSet')
+                ->also('obeu-dimension:organization', "<" . $request->organization . ">")
+                ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
+                ->also('obeu-dimension:operationCharacter', 'obeu-operation:' . $operation);
+        $query = $sparqlBuilder->getSPARQL();
+        $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
+        $result = $endpoint->query($query);
+        try{
+            $link = $result[0]->dataset->getUri();
+        } catch (\ErrorException $ex) {
+            $link = null;
+        }
+        return $link;
+        
     }
 
     public function evolution() {
@@ -83,10 +145,12 @@ class DashboardController extends Controller {
         'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
         'obeu-measure' => 'http://data.openbudgets.eu/ontology/dsd/measure/',
         'obeu-dimension' => 'http://data.openbudgets.eu/ontology/dsd/dimension/',
+        'obeu-operation' => 'http://data.openbudgets.eu/resource/codelist/operation-character/',
         'qb' => 'http://purl.org/linked-data/cube#',
         'skos' => 'http://www.w3.org/2004/02/skos/core#',
         'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        'rdfs' => "http://www.w3.org/2000/01/rdf-schema#"
+        'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
+        
     );
 
     public function organizations() {
@@ -196,14 +260,19 @@ class DashboardController extends Controller {
 
         $years = [];
         foreach ($labels as $label) {
-            $path = parse_url($label->year, PHP_URL_PATH);
-            $pathFragments = explode('/', $path);
-            $end = end($pathFragments);
-            array_push($years, ["label" => $end, "value" => $label->year]);
-            Cache::forever($label->year, $end);
+            $lastPart = $this->urlLast($label->year);
+            array_push($years, ["label" => $lastPart, "value" => $label->year]);
+            Cache::forever($label->year, $lastPart);
         }
 
         return view('indicators.templates.year', ["years" => $years]);
+    }
+    
+    public function urlLast($url){
+        $path = parse_url($url, PHP_URL_PATH);
+        $pathFragments = explode('/', $path);
+        $end = end($pathFragments);
+        return $end;
     }
 
     public function getEnabled() {
