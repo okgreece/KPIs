@@ -33,50 +33,45 @@ class DashboardController extends Controller {
             "indicators" => $values,
             "osLinkE" => $this->getOSLink("expenditure"),
             "osLinkR" => $this->getOSLink("revenue"),
-            
         ]);
     }
-    
-    public function getOSLink($operation){
+
+    public function getOSLink($operation) {
         $request = request();
         $SPARQLdataset = $this->getDataset($operation);
-        if($SPARQLdataset != null){
+        if ($SPARQLdataset != null) {
             $lastPart = $this->urlLast($SPARQLdataset);
             $client = new \GuzzleHttp\Client();
-            try{
+            try {
                 $result = $client->request("GET", env("RUDOLF"));
             } catch (\GuzzleHttp\Exception\ConnectException $ex) {
                 return null;
-            }          
-            
+            }
             $cubes = collect(json_decode($result->getBody()->getContents())->data);
-            $OSDataset = $cubes->filter(function ($cube) use ($lastPart){
-                return explode("__", $cube->name)[0] == $lastPart;
-                })->first();
-            if(isset($OSDataset)){
+            $OSDataset = $cubes->filter(function ($cube) use ($lastPart) {
+                        return explode("__", $cube->name)[0] == $lastPart;
+                    })->first();
+            if (isset($OSDataset)) {
                 $query = [
-                  "lang" => "en",
+                    "lang" => "en",
                     "measure" => "amount.sum",
                     "groups[]" => "economicClassification.notation",
-                    "filters[budgetPhase.budgetPhase][]" => urlencode($request->phase),
-                    "visualizations[]" => "treemap"
-                     
+                    "filters[budgetPhase.budgetPhase][]" => $request->phase,
+                    "visualizations[]" => "Treemap"
                 ];
-                return $link = 
-                        $OSDataset->name
-                 //       . http_build_query($query);
-//&measure=amount.sum&groups%5B%5D=economicClassification.notation&filters%5BbudgetPhase.budgetPhase%5D%5B%5D=" . urlencode($request->phase) ."&order=amount.sum%7Cdesc&visualizations%5B%5D=Treemap";
-            ;}
-            else{
+                return $link = $OSDataset->name
+                        . "?"
+                        . http_build_query($query)
+                ;
+            } else {
                 return null;
             }
-        }
-        else{
+        } else {
             return null;
         }
     }
-    
-    public function getDataset($operation){
+
+    public function getDataset($operation) {
         $request = request();
         $sparqlBuilder = new QueryBuilder(self::$prefixes);
         $sparqlBuilder->selectDistinct("?dataset")
@@ -87,13 +82,12 @@ class DashboardController extends Controller {
         $query = $sparqlBuilder->getSPARQL();
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $result = $endpoint->query($query);
-        try{
+        try {
             $link = $result[0]->dataset->getUri();
         } catch (\ErrorException $ex) {
             $link = null;
         }
         return $link;
-        
     }
 
     public function evolution() {
@@ -150,7 +144,6 @@ class DashboardController extends Controller {
         'skos' => 'http://www.w3.org/2004/02/skos/core#',
         'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
-        
     );
 
     public function organizations() {
@@ -161,33 +154,26 @@ class DashboardController extends Controller {
         foreach ($candidates as $candidate) {
             array_push($organizations, ["label" => $this->getLabel($candidate->organization), "value" => $candidate->organization]);
         }
-
         return $organizations;
     }
 
     public function organizationsquery() {
 
         $queryBuilder = new QueryBuilder(self::$prefixes);
-
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
                 ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
                 ->orderBy('?organization');
         $query = $queryBuilder->getSPARQL();
-
         return $query;
     }
 
     public function getLabel($uri) {
         $queryBuilder = new QueryBuilder(self::$prefixes);
-
         $queryBuilder->selectDistinct("?label")
                 ->where('<' . $uri . '>', 'rdfs:label', '?label');
-
-
         $query = $queryBuilder->getSPARQL();
-
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         $label = $sparql->query($query)[0]->label->getValue();
         Cache::forever($uri, $label);
@@ -201,7 +187,6 @@ class DashboardController extends Controller {
         } else {
             $organization = "?organization";
         }
-
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $lang = "en";
         $queryBuilder->selectDistinct("?phase", "?label")
@@ -216,10 +201,8 @@ class DashboardController extends Controller {
                 ->optional('?phase', 'skos:prefLabel', '?label')
                 ->filter('langMatches(lang(?label), "' . $lang . '")')
                 ->orderBy("?phase");
-
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-
         $labels = $sparql->query($query);
         $phases = [];
         foreach ($labels as $label) {
@@ -229,7 +212,6 @@ class DashboardController extends Controller {
             Cache::forever($label->phase, $label->label->getValue());
             array_push($phases, ["label" => $label->label->getValue(), "value" => $label->phase]);
         }
-
         return view('indicators.templates.phase', ["phases" => $phases]);
     }
 
@@ -240,9 +222,7 @@ class DashboardController extends Controller {
         } else {
             $organization = "?organization";
         }
-
         $queryBuilder = new QueryBuilder(self::$prefixes);
-
         $queryBuilder->selectDistinct("?year")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', $organization)
@@ -255,20 +235,17 @@ class DashboardController extends Controller {
 
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-
         $labels = $sparql->query($query);
-
         $years = [];
         foreach ($labels as $label) {
             $lastPart = $this->urlLast($label->year);
             array_push($years, ["label" => $lastPart, "value" => $label->year]);
             Cache::forever($label->year, $lastPart);
         }
-
         return view('indicators.templates.year', ["years" => $years]);
     }
-    
-    public function urlLast($url){
+
+    public function urlLast($url) {
         $path = parse_url($url, PHP_URL_PATH);
         $pathFragments = explode('/', $path);
         $end = end($pathFragments);
@@ -330,9 +307,7 @@ class DashboardController extends Controller {
     }
 
     public function getYearlyChart($data) {
-
         $object = collect(json_decode($this->chartTransform($data)->content()));
-
         $labels = $object["labels"];
         $datasets = $object["datasets"];
         $chartjs = app()->chartjs
@@ -389,9 +364,7 @@ class DashboardController extends Controller {
     }
 
     public function getCompareChart($data) {
-
         $object = collect(json_decode($this->chartCompareTransform($data)->content()));
-
         $labels = $object["labels"];
         $datasets = $object["datasets"];
         $chartjs = app()->chartjs
@@ -410,15 +383,13 @@ class DashboardController extends Controller {
                 "yAxes" => [
                     [
                         "ticks" => [
-
                             "beginAtZero" => true,
+                            ]
                         ]
                     ]
                 ]
-            ]
-        ]);
-
-
+                    ]
+                        );
         return $chartjs;
     }
 
@@ -446,7 +417,6 @@ class DashboardController extends Controller {
             ]);
         }
         $data = response()->json($values);
-
         $chart = $this->getCompareChart($data);
         return view("indicators/compare_graph", ["chart" => $chart]);
     }
@@ -498,13 +468,12 @@ class DashboardController extends Controller {
             "label" => $data->label . " " . cache($request->organization) . " " . cache($request->phase) . " " . cache($request->year),
             'backgroundColor' => "rgba(38, 185, 154, 0.3)",
             'borderColor' => "rgba(38, 185, 154, 1)",
-            
             "pointBackgroundColor" => "rgba(179,181,198,1)",
             "pointBorderColor" => "#fff",
             "pointHoverBackgroundColor" => "#fff",
             "pointHoverBorderColor" => "rgba(179,181,198,1)",
             "data" => $data->dataset->data,
-        ];
+            ];
         return response()->json($dataset);
     }
 
@@ -528,8 +497,6 @@ class DashboardController extends Controller {
             ],
             "scales" => $scales,
         ]);
-        
         return $chartjs;
     }
-
 }

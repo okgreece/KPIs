@@ -30,6 +30,7 @@
     var counter = 0;
     var palette_size = 7;
     var colors = palette("tol-rainbow", palette_size);
+    var char_type = "bar";
 
     function updateYear(data) {
         var organization = $("#organization-select-year option:selected")[0].value;
@@ -71,11 +72,11 @@
                 <i class="material-icons">add</i>
                 <div class="mdl-tooltip mdl-tooltip--large" for="add">Add new series</div>
             </button>
-            <button id="yearly-change-line" onclick="changeToLine()" disabled class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
+            <button disabled id="yearly-change-line" onclick="changeToLine()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">timeline</i>
                 
             </button>
-            <button id="yearly-change-bar" onclick="changeToBar()" disabled class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
+            <button disabled id="yearly-change-bar" onclick="changeToBar()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">equalizer</i>
             </button>
         </div>
@@ -169,6 +170,12 @@
             data.datasets.backgroundColor = hex2rgba_convert(colors[counter%palette_size], 30);
             data.datasets.borderColor = hex2rgba_convert(colors[counter%palette_size], 100)
             chart.data.datasets.push(data.datasets);            
+//            if(chart_type == "bar"){
+//                changeToBar();
+//            }
+//            else if(chart_type == "line"){
+//                changeToLine();
+//            }
             chart.update();
             counter++;
             $(".progress").addClass("progress-hidden");
@@ -183,8 +190,9 @@
             var newData = chart.data;
             var options = chart.options;
             chart.destroy();
+            chart_type = "line";
             chart = new Chart(ctx,{
-                type:"line",
+                type:chart_type,
                 data:newData,
                 options:options
             });
@@ -195,9 +203,11 @@
             var ctx =$("#line");
             var newData = chart.data;
             var options = chart.options;
+            chart_type = "bar";
+            
             chart.destroy();
             chart = new Chart(ctx,{
-                type:"bar",
+                type:chart_type,
                 data:newData,
                 options:options
             });
