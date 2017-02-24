@@ -32,4 +32,8 @@
     </div>
 @endforeach
 </div>
+<script>
+    var osLinkR = "{{env('OS_VIEWER')}}" + "{!! $osLinkR !!}";
+    var osLinkE = "{{env('OS_VIEWER')}}" + "{!! $osLinkE !!}"; 
+</script>
 

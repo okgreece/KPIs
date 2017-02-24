@@ -102,6 +102,9 @@
                     $(".radar").html(data);
                     $("#addSeries2").removeClass("mdl-button--disabled");
                     $(".progress").addClass("progress-hidden");
+                    $("#radar-action-btn ul li a")[0].href = osLinkR;
+                    $("#radar-action-btn ul li a")[1].href = osLinkE;
+                    $("#radar-action-btn").show();
                 }
         });
     }
@@ -166,6 +169,7 @@
                     });
                     counter2++;
                     $(".progress").addClass("progress-hidden");
+                    $("#radar-action-btn").hide();
                 }
         });
     };

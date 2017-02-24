@@ -23,24 +23,24 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="fixed-action-btn">
+<div id="{{$actionBtnId}}" class="fixed-action-btn">
     <a class="btn-floating btn-large blue waves-effect waves-light">
         <i class="large material-icons">more_vert</i>
     </a>
     <ul>
         <li>
-            <a id="os-link-r" target="_blank" href="" class="btn-floating green waves-effect waves-light">
+            <a id="{{$actionBtnId}}-r" target="_blank" href="" class="btn-floating green waves-effect waves-light">
                 €
             </a>
-            <div class="mdl-tooltip mdl-tooltip--large" for="os-link-r">
+            <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-r">
                 Revenue Data
             </div>
         </li>
         <li>
-            <a id="os-link-e" target="_blank" href="" class="btn-floating red waves-effect waves-light">
+            <a id="{{$actionBtnId}}-e" target="_blank" href="" class="btn-floating red waves-effect waves-light">
                 €
             </a>
-            <div class="mdl-tooltip mdl-tooltip--large" for="os-link-e">
+            <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-e">
                 Expenditure Data
             </div>
         </li>

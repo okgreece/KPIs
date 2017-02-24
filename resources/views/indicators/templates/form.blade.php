@@ -88,10 +88,10 @@
             data: {organization: organization, year: year, phase: phase},
             success: function (data) {
                 $(".dashboard").html(data);
-                $("#os-link-r")[0].href = osLinkR;
-                $("#os-link-e")[0].href = osLinkE;
+                $("#dashboard-action-btn ul li a")[0].href = osLinkR;
+                $("#dashboard-action-btn ul li a")[1].href = osLinkE;
                 $(".progress").addClass("progress-hidden");
-                $(".fixed-action-btn").show();
+                $("#dashboard-action-btn").show();
             }
         });
     }

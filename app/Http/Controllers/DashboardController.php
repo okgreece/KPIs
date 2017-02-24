@@ -448,7 +448,10 @@ class DashboardController extends Controller {
             array_push($charts, $graph);
             $id++;
         }
-        return view("indicators.radar_graph", ["charts" => $charts]);
+        return view("indicators.radar_graph", ["charts" => $charts,
+            "osLinkE" => $this->getOSLink("expenditure"),
+            "osLinkR" => $this->getOSLink("revenue"),
+            ]);
     }
 
     public function updateRadar() {

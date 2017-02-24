@@ -31,7 +31,6 @@
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
             @include('layout.partials.contentHeader')
             @include('layout.partials.content')
-            @include('layout.partials.actionButton')
             @include('layout.partials.footer', ["screen_size" => "large-screen"])
         </div>
     </body>

@@ -25,6 +25,7 @@
  */
 ?>
 @include('indicators.templates.form_radar')
+@include('layout.partials.actionButton', ["actionBtnId" => "radar-action-btn"])
 <div class="radar">
 </div>
 
