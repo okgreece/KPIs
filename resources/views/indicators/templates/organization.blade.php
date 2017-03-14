@@ -29,4 +29,4 @@
     <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
  @endforeach
 </select>
-<label>Organization</label>
+<label>@lang('kpi/forms.organization')</label>

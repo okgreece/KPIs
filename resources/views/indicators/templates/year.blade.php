@@ -29,5 +29,5 @@
     <option value="{{$year["value"]}}">{{$year["label"]}}</option>
  @endforeach
 </select>
-<label>Year</label>
+<label>@lang('kpi/forms.year')</label>
 

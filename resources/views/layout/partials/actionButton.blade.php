@@ -33,7 +33,7 @@
                 €
             </a>
             <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-r">
-                Revenue Data
+                @lang('kpi/buttons.revenue')
             </div>
         </li>
         <li>
@@ -41,7 +41,7 @@
                 €
             </a>
             <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-e">
-                Expenditure Data
+                @lang('kpi/buttons.expenditure')
             </div>
         </li>
     </ul>

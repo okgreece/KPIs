@@ -30,11 +30,11 @@
     </div>
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-        <a id="tab-1" href="#scroll-tab-1" class="mdl-layout__tab is-active">Home</a>
-        <a id="tab-2" href="#scroll-tab-2" class="mdl-layout__tab">Dashboard</a>
-        <a id="tab-3" href="#scroll-tab-3" class="mdl-layout__tab">Compare</a>
-        <a id="tab-4" href="#scroll-tab-4" class="mdl-layout__tab">Yearly Change</a>
-        <a id="tab-5" href="#scroll-tab-5" class="mdl-layout__tab">Radar Dashboard</a>
-        <a id="tab-6" href="#scroll-tab-6" class="mdl-layout__tab">About</a>
+        <a id="tab-1" href="#scroll-tab-1" class="mdl-layout__tab is-active">@lang('kpi/navigation.home')</a>
+        <a id="tab-2" href="#scroll-tab-2" class="mdl-layout__tab">@lang('kpi/navigation.dashboard')</a>
+        <a id="tab-3" href="#scroll-tab-3" class="mdl-layout__tab">@lang('kpi/navigation.compare')</a>
+        <a id="tab-4" href="#scroll-tab-4" class="mdl-layout__tab">@lang('kpi/navigation.yearly')</a>
+        <a id="tab-5" href="#scroll-tab-5" class="mdl-layout__tab">@lang('kpi/navigation.radar')</a>
+        <a id="tab-6" href="#scroll-tab-6" class="mdl-layout__tab">@lang('kpi/navigation.about')</a>
     </div>
 </header>

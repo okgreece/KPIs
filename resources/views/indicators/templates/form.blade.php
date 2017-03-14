@@ -58,15 +58,17 @@
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
                 @endforeach
             </select>
-            <label>Organization</label>
+            <label>@lang('kpi/forms.organization')</label>
         </div>
         <div id="phase" class="input-field col l3 m12">
             <select>
             </select>
+            <label>@lang('kpi/forms.phase')</label>
         </div>
         <div id="year" class="input-field col l3 m12">
             <select>
             </select>
+            <label>@lang('kpi/forms.year')</label>
         </div>
         <div class="input-field col l3 m12 valign-wrapper">
             <button onclick="indicators()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">

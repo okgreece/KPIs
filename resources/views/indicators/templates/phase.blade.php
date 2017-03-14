@@ -29,5 +29,5 @@
     <option value="{{$phase["value"]}}">{{$phase["label"]}}</option>
  @endforeach
 </select>
-<label>Phase</label>
+<label>@lang('kpi/forms.phase')</label>
 

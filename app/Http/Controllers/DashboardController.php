@@ -431,7 +431,7 @@ class DashboardController extends Controller {
             $data = [];
             foreach ($indicators as $indicator) {
                 $request->request->set("indicatorID", $indicator->id);
-                array_push($labels, $indicator->title);
+                array_push($labels, explode(" ",$indicator->title));
                 array_push($data, $this->getValue($request));
             }
             array_push($radars, ["label" => $group->title, "dataset" => ["labels" => $labels, "data" => $data]]);

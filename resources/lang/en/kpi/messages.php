@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -22,30 +23,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-?>
-@include('indicators.templates.gauge_script')
-@include('indicators.templates.number_script')
-@include('indicators.templates.form')
-<div class="dashboard">
-    <div class="grid">
-        <div id="dashboard-info" class="row">
-            <div class="card-panel teal center-align">
-                <span class="white-text">@lang('kpi/messages.dashboard_help')</span>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    function yearly(id){
-        clickTab("#tab-4 span");
-        $(".evolution").html("");
-        var organization = $("#organization-select option:selected")[0].value;
-        document.getElementById("organization-select-year").value = organization;
-        updateYear();
-        var phase = $("#phase-select option:selected")[0].value;
-        document.getElementById("phase-select").value = phase;
-        document.getElementById("indicator-select-year").value = id;
-        evolution(organization, id, phase);
-    }
-</script>
-@include('layout.partials.actionButton', ["actionBtnId" => "dashboard-action-btn"])
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Messages Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used on various messages
+    |
+    */
+
+    'loading' => 'Loading...',
+    'copyright' => 'KPIs application is developed partially by the <a href="http://openbudgets.eu/">OpenBudgets.eu</a> project. <a href="http://openbudgets.eu/">OpenBudgets.eu</a> has received funding from the European Union’s H2020 EU research and innovation programme under grant agreement <a href="http://cordis.europa.eu/project/rcn/194394_en.html">No 645833</a>.',
+    'dashboard_help' => 'Select an organization to start.',
+    'ind_description' => 'Indicator description',
+    
+
+];

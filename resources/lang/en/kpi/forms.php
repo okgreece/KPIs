@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -22,30 +23,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-?>
-@include('indicators.templates.gauge_script')
-@include('indicators.templates.number_script')
-@include('indicators.templates.form')
-<div class="dashboard">
-    <div class="grid">
-        <div id="dashboard-info" class="row">
-            <div class="card-panel teal center-align">
-                <span class="white-text">@lang('kpi/messages.dashboard_help')</span>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    function yearly(id){
-        clickTab("#tab-4 span");
-        $(".evolution").html("");
-        var organization = $("#organization-select option:selected")[0].value;
-        document.getElementById("organization-select-year").value = organization;
-        updateYear();
-        var phase = $("#phase-select option:selected")[0].value;
-        document.getElementById("phase-select").value = phase;
-        document.getElementById("indicator-select-year").value = id;
-        evolution(organization, id, phase);
-    }
-</script>
-@include('layout.partials.actionButton', ["actionBtnId" => "dashboard-action-btn"])
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Forms Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used on forms
+    |
+    */
+
+    'organization' => 'Organization',
+    'year' => 'Year',
+    'phase' => 'Phase',
+    'indicator' => 'Indicator',
+    'helper' => 'Select a dimension',
+    'compare_label1' => 'Select Fixed Dimension 1',
+    'compare_label2' => 'Select Fixed Dimension 2',
+    'compare_label3' => 'Select Fixed Dimension 3',
+    
+];

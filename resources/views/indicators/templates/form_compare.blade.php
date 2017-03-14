@@ -33,13 +33,13 @@
         <div id="row-1" class="row">
             <div id="fixed-dimension-1" class="input-field col s12 m6 l6">
                 <select onchange="getConcepts(this, 1)" id="fixed-select-1">
-                    <option value="" selected disabled>Select a dimension</option>
-                    <option value="year">Year</option>
-                    <option value="indicatorID">Indicator</option>
-                    <option value="phase">Phase</option>
-                    <option value="organization">Organization</option>
+                    <option value="" selected disabled>@lang('kpi/forms.helper')</option>
+                    <option value="year">@lang('kpi/forms.year')</option>
+                    <option value="indicatorID">@lang('kpi/forms.indicator')</option>
+                    <option value="phase">@lang('kpi/forms.phase')</option>
+                    <option value="organization">@lang('kpi/forms.organization')</option>
                 </select>
-                <label>Fixed dimension 1</label>
+                <label>@lang('kpi/forms.compare_label1')</label>
             </div>
             <div id="fixed-value-1" class="input-field col s12 m6 l6">
                 <select>
@@ -51,13 +51,13 @@
         <div style="display: none" id="row-2" class="row">
             <div id="fixed-dimension-2" class="input-field col s12 m6 l6">
                 <select onchange="getConcepts(this, 2)" id="fixed-select-2">
-                    <option value="" selected disabled>Select a dimension</option>
-                    <option value="year">Year</option>
-                    <option value="indicatorID">Indicator</option>
-                    <option value="phase">Phase</option>
-                    <option value="organization">Organization</option>
+                    <option value="" selected disabled>@lang('kpi/forms.helper')</option>
+                    <option value="year">@lang('kpi/forms.year')</option>
+                    <option value="indicatorID">@lang('kpi/forms.indicator')</option>
+                    <option value="phase">@lang('kpi/forms.phase')</option>
+                    <option value="organization">@lang('kpi/forms.organization')</option>
                 </select>
-                <label>Fixed dimension 2</label>
+                <label>@lang('kpi/forms.compare_label2')</label>
             </div>
             <div id="fixed-value-2" class="input-field col s12 m6 l6">
                 <select>
@@ -68,29 +68,25 @@
         <div style="display: none" id="row-3" class="row">
             <div id="fixed-dimension-3" class="input-field col s12 m6 l6">
                 <select onchange="getConcepts(this, 3)" id="fixed-select-3">
-                    <option value="" selected disabled>Select a dimension</option>
-                    <option value="year">Year</option>
-                    <option value="indicatorID">Indicator</option>
-                    <option value="phase">Phase</option>
-                    <option value="organization">Organization</option>
+                    <option value="" selected disabled>@lang('kpi/forms.helper')</option>
+                    <option value="year">@lang('kpi/forms.year')</option>
+                    <option value="indicatorID">@lang('kpi/forms.indicator')</option>
+                    <option value="phase">@lang('kpi/forms.phase')</option>
+                    <option value="organization">@lang('kpi/forms.organization')</option>
                 </select>
-                <label>Fixed dimension 3</label>
+                <label>@lang('kpi/forms.compare_label3')</label>
             </div>
             <div id="fixed-value-3" class="input-field col s12 m6 l6">
                 <select>
-                    
                 </select>
             </div>
-            
         </div>
         <div class="row">
-            
             <div class="input-field col s12 m12 l12 center-align">
                 <button id="compare-submit-button" onclick="compare()" class="btn-floatin btn-large waves-effect waves-light" disabled type="submit" name="action">
                     <i class="material-icons right">send</i>
                 </button>
             </div>
-           
         </div>
     </div>
 </div>

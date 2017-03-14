@@ -29,5 +29,5 @@
     <option value="{{$indicator->id}}">{{$indicator->title}}</option>
  @endforeach
 </select>
-<label>Indicator</label>
+<label>@lang('kpi/forms.indicator')</label>
 

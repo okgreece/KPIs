@@ -54,7 +54,7 @@
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
                 @endforeach
             </select>
-            <label>Organization</label>
+            <label>@lang('kpi/forms.organization')</label>
         </div>
         <div id="phase-year" class="input-field col m12 l3">
             <select>
@@ -66,11 +66,11 @@
         <div class="input-field col l3 m12 valign-wrapper">
             <button id="yearly-send" onclick="evolution()" class="btn-floatin btn-large waves-effect waves-light" type="submit" name="action">
                 <i class="material-icons right">send</i>
-                <div class="mdl-tooltip mdl-tooltip--large" for="yearly-send">Submit</div>
+                <div class="mdl-tooltip mdl-tooltip--large" for="yearly-send">@lang('kpi/buttons.submit')</div>
             </button>  
             <button id="addSeries" onclick="addSeries()" class="mdl-button mdl-js-button mdl-button--disabled mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">add</i>
-                <div class="mdl-tooltip mdl-tooltip--large" for="add">Add new series</div>
+                <div class="mdl-tooltip mdl-tooltip--large" for="add">@lang('kpi/buttons.add')</div>
             </button>
             <button disabled id="yearly-change-line" onclick="changeToLine()" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored waves-effect waves-light">
                 <i class="material-icons">timeline</i>

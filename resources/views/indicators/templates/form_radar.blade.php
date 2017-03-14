@@ -60,7 +60,7 @@
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
                 @endforeach
             </select>
-            <label>Organization</label>
+            <label>@lang('kpi/forms.organization')</label>
         </div>
         <div id="phase-radar" class="input-field col l3 m12">
             <select>

@@ -45,6 +45,6 @@
                 </div>
             </div>
         </div>
-        <p class='cover-text'>Loading...</p>
+        <p class='cover-text'>@lang('kpi/messages.loading')</p>
     </div>
 </div>

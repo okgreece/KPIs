@@ -24,7 +24,8 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{Cookie::get('locale')}}">
+    <?php App::setLocale(Cookie::get('locale')); ?>
     @include('layout.partials.htmlHeader')    
     <body>
         @include('layout.partials.pageLoader')

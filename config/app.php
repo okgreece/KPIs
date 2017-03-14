@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'el',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +168,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         //lang detector
-       // Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
+        Vluzrmos\LanguageDetector\Providers\LanguageDetectorServiceProvider::class,
         
         /*
          * Application Service Providers...

@@ -36,10 +36,10 @@
 
     <div class="mdl-card__actions mdl-card--border">
         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Compare
+            @lang('kpi/buttons.compare')
         </a>
         <a onclick="yearly({{ltrim($indicator_id,"indicator")}})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            Yearly Change
+            @lang('kpi/buttons.yearly')
         </a>
         <button id="demo-menu-lower-right-{{$indicator_id}}"
                 class="mdl-button mdl-js-button mdl-button--icon">
@@ -53,7 +53,7 @@
 
 
     <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4">Indicator Description<i class="material-icons right">close</i></span>
+        <span class="card-title grey-text text-darken-4">@lang('kpi/messages.ind_description')<i class="material-icons right">close</i></span>
         <div class="mdl-card__supporting-text">
             {{$indicator_description}}
         </div>
