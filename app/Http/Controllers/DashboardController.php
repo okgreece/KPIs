@@ -163,6 +163,7 @@ class DashboardController extends Controller {
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
+                //TODO:exclude organizations temporal fix
                 ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
                 ->orderBy('?organization');
         $query = $queryBuilder->getSPARQL();
