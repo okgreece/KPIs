@@ -195,6 +195,9 @@ return [
         //chartjs
         Fx3costa\LaravelChartJs\Providers\ChartjsServiceProvider::class,
         
+        //seeder generator
+        Orangehill\Iseed\IseedServiceProvider::class,
+        
         
 
     ],
