@@ -2,31 +2,22 @@
 
 ```
 composer install
-```
 
-```
 npm install
-```
 
-```
 gulp
-```
 
-```
 cp .env.example .env
+
 ```
 
 edit the .env file to reflect your endpoint
 
 ```
 php artisan key:generate
-```
 
-```
 php artisan migrate 
-```
 
-```
 php artisan db:seed
 ```
 
