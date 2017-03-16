@@ -149,11 +149,16 @@ class DashboardController extends Controller {
     public function organizations() {
 
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-        $candidates = $sparql->query($this->organizationsQuery());
+        //$candidates = $sparql->query($this->organizationsQuery());
+        $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
+        
+        
         foreach ($candidates as $candidate) {
-            array_push($organizations, ["label" => $this->getLabel($candidate->organization), "value" => $candidate->organization]);
+            
+            array_push($organizations, ["label" => $this->getLabel($candidate->uri), "value" => $candidate->uri]);
         }
+        //dd($organizations);
         return $organizations;
     }
 
@@ -164,12 +169,12 @@ class DashboardController extends Controller {
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
                 //TODO:exclude organizations temporal fix
-                ->filter("str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Kατερίνης' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
+                ->filter("str(?organization) != 'http://data.openbudgets.eu/resource/codelist/cl-geo/ES' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
                 ->orderBy('?organization');
         $query = $queryBuilder->getSPARQL();
         return $query;
     }
-
+    
     public function getLabel($uri) {
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $queryBuilder->selectDistinct("?label")

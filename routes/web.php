@@ -19,7 +19,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
     Route::resource('admin/indicators', 'Admin\\IndicatorsController');
     Route::resource('admin/groups', 'Admin\\GroupsController');
-    Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
+    Route::resource('admin/aggregators', 'Admin\\AggregatorsController');   
+    Route::resource('admin/organizations', 'Admin\\OrganizationsController');    
+    Route::resource('admin/s-p-a-r-q-l-endpoints', 'Admin\\SPARQLEndpointsController');
+    Route::resource('admin/o-s-endpoints', 'Admin\\OSEndpointsController');
 });
 Route::get('/', 'DashboardController@index');
 
@@ -40,3 +43,4 @@ Route::get('/compare', 'DashboardController@compare');
 Route::get('/radar', 'DashboardController@radar');
 
 Route::get('/updateRadar', 'DashboardController@updateRadar');
+
