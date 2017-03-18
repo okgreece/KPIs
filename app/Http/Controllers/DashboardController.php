@@ -148,28 +148,21 @@ class DashboardController extends Controller {
 
     public function organizations() {
 
-        $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
+        //$sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         //$candidates = $sparql->query($this->organizationsQuery());
         $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
-        
-        
         foreach ($candidates as $candidate) {
-            
             array_push($organizations, ["label" => $this->getLabel($candidate->uri), "value" => $candidate->uri]);
         }
-        //dd($organizations);
         return $organizations;
     }
 
     public function organizationsquery() {
-
         $queryBuilder = new QueryBuilder(self::$prefixes);
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
-                //TODO:exclude organizations temporal fix
-                ->filter("str(?organization) != 'http://data.openbudgets.eu/resource/codelist/cl-geo/ES' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Ηπείρου' && str(?organization) != 'http://dbpedia.org/resource/Aragon' && str(?organization) != 'http://el.dbpedia.org/resource/Δήμος_Ηρακλείου' && str(?organization) != 'http://el.dbpedia.org/resource/Περιφέρεια_Νότιου_Αιγαίου'")
                 ->orderBy('?organization');
         $query = $queryBuilder->getSPARQL();
         return $query;
@@ -182,7 +175,7 @@ class DashboardController extends Controller {
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         $label = $sparql->query($query)[0]->label->getValue();
-        Cache::forever($uri, $label);
+        Cache::forever($uri . Cache::get('locale'), $label);
         return $label;
     }
 
@@ -300,7 +293,7 @@ class DashboardController extends Controller {
                     return $item->value;
                 })->all();
         $dataset = [
-            "label" => cache($request->organization . Cookie::get('locale')) . " " . $indicator->title . " " . cache($request->phase) . Cookie::get('locale'),
+            "label" => cache($request->organization . Cache::get('locale')) . " " . $indicator->title . " " . cache($request->phase) ,
             "fill" => false,
             "lineTension" => "0.1",
             "type" => "bar",
@@ -348,12 +341,10 @@ class DashboardController extends Controller {
         $values = collect(json_decode($data->content()));
 
         $labels = $values->map(function($item, $key) {
-
-                    return $item->label;
+                return $item->label;
                 })->all();
         $series = $values->map(function($item, $key) {
-
-                    return $item->value;
+                return $item->value;
                 })->all();
         $request = request();
         $dataset = [
@@ -416,7 +407,6 @@ class DashboardController extends Controller {
         foreach ($concepts as $element) {
             //dd($element);
             $request->request->set($free, $free == "indicator" ? $element["value"]->getUri() : $element["value"] );
-
             array_push($values, [
                 "label" => $element["label"],
                 "value" => $this->getValue($request),
