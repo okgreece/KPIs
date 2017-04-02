@@ -43,6 +43,9 @@
                         <li>
                             <a href="{{route("indicators.index")}}">Indicators</a>
                         </li>
+                        <li>
+                            <a href="{{route("organizations.index")}}">Organizations</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

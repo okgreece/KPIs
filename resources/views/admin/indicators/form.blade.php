@@ -64,7 +64,7 @@
         {!! $errors->first('type', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('nominator') ? 'has-error' : ''}}">
-    {!! Form::label('nominator', 'Nominator', ['class' => 'col-md-4 control-label']) !!}
+    {!! Form::label('nominator', 'Numerator', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
         {!! Form::select('nominator', $aggregators, isset($indicator)?$indicator->nominator:null, ['class' => 'form-control']) !!}
         {!! $errors->first('nominator', '<p class="help-block">:message</p>') !!}
