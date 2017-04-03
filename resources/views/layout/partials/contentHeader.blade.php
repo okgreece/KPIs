@@ -35,6 +35,6 @@
         <a id="tab-3" href="#scroll-tab-3" class="mdl-layout__tab">@lang('kpi/navigation.compare')</a>
         <a id="tab-4" href="#scroll-tab-4" class="mdl-layout__tab">@lang('kpi/navigation.yearly')</a>
         <a id="tab-5" href="#scroll-tab-5" class="mdl-layout__tab">@lang('kpi/navigation.radar')</a>
-        <a id="tab-6" href="#scroll-tab-6" class="mdl-layout__tab">@lang('kpi/navigation.about')</a>
+        <a id="tab-6" href="#about-page" class="mdl-layout__tab">@lang('kpi/navigation.about')</a>
     </div>
 </header>

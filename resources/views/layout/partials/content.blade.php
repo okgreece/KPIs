@@ -49,8 +49,9 @@
             @include('indicators.radar')
         </div>
     </section>
-    <section class="mdl-layout__tab-panel" id="scroll-tab-6">
+    <section class="mdl-layout__tab-panel" id="about-page">
         <div class="page-content">
+            @include('pages.about')
         </div>
     </section>
     @include('layout.partials.footer', ["screen_size" => "mobile"])
