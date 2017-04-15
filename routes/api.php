@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1'], function() {
     
     Route::get('/aggregators/groupedValue', 'Admin\AggregatorsController@groupedValue');
     
-    Route::get('/indicator/list', 'Admin\IndicatorsController@lineup');
+    Route::get('/indicator/list', 'Admin\IndicatorsController@indicators');
     
     Route::get('/indicator/list/enabled', 'Admin\IndicatorsController@enabled');
     

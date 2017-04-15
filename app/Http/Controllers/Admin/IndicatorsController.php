@@ -53,7 +53,7 @@ class IndicatorsController extends Controller
             'en_description' => 'required|max:400',
             'el_title' => 'required|max:120',
             'el_description' => 'required|max:400',
-            'nominator' =>'required|integer',
+            'numerator' =>'required|integer',
             'denominator' =>'required|integer',
             //'code' =>'required',
             'group' =>'required|integer',
@@ -130,7 +130,7 @@ class IndicatorsController extends Controller
             'en_description' => 'required|max:400',
             'el_title' => 'required|max:120',
             'el_description' => 'required|max:400',
-            'nominator' =>'required|integer',
+            'numerator' =>'required|integer',
             'denominator' =>'required|integer',
             //'code' =>'required',
             'group' =>'required|integer',
@@ -203,11 +203,11 @@ class IndicatorsController extends Controller
         $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;
         $indicator = Indicator::find($indicatorID);
-        $request["aggregatorID"] = $indicator->nominator;
-        $nominator = $aggregator->value($request)->getData();
+        $request["aggregatorID"] = $indicator->numerator;
+        $numerator = $aggregator->value($request)->getData();
         $request["aggregatorID"] = $indicator->denominator;
         $denominator = $aggregator->value($request)->getData();
-        $result = $denominator != 0 ? $nominator / $denominator : 0;
+        $result = $denominator != 0 ? $numerator / $denominator : 0;
         if($indicator->type == 0){
             $result = $result * 100;
         }
@@ -219,11 +219,11 @@ class IndicatorsController extends Controller
         $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;
         $indicator = Indicator::find($indicatorID);
-        $request["aggregatorID"] = $indicator->nominator;
-        $nominator = $aggregator->value($request)->getData();
+        $request["aggregatorID"] = $indicator->numerator;
+        $numerator = $aggregator->value($request)->getData();
         $request["aggregatorID"] = $indicator->denominator;
         $denominator = $aggregator->value($request)->getData();
-        $result = $nominator / $denominator;
+        $result = $numerator / $denominator;
         return response()->json($result);
     }
     
@@ -232,11 +232,19 @@ class IndicatorsController extends Controller
         $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;
         $indicator = Indicator::find($indicatorID);
-        $request["aggregatorID"] = $indicator->nominator;
-        $nominator = $aggregator->value($request)->getData();
+        $request["aggregatorID"] = $indicator->numerator;
+        $numerator = $aggregator->value($request)->getData();
         $request["aggregatorID"] = $indicator->denominator;
         $denominator = $aggregator->value($request)->getData();
-        $result = $nominator / $denominator;
+        $result = $numerator / $denominator;
         return response()->json($result);
+    }
+    
+    public function indicators(Request $request){
+        if(isset($request->lang)){
+            \App::setLocale($request->lang);
+        }        
+        $indicators = \App\Indicator::all();
+        return response()->json($indicators);
     }
 }

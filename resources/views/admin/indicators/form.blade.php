@@ -63,11 +63,11 @@
         {!! Form::select('type', ['Percent', ' Number', ' Bar Chart'], null, ['class' => 'form-control']) !!}
         {!! $errors->first('type', '<p class="help-block">:message</p>') !!}
     </div>
-</div><div class="form-group {{ $errors->has('nominator') ? 'has-error' : ''}}">
-    {!! Form::label('nominator', 'Numerator', ['class' => 'col-md-4 control-label']) !!}
+</div><div class="form-group {{ $errors->has('numerator') ? 'has-error' : ''}}">
+    {!! Form::label('numerator', 'Numerator', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">
-        {!! Form::select('nominator', $aggregators, isset($indicator)?$indicator->nominator:null, ['class' => 'form-control']) !!}
-        {!! $errors->first('nominator', '<p class="help-block">:message</p>') !!}
+        {!! Form::select('numerator', $aggregators, isset($indicator)?$indicator->numerator:null, ['class' => 'form-control']) !!}
+        {!! $errors->first('numerator', '<p class="help-block">:message</p>') !!}
     </div>
 </div><div class="form-group {{ $errors->has('denominator') ? 'has-error' : ''}}">
     {!! Form::label('denominator', 'Denominator', ['class' => 'col-md-4 control-label']) !!}

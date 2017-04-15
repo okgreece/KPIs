@@ -19,7 +19,7 @@ class CreateIndicatorsTable extends Migration
             $table->boolean('enabled');
             $table->string('type');
             $table->boolean('reverse');
-            $table->integer('nominator');
+            $table->integer('numerator');
             $table->integer('denominator');
             $table->timestamps();
         });
