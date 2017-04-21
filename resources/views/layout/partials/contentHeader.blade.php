@@ -36,5 +36,11 @@
         <a id="tab-4" href="#scroll-tab-4" class="mdl-layout__tab">@lang('kpi/navigation.yearly')</a>
         <a id="tab-5" href="#scroll-tab-5" class="mdl-layout__tab">@lang('kpi/navigation.radar')</a>
         <a id="tab-6" href="#about-page" class="mdl-layout__tab">@lang('kpi/navigation.about')</a>
+        <div class='spacer'></div>
+        <div class="language-switch">
+            @foreach(config('lang-detector.languages') as $language)
+                <a href="/lang/{{$language}}" title="Switch Language to {{$language}}" class="mdl-layout__tab"><span class="flag-icon flag-icon-{{$language}}"></span></a>
+            @endforeach
+        </div>
     </div>
 </header>

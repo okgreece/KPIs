@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
     <link rel="stylesheet" href="/css/materialize.css">
     <link rel="stylesheet" href="/css/indicators.css">
+    <link href="{{ asset('/css/flag-icon.css') }}" rel="stylesheet" type="text/css" />
     <title>@yield('page_title', 'Page Title')</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">

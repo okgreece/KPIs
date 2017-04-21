@@ -194,6 +194,10 @@ button{
     padding: 4px;
 }
 
+.spacer {
+    flex-grow:1;
+}
+
 @media screen and (max-width: 500px) {
     .mdl-mini-footer.mobile {
         display: block!important;

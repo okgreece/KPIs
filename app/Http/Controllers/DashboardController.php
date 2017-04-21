@@ -498,4 +498,12 @@ class DashboardController extends Controller {
         ]);
         return $chartjs;
     }
+    
+    public function language($lang){
+        \Cookie::forget('locale');
+        cookie()->queue(
+                cookie()->forever("locale", $lang)
+                );
+        return redirect('/');
+    }
 }
