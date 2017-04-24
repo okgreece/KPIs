@@ -145,7 +145,7 @@ class DashboardController extends Controller {
         'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
     );
-
+    
     public function organizations() {
 
         //$sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
@@ -153,7 +153,7 @@ class DashboardController extends Controller {
         $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
         foreach ($candidates as $candidate) {
-            array_push($organizations, ["label" => $this->getLabel($candidate->uri), "value" => $candidate->uri]);
+            array_push($organizations, ["label" => $this->getLabel($candidate->uri), "value" => $candidate->uri, "id" => $candidate->id]);
         }
         return $organizations;
     }
@@ -178,8 +178,8 @@ class DashboardController extends Controller {
         Cache::forever($uri . Cache::get('locale'), $label);
         return $label;
     }
-
-    public function phases() {
+    
+    public function phasesApi() {
         $request = request();
         if (isset($request->organization)) {
             $organization = '<' . $request->organization . '>';
@@ -211,10 +211,15 @@ class DashboardController extends Controller {
             Cache::forever($label->phase, $label->label->getValue());
             array_push($phases, ["label" => $label->label->getValue(), "value" => $label->phase]);
         }
-        return view('indicators.templates.phase', ["phases" => $phases]);
+        return $phases;
     }
 
-    public function years() {
+    public function phases() {
+        $phases = $this->phasesApi();
+        return view('indicators.templates.phase', ["phases" => $phases]);
+    }
+    
+    public function yearsApi(){
         $request = request();
         if (isset($request->organization)) {
             $organization = '<' . $request->organization . '>';
@@ -241,6 +246,11 @@ class DashboardController extends Controller {
             array_push($years, ["label" => $lastPart, "value" => $label->year]);
             Cache::forever($label->year, $lastPart);
         }
+        return $years;
+    }
+
+    public function years() {
+        $years = $this->yearsApi();
         return view('indicators.templates.year', ["years" => $years]);
     }
 

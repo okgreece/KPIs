@@ -30,5 +30,7 @@ class Group extends Model
      */
     protected $fillable = ['code'];
 
-    
+    public function indicators(){
+        return $this->hasMany("App\Indicator", "id", "group");
+    }
 }

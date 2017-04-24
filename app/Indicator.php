@@ -34,6 +34,10 @@ class Indicator extends Model
     }
     
     public function denom(){
-        return $this->hasOne("Aggregator", "id", "denominator");
+        return $this->hasOne("\App\Aggregator", "id", "denominator");
+    }
+    
+    public function indicatorGroup(){
+        return $this->belongsTo("App\Group", "group", "id");
     }
 }
