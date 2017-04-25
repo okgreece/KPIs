@@ -198,7 +198,23 @@ class IndicatorsController extends Controller
     }
     
     public function value(Request $request){
+        //create the cache key
+        $key = $this->cacheValueKey();
         
+        //check if value exists in cache
+        if(\Cache::has($key)){
+            $result = \Cache::get($key);
+        }
+        //calculate value if cache does not exist
+        else{
+            $result = $this->calculateValue();
+        }
+        //return value in json format
+        return response()->json($result);
+    }
+    
+    public function calculateValue(){
+        $request = request();
         $indicatorCode = $request->indicatorCode;
         $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;
@@ -211,7 +227,32 @@ class IndicatorsController extends Controller
         if($indicator->type == 0){
             $result = $result * 100;
         }
-        return response()->json($result);
+        $key = $this->cacheValueKey;
+        //cache value forever
+        \Cache::forever($key, $result);
+        return $result;
+    }
+    /**
+     * function cacheValueKey
+     * 
+     * creates a json encoded cache key for each value, using the unique components
+     * of the indicator building stage as is the indicator ID, organization,
+     * budget phase and year
+     * 
+     * @param string $delimiter delimeter used between different parameters
+     * @return string
+     */
+    public function cacheValueKey($delimiter = "_"){
+        $request = request();
+
+        $key = $request->indicatorID 
+                . $delimiter
+                . $request->organization
+                . $delimiter
+                . $request->year
+                . $delimiter
+                . $request->phase;
+        return json_encode($key);
     }
        
     public function lineup(Request $request){
@@ -239,7 +280,16 @@ class IndicatorsController extends Controller
         $result = $numerator / $denominator;
         return response()->json($result);
     }
-    
+    /**
+     * function indicators
+     * 
+     * Returns all indicators description on requested language. Language can
+     * be defined either automatically using browser preferences or forced by using 
+     * the lang query parameter
+     * 
+     * @param Request $request
+     * @return json 
+     */
     public function indicators(Request $request){
         if(isset($request->lang)){
             \App::setLocale($request->lang);
