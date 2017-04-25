@@ -254,32 +254,7 @@ class IndicatorsController extends Controller
                 . $request->phase;
         return json_encode($key);
     }
-       
-    public function lineup(Request $request){
-        $indicatorCode = $request->indicatorCode;
-        $indicatorID = $request->indicatorID;
-        $aggregator = new AggregatorsController;
-        $indicator = Indicator::find($indicatorID);
-        $request["aggregatorID"] = $indicator->numerator;
-        $numerator = $aggregator->value($request)->getData();
-        $request["aggregatorID"] = $indicator->denominator;
-        $denominator = $aggregator->value($request)->getData();
-        $result = $numerator / $denominator;
-        return response()->json($result);
-    }
     
-    public function enabled(Request $request){
-        $indicatorCode = $request->indicatorCode;
-        $indicatorID = $request->indicatorID;
-        $aggregator = new AggregatorsController;
-        $indicator = Indicator::find($indicatorID);
-        $request["aggregatorID"] = $indicator->numerator;
-        $numerator = $aggregator->value($request)->getData();
-        $request["aggregatorID"] = $indicator->denominator;
-        $denominator = $aggregator->value($request)->getData();
-        $result = $numerator / $denominator;
-        return response()->json($result);
-    }
     /**
      * function indicators
      * 

@@ -198,6 +198,9 @@ return [
         //seeder generator
         Orangehill\Iseed\IseedServiceProvider::class,
         
+        //Excel support
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        
         
 
     ],
