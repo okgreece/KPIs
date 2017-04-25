@@ -227,7 +227,7 @@ class IndicatorsController extends Controller
         if($indicator->type == 0){
             $result = $result * 100;
         }
-        $key = $this->cacheValueKey;
+        $key = $this->cacheValueKey();
         //cache value forever
         \Cache::forever($key, $result);
         return $result;
