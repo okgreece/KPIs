@@ -228,9 +228,10 @@ class IndicatorsController extends Controller
             $result = $result * 100;
         }
         $key = $this->cacheValueKey();
+        $rounded_result = round($result, 2);
         //cache value forever
-        \Cache::forever($key, $result);
-        return round($result, 2);
+        \Cache::add($key, $rounded_result, 60);
+        return $rounded_result;
     }
     /**
      * function cacheValueKey

@@ -199,7 +199,8 @@ class AggregatorsController extends Controller {
 
         $notations = $this->notations($request);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-        $query_result = $sparql->query($this->query($notations[0], $organization, $year, $phase));
+        $query = $this->query($notations[0], $organization, $year, $phase);
+        $query_result = $sparql->query($query);
         //dd(isset($query_result[0]->sum));
         if (isset($query_result[0]->sum)) {
             //dd(isset($query_result[0]->sum));
