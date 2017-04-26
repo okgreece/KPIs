@@ -61,8 +61,12 @@ THE SOFTWARE.
   color: #fff;
 }
 .card-icon{
-    font-size: 120px;
+    font-size: 90px;
     margin:auto;
+}
+
+.mdl-button{
+    padding: 0 8px;
 }
 
 .dashboard{
