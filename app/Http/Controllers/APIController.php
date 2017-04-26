@@ -4,8 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 class APIController extends Controller
 {
+    private static $excelFormats = [
+        "xls",
+        "csv",
+        "xlsx"
+    ];
+    
+    private static $jsonFormats = [
+        "json",
+    ];
+    
+    private static $rdfFormats = [
+        "rdfxml",
+        "turtle",
+        "ntriples",
+        "jsonld"
+    ];
+    
     public function getOrganizations($filter_array = null){
         
         $controller = new FiltersController;
@@ -141,6 +160,47 @@ class APIController extends Controller
             }
             $request->request->remove("organization");
         }
-        return response()->json($results);
+        if(isset($request->format)){
+            return $this->transformResults($results);
+        }
+        else{
+            return response()->json($results);
+        }
+        
+    }
+    
+    public function transformResults($result){
+        if(in_array(request()->format, self::$excelFormats)){
+            return $this->excelHandler($result);
+        }
+        else if(in_array(request()->format, self::$rdfFormats)){
+            return $this->rdfHandler($result);
+        }
+        else if(in_array(request()->format, self::$jsonFormats)){
+            return $this->jsonHandler($result);
+        }        
+        else
+            {
+                $response = response()->json("Error! Unsupported format.", 422);
+                return $response;
+            }
+        
+    }
+    
+    public function excelHandler($result){
+        Excel::create('KPI_export', function($excel) use ($result){
+            $excel->sheet("KPI_sheet", function($sheet) use ($result) {
+                $sheet->fromArray($result);
+                });
+                
+            })->export(request()->format);
+    }
+    
+    public function rdfHandler($result){
+        return response()->json($result);
+    }
+    
+    public function jsonHandler($result){
+        return response()->json($result);
     }
 }

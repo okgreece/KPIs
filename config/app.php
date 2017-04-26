@@ -260,6 +260,8 @@ return [
         'BootForm' => 'AdamWathan\BootForms\Facades\BootForm'::class,
         //translatable models bootforms
         'TranslatableBootForm' => Propaganistas\LaravelTranslatableBootForms\Facades\TranslatableBootForm::class,
+        //Excel
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
