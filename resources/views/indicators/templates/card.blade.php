@@ -42,16 +42,12 @@
             @lang('kpi/buttons.yearly')
         </a>
         <button id="demo-menu-lower-right-{{$indicator_id}}"
-                class="mdl-button mdl-js-button mdl-button--icon">
+                class="mdl-button mdl-js-button mdl-button--icon"
+                onclick="updateModal('{{$indicator_code}}')"
+                >
             <i class="material-icons">share</i>
         </button>
-        <button id="demo-menu-lower-right-{{$indicator_id}}"
-                class="mdl-button mdl-js-button mdl-button--icon">
-            <i class="material-icons">code</i>
-        </button>
     </div>
-
-
     <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">@lang('kpi/messages.ind_description')<i class="material-icons right">close</i></span>
         <div class="mdl-card__supporting-text">

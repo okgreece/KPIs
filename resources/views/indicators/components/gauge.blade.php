@@ -40,6 +40,10 @@
     @slot('indicator_title')
         {{$indicator["indicator"]->title}}
     @endslot
+    
+    @slot('indicator_code')
+        {{$indicator["indicator"]->indicator}}
+    @endslot
 
     @slot('indicator_description')
         {{$indicator["indicator"]->description}}

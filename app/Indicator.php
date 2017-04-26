@@ -40,4 +40,18 @@ class Indicator extends Model
     public function indicatorGroup(){
         return $this->belongsTo("App\Group", "group", "id");
     }
+    
+    public function type(){
+        $types = [            
+            "percent",
+            "numeric",
+            "barchart"
+        ];
+        return $types[$this->type];
+    }
+    
+    public function reverse(){
+        return $this->reverse ? TRUE : FALSE;
+    }
+    
 }

@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -22,18 +23,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-?>
-<!DOCTYPE html>
-<html lang="{{Cookie::get('locale')}}">
-    <?php App::setLocale(Cookie::get('locale')); ?>
-    @include('layout.partials.htmlHeader')    
-    <body>
-        @include('layout.partials.pageLoader')
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            @include('layout.partials.contentHeader')
-            @include('layout.partials.content')
-            @include('layout.partials.footer', ["screen_size" => "large-screen"])
-        </div>
-        @include('layout.partials.shareModal')
-    </body>
-</html>
+return [
+    "header" => "Επιλογές Κοινοποίησης",
+    "body" => "Επιλέξτε κάποια από τις διαθέσιμες επιλογές για να κοινοποιήσετε τον δείκτη",
+    "embed" => "Ενσωμάτωση",
+    "link" => "Σύνδεσμος",
+    "close" => "Πίσω"
+];

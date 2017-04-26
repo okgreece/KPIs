@@ -28,6 +28,9 @@ class FiltersController extends Controller {
         'skos' => 'http://www.w3.org/2004/02/skos/core#',
         'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
         'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
+        'dbpedia-el' => "http://el.dbpedia.org/resource/",
+        'dbpedia' => "http://dbpedia.org/resource/",
+        'gn' => 'http://sws.geonames.org/'
     );
     
     public static function setNamespaces(){
@@ -62,8 +65,8 @@ class FiltersController extends Controller {
 
             return [
                 "label" => $item["label"],
-                //"value" => \EasyRdf_Namespace::shorten($item["value"]->getUri(),true),
-                "value" => $item["label"],
+                "value" => \EasyRdf_Namespace::shorten($item["value"]->getUri(),true),
+                //"value" => $item["label"],
                 "url" => $item["value"]->getUri(),
             ];
         });
@@ -74,12 +77,12 @@ class FiltersController extends Controller {
     public function organizations() {
 
         $controller = new DashboardController;
-
+        $this->setNamespaces();
         $organizations = collect($controller->organizations())->map(function($item, $key) {
 
             return [
                 "label" => $item["label"],
-                "value" => $item["id"],
+                "value" => \EasyRdf_Namespace::shorten($item["value"]),
                 "url" => $item["value"],
             ];
         });
