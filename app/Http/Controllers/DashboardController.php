@@ -121,7 +121,7 @@ class DashboardController extends Controller {
 
     public function getDataset($operation) {
         $request = request();
-        $sparqlBuilder = new QueryBuilder(self::$prefixes);
+        $sparqlBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $sparqlBuilder->selectDistinct("?dataset")
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', "<" . $request->organization . ">")
@@ -181,18 +181,6 @@ class DashboardController extends Controller {
         }
         return $result;
     }
-
-    private static $prefixes = array(
-        'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
-        'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
-        'obeu-measure' => 'http://data.openbudgets.eu/ontology/dsd/measure/',
-        'obeu-dimension' => 'http://data.openbudgets.eu/ontology/dsd/dimension/',
-        'obeu-operation' => 'http://data.openbudgets.eu/resource/codelist/operation-character/',
-        'qb' => 'http://purl.org/linked-data/cube#',
-        'skos' => 'http://www.w3.org/2004/02/skos/core#',
-        'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
-    );
     
     public function organizations() {
 
@@ -207,7 +195,7 @@ class DashboardController extends Controller {
     }
 
     public function organizationsquery() {
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')
@@ -217,7 +205,7 @@ class DashboardController extends Controller {
     }
     
     public function getLabel($uri) {
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?label")
                 ->where('<' . $uri . '>', 'rdfs:label', '?label');
         $query = $queryBuilder->getSPARQL();
@@ -234,7 +222,7 @@ class DashboardController extends Controller {
         } else {
             $organization = "?organization";
         }
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $lang = "en";
         $queryBuilder->selectDistinct("?phase", "?label")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
@@ -274,7 +262,7 @@ class DashboardController extends Controller {
         } else {
             $organization = "?organization";
         }
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?year")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', $organization)

@@ -157,18 +157,9 @@ class AggregatorsController extends Controller {
         return response()->json($list);
     }
 
-    private static $prefixes = array(
-        'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
-        'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
-        'obeu-measure' => 'http://data.openbudgets.eu/ontology/dsd/measure/',
-        'obeu-dimension' => 'http://data.openbudgets.eu/ontology/dsd/dimension/',
-        'qb' => 'http://purl.org/linked-data/cube#',
-        'skos' => 'http://www.w3.org/2004/02/skos/core#',
-    );
-
     public function getRemote($organization, $property, $endpoint) {
         $sparql = new \EasyRdf_Sparql_Client($endpoint);
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $queryBuilder->select("?value")
                 ->where("<" . $organization . ">", "<" . $property . ">", "?value");
         $query_result = $sparql->query($queryBuilder);
@@ -176,7 +167,7 @@ class AggregatorsController extends Controller {
             $result = $query_result[0]->value->getValue();
         } 
         else {
-            $queryBuilder = new QueryBuilder(self::$prefixes);
+            $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
             $queryBuilder->select("?value")
                     ->where("<" . $organization . ">", "<http://dbpedia.org/ontology/wikiPageRedirects>", "?redirect")
                     ->where("?redirect", "<" . $property . ">", "?value" );
@@ -267,7 +258,7 @@ class AggregatorsController extends Controller {
 
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
 
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
         $queryBuilder->select($select)

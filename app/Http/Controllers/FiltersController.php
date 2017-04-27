@@ -17,35 +17,11 @@ class FiltersController extends Controller {
 
         return response()->json($filters);
     }   
-    
-    private static $prefixes = array(
-        'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
-        'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
-        'obeu-measure' => 'http://data.openbudgets.eu/ontology/dsd/measure/',
-        'obeu-dimension' => 'http://data.openbudgets.eu/ontology/dsd/dimension/',
-        'obeu-operation' => 'http://data.openbudgets.eu/resource/codelist/operation-character/',
-        'qb' => 'http://purl.org/linked-data/cube#',
-        'skos' => 'http://www.w3.org/2004/02/skos/core#',
-        'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
-        'dbpedia-el' => "http://el.dbpedia.org/resource/",
-        'dbpedia' => "http://dbpedia.org/resource/",
-        'gn' => 'http://sws.geonames.org/'
-    );
-    
-    public static function setNamespaces(){
-        $myPrefixes = self::$prefixes;
-        foreach ($myPrefixes as $namespace){
-            \EasyRdf_Namespace::set(key($myPrefixes), $namespace);
-            next($myPrefixes);
-        }
-        return;
-    }
 
     public function phases() {
 
         $controller = new DashboardController;
-        $this->setNamespaces();
+        Admin\RdfNamespacesController::setNamespaces();
         $phases = collect($controller->phasesApi())->map(function($item, $key) {
             return [
                 "label" => $item["label"],
@@ -77,7 +53,7 @@ class FiltersController extends Controller {
     public function organizations() {
 
         $controller = new DashboardController;
-        $this->setNamespaces();
+        Admin\RdfNamespacesController::setNamespaces();
         $organizations = collect($controller->organizations())->map(function($item, $key) {
 
             return [

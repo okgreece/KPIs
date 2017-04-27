@@ -134,20 +134,8 @@ class OrganizationsController extends Controller
         return redirect('admin/organizations');
     }
     
-     private static $prefixes = array(
-        'gr-dimension' => 'http://data.openbudgets.eu/ontology/dsd/greek-municipalities/dimension/',
-        'obeu-budgetphase' => 'http://data.openbudgets.eu/resource/codelist/budget-phase/',
-        'obeu-measure' => 'http://data.openbudgets.eu/ontology/dsd/measure/',
-        'obeu-dimension' => 'http://data.openbudgets.eu/ontology/dsd/dimension/',
-        'obeu-operation' => 'http://data.openbudgets.eu/resource/codelist/operation-character/',
-        'qb' => 'http://purl.org/linked-data/cube#',
-        'skos' => 'http://www.w3.org/2004/02/skos/core#',
-        'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        'rdfs' => "http://www.w3.org/2000/01/rdf-schema#",
-    );
-    
     public function availableOrganizationsquery() {
-        $queryBuilder = new QueryBuilder(self::$prefixes);
+        $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?organization")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', '?organization')

@@ -46,6 +46,9 @@
                         <li>
                             <a href="{{route("organizations.index")}}">Organizations</a>
                         </li>
+                        <li>
+                            <a href="{{route("rdf-namespaces.index")}}">RDF Namespaces</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
