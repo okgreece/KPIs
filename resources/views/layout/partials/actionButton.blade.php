@@ -37,6 +37,14 @@
             </div>
         </li>
         <li>
+            <a id="{{$actionBtnId}}-r-analytics" target="_blank" href="" class="btn-floating green waves-effect waves-light">
+                <strong><i class="indigo-icon">i</i></strong>
+            </a>
+            <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-r-analytics">
+                @lang('kpi/buttons.revenue_analytics')
+            </div>
+        </li>
+        <li>
             <a id="{{$actionBtnId}}-e" target="_blank" href="" class="btn-floating red waves-effect waves-light">
                 €
             </a>
@@ -44,5 +52,13 @@
                 @lang('kpi/buttons.expenditure')
             </div>
         </li>
+        <li>
+            <a id="{{$actionBtnId}}-e-analytics" target="_blank" href="" class="btn-floating red waves-effect waves-light">
+                <strong><i class="indigo-icon">i</i></strong>
+            </a>
+            <div class="mdl-tooltip mdl-tooltip--large" for="{{$actionBtnId}}-e-analytics">
+                @lang('kpi/buttons.expenditure_analytics')
+            </div>
+        </li>        
     </ul>
 </div>

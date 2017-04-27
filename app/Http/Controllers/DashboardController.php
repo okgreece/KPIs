@@ -28,32 +28,35 @@ class DashboardController extends Controller {
                 "value" => $this->getValue($request),
             ]);
         }
-
-        return view('indicators/components', [
+        $integration = $this->integration();
+        
+        $allIndicators = [
             "indicators" => $values,
-            "osLinkE" => $this->getOSLink("expenditure"),
-            "osLinkR" => $this->getOSLink("revenue"),
-        ]);
+        ];
+        $result = array_merge($allIndicators, $integration);
+        return view('indicators/components', $result);
+    }
+    
+    public function integration(){
+        $datasetE = $this->getDataset("expenditure");
+        $datasetR = $this->getDataset("revenue");
+        $OSDatasetE = $this->getRudolfDataset($datasetE);
+        $OSDatasetR = $this->getRudolfDataset($datasetR);
+        return [
+            "osLinkE" => $this->getOSLink($datasetE, $OSDatasetE),
+            "osLinkR" => $this->getOSLink($datasetR, $OSDatasetR),
+            "indigoLinkE" => $this->getIndigoLink($datasetE, $OSDatasetE),
+            "indigoLinkR" => $this->getIndigoLink($datasetR, $OSDatasetR),
+        ];
     }
 
-    public function getOSLink($operation) {
+    public function getOSLink($SPARQLDataset, $OSDataset) {
         $request = request();
-        $SPARQLdataset = $this->getDataset($operation);
-        if ($SPARQLdataset != null) {
-            $lastPart = $this->urlLast($SPARQLdataset);
-            $client = new \GuzzleHttp\Client();
-            try {
-                $result = $client->request("GET", env("RUDOLF"));
-            } catch (\GuzzleHttp\Exception\ConnectException $ex) {
-                return null;
-            }
-            $cubes = collect(json_decode($result->getBody()->getContents())->data);
-            $OSDataset = $cubes->filter(function ($cube) use ($lastPart) {
-                        return explode("__", $cube->name)[0] == $lastPart;
-                    })->first();
+        
+        if ($SPARQLDataset != null) {
             if (isset($OSDataset)) {
                 $query = [
-                    "lang" => "en",
+                    "lang" => \App::getLocale(),
                     "measure" => "amount.sum",
                     "groups[]" => "economicClassification.notation",
                     "filters[budgetPhase.budgetPhase][]" => $request->phase,
@@ -70,6 +73,32 @@ class DashboardController extends Controller {
             return null;
         }
     }
+    
+    public function getIndigoLink($SPARQLDataset, $OSDataset){
+        if ($SPARQLDataset != null) {
+            if (isset($OSDataset)) {
+                return env("INDIGO") . "#indigo/cube/analytics/" . $OSDataset->name;
+            }
+        }
+        else{
+            return null;
+        }
+    }
+    
+    public function getRudolfDataset($SPARQLdataset){        
+        $lastPart = $this->urlLast($SPARQLdataset);
+            $client = new \GuzzleHttp\Client();
+            try {
+                $result = $client->request("GET", env("RUDOLF"));
+            } catch (\GuzzleHttp\Exception\ConnectException $ex) {
+                return null;
+            }
+            $cubes = collect(json_decode($result->getBody()->getContents())->data);
+            $OSDataset = $cubes->filter(function ($cube) use ($lastPart) {
+                        return explode("__", $cube->name)[0] == $lastPart;
+                    })->first();
+            return $OSDataset;
+    }
 
     public function getDataset($operation) {
         $request = request();
@@ -83,11 +112,11 @@ class DashboardController extends Controller {
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $result = $endpoint->query($query);
         try {
-            $link = $result[0]->dataset->getUri();
+            $dataset = $result[0]->dataset->getUri();
         } catch (\ErrorException $ex) {
-            $link = null;
+            $dataset = null;
         }
-        return $link;
+        return $dataset;
     }
 
     public function evolution() {
@@ -454,10 +483,13 @@ class DashboardController extends Controller {
             array_push($charts, $graph);
             $id++;
         }
-        return view("indicators.radar_graph", ["charts" => $charts,
-            "osLinkE" => $this->getOSLink("expenditure"),
-            "osLinkR" => $this->getOSLink("revenue"),
-            ]);
+        $integration = $this->integration();
+        
+        $allCharts = [
+            "charts" => $charts,
+        ];
+        $result = array_merge($allCharts, $integration);
+        return view("indicators.radar_graph", $result);
     }
 
     public function updateRadar() {

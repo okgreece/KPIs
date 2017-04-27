@@ -91,7 +91,9 @@
             success: function (data) {
                 $(".dashboard").html(data);
                 $("#dashboard-action-btn ul li a")[0].href = osLinkR;
-                $("#dashboard-action-btn ul li a")[1].href = osLinkE;
+                $("#dashboard-action-btn ul li a")[2].href = osLinkE;
+                $("#dashboard-action-btn ul li a")[1].href = indigoLinkE;
+                $("#dashboard-action-btn ul li a")[3].href = indigoLinkR;
                 $(".progress").addClass("progress-hidden");
                 $("#dashboard-action-btn").show();
             }

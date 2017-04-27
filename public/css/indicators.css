@@ -150,6 +150,10 @@ button{
     margin:auto!important;
 }
 
+.indigo-icon{
+    font-family: "Leckerli One";
+}
+
 .page-cover{
     background: #212121;
     position: fixed;

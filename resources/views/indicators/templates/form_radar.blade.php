@@ -103,7 +103,9 @@
                     $("#addSeries2").removeClass("mdl-button--disabled");
                     $(".progress").addClass("progress-hidden");
                     $("#radar-action-btn ul li a")[0].href = osLinkR;
-                    $("#radar-action-btn ul li a")[1].href = osLinkE;
+                    $("#radar-action-btn ul li a")[2].href = osLinkE;
+                    $("#radar-action-btn ul li a")[1].href = indigoLinkE;
+                    $("#radar-action-btn ul li a")[3].href = indigoLinkR;
                     $("#radar-action-btn").show();
                 }
         });

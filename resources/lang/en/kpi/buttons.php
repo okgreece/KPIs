@@ -35,7 +35,9 @@ return [
     */
 
     'revenue' => 'Revenue Data',
+    'revenue_analytics' => "Analyze Revenue Data with Indigo",
     'expenditure' => 'Expenditure Data',
+    'expenditure_analytics' => "Analyze Expenditure Data with Indigo",
     'go' => 'GO',
     'compare' => 'Compare',
     'yearly' => 'Yearly Change',

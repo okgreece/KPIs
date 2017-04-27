@@ -35,7 +35,9 @@ return [
     */
 
     'revenue' => 'Δεδομένα Εσόδων',
+    'revenue_analytics' => "Ανάλυση Δεδομένων Εσόδων με το Indigo",
     'expenditure' => 'Δεδομένα Εξόδων',
+    'expenditure_analytics' => "Ανάλυση Δεδομένων Εξόδων με το Indigo",
     'go' => 'GO',
     'compare' => 'Σύγκριση',
     'yearly' => 'Χρονική Μεταβολή',

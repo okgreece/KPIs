@@ -39,4 +39,6 @@
 <script>
     var osLinkR = "{{env('OS_VIEWER')}}" + "{!! $osLinkR !!}";
     var osLinkE = "{{env('OS_VIEWER')}}" + "{!! $osLinkE !!}"; 
+    var indigoLinkE = "{!! $indigoLinkE !!}"; 
+    var indigoLinkR = "{!! $indigoLinkR !!}"; 
 </script>
