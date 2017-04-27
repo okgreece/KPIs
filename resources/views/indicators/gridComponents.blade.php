@@ -1,4 +1,5 @@
 <?php
+
 /* 
  * The MIT License
  *
@@ -23,14 +24,12 @@
  * THE SOFTWARE.
  */
 ?>
-@foreach($indicators as $indicator)
-    @if($indicator["indicator"]->type == "0")
-        @include('indicators.components.gauge')
-    @endif
-    @if($indicator["indicator"]->type == "1")
-        @include('indicators.components.number')
-    @endif
-    @if($indicator["indicator"]->type == "2")
-        @include('indicators.components.barchart')
-    @endif
-@endforeach
+<div class="mdl-grid">    
+    @include("indicators/components")
+</div>
+<script>
+    var osLinkR = "{{env('OS_VIEWER')}}" + "{!! $osLinkR !!}";
+    var osLinkE = "{{env('OS_VIEWER')}}" + "{!! $osLinkE !!}"; 
+    var indigoLinkE = "{!! $indigoLinkE !!}"; 
+    var indigoLinkR = "{!! $indigoLinkR !!}"; 
+</script>

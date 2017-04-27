@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -23,14 +23,10 @@
  * THE SOFTWARE.
  */
 ?>
-@foreach($indicators as $indicator)
-    @if($indicator["indicator"]->type == "0")
-        @include('indicators.components.gauge')
-    @endif
-    @if($indicator["indicator"]->type == "1")
-        @include('indicators.components.number')
-    @endif
-    @if($indicator["indicator"]->type == "2")
-        @include('indicators.components.barchart')
-    @endif
-@endforeach
+@include('indicators.templates.gauge_script')
+@include('indicators.templates.number_script')
+<link rel="stylesheet" href="/css/materialize.css">
+<link rel="stylesheet" href="/css/indicators.css">
+<link href="{{ asset('/css/flag-icon.css') }}" rel="stylesheet" type="text/css" />
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">

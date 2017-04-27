@@ -33,21 +33,11 @@
         <div id="{{$indicator_id}}">
         </div>
     </div>
-
-    <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            @lang('kpi/buttons.compare')
-        </a>
-        <a onclick="yearly({{ltrim($indicator_id,"indicator")}})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-            @lang('kpi/buttons.yearly')
-        </a>
-        <button id="demo-menu-lower-right-{{$indicator_id}}"
-                class="mdl-button mdl-js-button mdl-button--icon"
-                onclick="updateModal('{{$indicator_code}}')"
-                >
-            <i class="material-icons">share</i>
-        </button>
-    </div>
+    @if(Route::currentRouteName() == "embed")
+        @include("embed/embedCardActions")
+    @else
+        @include("indicators/templates.cardActions")
+    @endif
     <div class="card-reveal">
         <span class="card-title grey-text text-darken-4">@lang('kpi/messages.ind_description')<i class="material-icons right">close</i></span>
         <div class="mdl-card__supporting-text">

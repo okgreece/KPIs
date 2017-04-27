@@ -16,10 +16,23 @@ class DashboardController extends Controller {
             "organizations" => $organizations,
         ]);
     }
-
+    
+    public function embed(){
+        $request = request();
+        if (isset($request->lang)) {
+            \App::setLocale($request->lang);
+        }
+        $scripts = view("layout/partials/scripts") . view("embed/embedScripts");
+        return $scripts . $this->dashboard($request);
+    }
+    
     public function dashboard(Request $request) {
-
-        $indicators = $this->getEnabled();
+        if(!isset($request->indicator)){
+            $indicators = $this->getEnabled();
+        }
+        else{
+            $indicators = \App\Indicator::where("indicator", "=", $request->indicator)->get();
+        }
         $values = [];
         foreach ($indicators as $indicator) {
             $request->request->set("indicatorID", $indicator->id);
@@ -34,7 +47,13 @@ class DashboardController extends Controller {
             "indicators" => $values,
         ];
         $result = array_merge($allIndicators, $integration);
-        return view('indicators/components', $result);
+        if(\Route::currentRouteName() == "embed"){
+            return view('indicators/components', $result);
+        }
+        else{
+            return view('indicators/gridComponents', $result);
+        }
+        
     }
     
     public function integration(){

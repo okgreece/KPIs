@@ -1,4 +1,5 @@
 <?php
+
 /* 
  * The MIT License
  *
@@ -23,14 +24,17 @@
  * THE SOFTWARE.
  */
 ?>
-@foreach($indicators as $indicator)
-    @if($indicator["indicator"]->type == "0")
-        @include('indicators.components.gauge')
-    @endif
-    @if($indicator["indicator"]->type == "1")
-        @include('indicators.components.number')
-    @endif
-    @if($indicator["indicator"]->type == "2")
-        @include('indicators.components.barchart')
-    @endif
-@endforeach
+<div class="mdl-card__actions mdl-card--border">
+    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        GO
+    </a>
+<!--    <a onclick="yearly({{ltrim($indicator_id,"indicator")}})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        @lang('kpi/buttons.yearly')
+    </a>-->
+<!--    <button id="demo-menu-lower-right-{{$indicator_id}}"
+            class="mdl-button mdl-js-button mdl-button--icon"
+            onclick="updateModal('{{$indicator_code}}')"
+            >
+        <i class="material-icons">share</i>
+    </button>-->
+</div>

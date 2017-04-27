@@ -45,8 +45,11 @@
         var api = "/api/v1/indicators/";
         var host = "{{env('APP_URL')}}";
         var url = host + api + indicator + "/" + "value?" + "organization=" + organization + "&phase=" + phase + "&year=" + year;
+        var embed = host + "/embed?" + "indicator=" + indicator + "&organization=" + organization + "&phase=" + phase + "&year=" + year;
         shareButtons.html('');
         shareButtons.append('<li><a href="' + url + '" target="_blank"><i class="material-icons">&#xE902;</i> API</a></li>');
+        shareButtons.append('<li><a href="' + embed + '" target="_blank"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Embed</a></li>');
+        shareButtons.append('<li>&ltiframe src="' + embed + '" height="330" width="330" frameborder="0" scrolling="no"&gtYou need an iframes capable browser to view this content.&lt/iframe&gt</li>');
         var modal = $("#shareModal");
         modal.modal();
         modal.modal("open");
