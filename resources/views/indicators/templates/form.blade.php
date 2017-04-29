@@ -53,7 +53,8 @@
 <div class='form'>
     <div class="row">
         <div class="input-field col l3 m12">
-            <select id="organization-select" onchange="update(this)">     
+            <select id="organization-select" onchange="update(this)">
+                <option value="" disabled selected hidden>@lang('kpi/forms.organization_placeholder')</option>
                 @foreach($organizations as $organization)
                 <option value="{{$organization["value"]}}">{{$organization["label"]}}</option>
                 @endforeach

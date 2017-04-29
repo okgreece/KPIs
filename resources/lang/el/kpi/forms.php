@@ -35,6 +35,7 @@ return [
     */
 
     'organization' => 'Οργανισμός',
+    'organization_placeholder' => 'Επιλέξτε έναν οργανισμό...',
     'year' => 'Έτος',
     'phase' => 'Φάση Προϋπολογισμού',
     'indicator' => 'Δείκτης',

@@ -35,6 +35,7 @@ return [
     */
 
     'organization' => 'Organization',
+    'organization_placeholder' => 'Select an organization...',
     'year' => 'Year',
     'phase' => 'Phase',
     'indicator' => 'Indicator',
