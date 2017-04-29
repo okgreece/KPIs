@@ -255,24 +255,69 @@ class AggregatorsController extends Controller {
         }
         return $notations;
     }
+        
+    public function getAttachement() {
+        $request = request();
+        $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+        $sparqlBuilder->selectDistinct("?dimension", "?attachment")
+                ->where("?dataset", 'rdf:type', 'qb:DataSet')
+                ->also('obeu-dimension:organization', "<" . $request->organization . ">")
+                ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
+                ->also('qb:structure', '?dsd')
+                ->where('?dsd', 'qb:component', '?component')
+                ->where('?component', 'qb:dimension', '?dimension')
+                ->where('?dimension', 'rdfs:subPropertyOf', 'obeu-dimension:economicClassification')
+                ->optional('?component', 'qb:componentAttachment', '?attachment');        
+        $query = $sparqlBuilder->getSPARQL();
+        $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
+        $result = $endpoint->query($query);
+        logger($query);
+        logger($result);
+        try {
+            $dimension = [
+                "dimension" => $result[0]->dimension->getUri(),
+                "attachment" => isset($result[0]->attachment) ? $result[0]->attachment->shorten() : 'qb:Observation',
+            ];
+            
+        } catch (\ErrorException $ex) {
+            logger($ex);
+            $dimension = null;
+        }
+        logger($dimension);
+        return $dimension;
+    }
 
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
-
+        $dimension = $this->getAttachement();
+        logger($dimension);
         $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
         $queryBuilder->select($select)
                 ->where('?dataset', 'obeu-dimension:fiscalYear', '?year')
                 ->also('obeu-dimension:organization', '?organization')
-                ->also('qb:slice', '?slice')
-                ->where('?slice', 'qb:observation', '?observation')
-                ->also('?slice', 'gr-dimension:economicClassification', '?classification')
+               // ->also('qb:slice', '?slice')
+                //->where('?slice', 'qb:observation', '?observation')
+                //->also('gr-dimension:economicClassification', '?classification')
                 ->where('?classification', 'skos:broader+', '?topConcept')
                 ->where('?topConcept', 'skos:prefLabel', '?label')
                 ->also('skos:notation', '?notation')
                 ->where('?observation', 'gr-dimension:budgetPhase', '?phase')
                 ->also('obeu-measure:amount', '?amount');
-
+        if($dimension["attachment"] == 'qb:DataSet'){
+            $queryBuilder->where('?dataset', '<'. $dimension["dimension"] . '>', '?classification')
+                    ->where('?observation', 'qb:dataSet', '?dataset');
+        }
+        elseif($dimension["attachment"] == 'qb:Slice'){
+            $queryBuilder->where('?dataset', 'qb:slice', '?slice')
+                    ->where('?slice', '<'. $dimension["dimension"] . '>', '?classification')
+                    ->where('?slice', 'qb:observation', '?observation');
+            
+        }
+        else{
+            
+        }
+        
         if (!empty($notation)) {
             $queryBuilder->values(["?notation" => $notation]);
         }
