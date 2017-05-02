@@ -202,7 +202,7 @@ class IndicatorsController extends Controller
         $key = $this->cacheValueKey();
         
         //check if value exists in cache
-        if(env("CACHE_VALUE") && \Cache::has($key)){
+        if(env("VALUE_CACHE") && \Cache::has($key)){
             $result = \Cache::get($key);
         }
         //calculate value if cache does not exist

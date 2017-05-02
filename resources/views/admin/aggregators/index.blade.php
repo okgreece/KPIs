@@ -22,7 +22,7 @@
                                 @foreach($aggregators as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->code }}</td><td>{{ $item->included }}</td><td>{{ $item->excluded }}</td>
+                                        <td>{{ $item->code }}</td><td>{{ str_replace(',', ', ',$item->included) }}</td><td>{{ str_replace(',', ', ',$item->excluded) }}</td>
                                         <td>
                                             <a href="{{ url('/admin/aggregators/' . $item->id) }}" class="btn btn-success btn-xs" title="View Aggregator"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                             <a href="{{ url('/admin/aggregators/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Aggregator"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
