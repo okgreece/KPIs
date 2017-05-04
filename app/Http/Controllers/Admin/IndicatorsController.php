@@ -230,7 +230,7 @@ class IndicatorsController extends Controller
         $key = $this->cacheValueKey();
         $rounded_result = round($result, 2);
         //cache value forever
-        \Cache::add($key, $rounded_result, 60);
+        \Cache::add($key, $rounded_result, env("CACHE_TIME"));
         return $rounded_result;
     }
     /**

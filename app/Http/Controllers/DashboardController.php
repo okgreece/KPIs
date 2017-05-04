@@ -205,13 +205,15 @@ class DashboardController extends Controller {
     }
     
     public function getLabel($uri) {
+        $locale = \App::getLocale();
         $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?label")
-                ->where('<' . $uri . '>', 'rdfs:label', '?label');
+                ->where('<' . $uri . '>', 'rdfs:label', '?label')
+                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en")');
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         $label = $sparql->query($query)[0]->label->getValue();
-        Cache::forever($uri . Cache::get('locale'), $label);
+        Cache::forever($uri . $locale, $label);
         return $label;
     }
     
@@ -223,7 +225,7 @@ class DashboardController extends Controller {
             $organization = "?organization";
         }
         $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
-        $lang = "en";
+        $locale = \App::getLocale();
         $queryBuilder->selectDistinct("?phase", "?label")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', $organization)
@@ -234,7 +236,7 @@ class DashboardController extends Controller {
                 ->also('qb:codeList', '?codelist')
                 ->where('?codelist', 'skos:hasTopConcept', '?phase')
                 ->optional('?phase', 'skos:prefLabel', '?label')
-                ->filter('langMatches(lang(?label), "' . $lang . '")')
+                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en")')
                 ->orderBy("?phase");
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
@@ -244,7 +246,7 @@ class DashboardController extends Controller {
             if ($label->label->getValue() == "Reserved") {
                 continue;
             }
-            Cache::forever($label->phase, $label->label->getValue());
+            Cache::forever($label->phase . "_" .$locale, $label->label->getValue());
             array_push($phases, ["label" => $label->label->getValue(), "value" => $label->phase]);
         }
         return $phases;

@@ -258,8 +258,13 @@ class AggregatorsController extends Controller {
         
     public function getAttachement() {
         $request = request();
-        $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
-        $sparqlBuilder->selectDistinct("?dimension", "?attachment")
+        $key = "attachment_" . $request->organization . "_" . $request->year;
+        if(env("VALUE_CACHE") && \Cache::has($key)){
+            $dimension = \Cache::get($key);
+        }
+        else{
+            $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+            $sparqlBuilder->selectDistinct("?dimension", "?attachment")
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', "<" . $request->organization . ">")
                 ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
@@ -268,28 +273,26 @@ class AggregatorsController extends Controller {
                 ->where('?component', 'qb:dimension', '?dimension')
                 ->where('?dimension', 'rdfs:subPropertyOf', 'obeu-dimension:economicClassification')
                 ->optional('?component', 'qb:componentAttachment', '?attachment');        
-        $query = $sparqlBuilder->getSPARQL();
-        $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
-        $result = $endpoint->query($query);
-        logger($query);
-        logger($result);
-        try {
-            $dimension = [
-                "dimension" => $result[0]->dimension->getUri(),
-                "attachment" => isset($result[0]->attachment) ? $result[0]->attachment->shorten() : 'qb:Observation',
-            ];
-            
-        } catch (\ErrorException $ex) {
-            logger($ex);
-            $dimension = null;
-        }
-        logger($dimension);
+            $query = $sparqlBuilder->getSPARQL();
+            $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
+            $result = $endpoint->query($query);
+            try {
+                $dimension = [
+                    "dimension" => $result[0]->dimension->getUri(),
+                    "attachment" => isset($result[0]->attachment) ? $result[0]->attachment->shorten() : 'qb:Observation',
+                ];
+
+            } catch (\ErrorException $ex) {
+                logger($ex);
+                $dimension = null;
+            }
+            \Cache::add($key, $dimension, env("CACHE_TIME"));
+        }        
         return $dimension;
     }
 
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
         $dimension = $this->getAttachement();
-        logger($dimension);
         $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
@@ -312,10 +315,10 @@ class AggregatorsController extends Controller {
             $queryBuilder->where('?dataset', 'qb:slice', '?slice')
                     ->where('?slice', '<'. $dimension["dimension"] . '>', '?classification')
                     ->where('?slice', 'qb:observation', '?observation');
-            
         }
         else{
-            
+            $queryBuilder->where('?observation', 'qb:dataSet', '?dataset')
+                    ->where('?observation', '<'. $dimension["dimension"] . '>', '?classification');
         }
         
         if (!empty($notation)) {
