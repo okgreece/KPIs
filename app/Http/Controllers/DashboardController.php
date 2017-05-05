@@ -209,7 +209,7 @@ class DashboardController extends Controller {
         $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $queryBuilder->selectDistinct("?label")
                 ->where('<' . $uri . '>', 'rdfs:label', '?label')
-                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en")');
+                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en") || langMatches(lang(?label), "el")');
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         $label = $sparql->query($query)[0]->label->getValue();
