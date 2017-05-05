@@ -92,8 +92,11 @@ class OrganizationsController extends Controller
     public function edit($id)
     {
         $organization = Organization::findOrFail($id);
-
-        return view('admin.organizations.edit', compact('organization'));
+        $availableOrganizations = $this->availableOrganizationsSelect();
+        return view('admin.organizations.edit', [
+            "organization" => $organization,
+            "availableOrganizations" => $availableOrganizations,
+        ]);
     }
 
     /**
