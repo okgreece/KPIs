@@ -266,6 +266,25 @@ class IndicatorsController extends Controller
      * @param Request $request
      * @return json 
      */
+    /**
+    * @SWG\Get(
+    *   path="/indicators/list",
+    *   summary="List Indicators",
+    *   tags={"indicators"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all available indicators."
+    *   ),
+    *   @SWG\Parameter(
+     *         name="lang",
+     *         in="query",
+     *         description="Localization paremeter. Choose from available languages (en, el).",
+     *         required=false,
+     *         type="string",
+     *         enum={"en", "el"},        
+     *     ),
+    * )
+    */
     public function indicators(Request $request){
         if(isset($request->lang)){
             \App::setLocale($request->lang);

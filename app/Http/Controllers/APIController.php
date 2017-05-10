@@ -111,6 +111,63 @@ class APIController extends Controller
         return response()->json($result);        
     }
     
+    /**
+    * @SWG\Get(
+    *   path="/indicators/{indicator}/value",
+    *   summary="Evaluate indicators",
+    *   tags={"indicators"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all available indicators values."
+    *   ),
+    *   @SWG\Parameter(
+     *         name="lang",
+     *         in="query",
+     *         description="Localization paremeter. Choose from available languages (en, el).",
+     *         required=false,
+     *         type="string",
+     *         enum={"en", "el"},
+     *         
+     *     ),
+     *  @SWG\Parameter(
+     *         description="Ιndicator name",
+     *         in="path",
+     *         name="indicator",
+     *         required=true,
+     *         type="string"
+     *     ),
+     *  @SWG\Parameter(
+     *         description="Organization IRI in full or shortened form",
+     *         in="query",
+     *         name="organization",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *  @SWG\Parameter(
+     *         description="Budget Phase IRI in full or shortened form",
+     *         in="query",
+     *         name="phase",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *  @SWG\Parameter(
+     *         description="Fiscal year IRI in full or shortened form",
+     *         in="query",
+     *         name="year",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *  @SWG\Parameter(
+     *         description="Response Format",
+     *         in="query",
+     *         name="format",
+     *         required=false,
+     *         type="string",
+     *         enum={"xls","csv","xlsx", "json"}
+     *     ),
+    * )
+    */
+    
     public function value($id, Request $request){
 
         if (isset($request->lang)) {

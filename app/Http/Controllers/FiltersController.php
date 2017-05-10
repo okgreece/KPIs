@@ -5,6 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 class FiltersController extends Controller {
+ 
+/**
+ * @SWG\Swagger(
+ *   @SWG\Info(
+ *     title="KPIs API Documentation",
+ *     version="1.0",
+ *     description="KPIs API Documentation",
+ *   ),
+ *   
+ *   basePath="/api/v1",
+ *   produces={"application/json"},
+ *   consumes={"application/json"},
+ * )
+ */
+    
+    
+    /**
+     * @SWG\Get(
+     *   path="/filters/list",
+     *   summary="List Filters",
+     *   tags={"filters"},
+     *   @SWG\Response(
+     *     response=200,
+     *     description="A list with all Filters that can be used."
+     *   ),
+     * )
+     */
 
     public function filters() {
 
@@ -17,6 +44,18 @@ class FiltersController extends Controller {
 
         return response()->json($filters);
     }   
+    
+    /**
+    * @SWG\Get(
+    *   path="/filters/phases",
+    *   summary="List Phases",
+    *   tags={"filters"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all Budget Phases that can be used."
+    *   ),
+    * )
+    */
 
     public function phases() {
 
@@ -32,7 +71,18 @@ class FiltersController extends Controller {
 
         return response()->json($phases);
     }
-
+    
+    /**
+    * @SWG\Get(
+    *   path="/filters/years",
+    *   summary="List Years",
+    *   tags={"filters"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all years available."
+    *   ),
+    * )
+    */
     public function years() {
 
         $controller = new DashboardController;
@@ -49,7 +99,19 @@ class FiltersController extends Controller {
 
         return response()->json($years);
     }
-
+    
+    /**
+    * @SWG\Get(
+    *   path="/filters/organizations",
+    *   summary="List Organizations",
+    *   tags={"filters"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all available organizations."
+    *   ),
+    * )
+    */
+    
     public function organizations() {
 
         $controller = new DashboardController;
@@ -65,6 +127,26 @@ class FiltersController extends Controller {
 
         return response()->json($organizations);
     }
+    
+    /**
+    * @SWG\Get(
+    *   path="/filters/groups",
+    *   summary="List Groups",
+    *   tags={"filters"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all available groups."
+    *   ),
+    *   @SWG\Parameter(
+     *         name="lang",
+     *         in="query",
+     *         description="Localization paremeter. Choose from available languages (en, el).",
+     *         required=false,
+     *         type="string",
+     *         enum={"en", "el"},         
+     *     ),
+    * )
+    */
 
     public function groups(Request $request) {
 

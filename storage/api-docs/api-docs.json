@@ -1,0 +1,215 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "KPIs API Documentation",
+        "description": "KPIs API Documentation",
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/indicators/{indicator}/value": {
+            "get": {
+                "tags": [
+                    "indicators"
+                ],
+                "summary": "Evaluate indicators",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Localization paremeter. Choose from available languages (en, el).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "el"
+                        ]
+                    },
+                    {
+                        "name": "indicator",
+                        "in": "path",
+                        "description": "\u0399ndicator name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "organization",
+                        "in": "query",
+                        "description": "Organization IRI in full or shortened form",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "phase",
+                        "in": "query",
+                        "description": "Budget Phase IRI in full or shortened form",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "year",
+                        "in": "query",
+                        "description": "Fiscal year IRI in full or shortened form",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "Response Format",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "xls",
+                            "csv",
+                            "xlsx",
+                            "json"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with all available indicators values."
+                    }
+                }
+            }
+        },
+        "/aggregators/list": {
+            "get": {
+                "tags": [
+                    "aggregators"
+                ],
+                "summary": "List Aggregators",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Localization paremeter. Choose from available languages (en, el).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "el"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with all available aggregators."
+                    }
+                }
+            }
+        },
+        "/indicators/list": {
+            "get": {
+                "tags": [
+                    "indicators"
+                ],
+                "summary": "List Indicators",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Localization paremeter. Choose from available languages (en, el).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "el"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with all available indicators."
+                    }
+                }
+            }
+        },
+        "/filters/list": {
+            "get": {
+                "tags": [
+                    "filters"
+                ],
+                "summary": "List Filters",
+                "responses": {
+                    "200": {
+                        "description": "A list with all Filters that can be used."
+                    }
+                }
+            }
+        },
+        "/filters/phases": {
+            "get": {
+                "tags": [
+                    "filters"
+                ],
+                "summary": "List Phases",
+                "responses": {
+                    "200": {
+                        "description": "A list with all Budget Phases that can be used."
+                    }
+                }
+            }
+        },
+        "/filters/years": {
+            "get": {
+                "tags": [
+                    "filters"
+                ],
+                "summary": "List Years",
+                "responses": {
+                    "200": {
+                        "description": "A list with all years available."
+                    }
+                }
+            }
+        },
+        "/filters/organizations": {
+            "get": {
+                "tags": [
+                    "filters"
+                ],
+                "summary": "List Organizations",
+                "responses": {
+                    "200": {
+                        "description": "A list with all available organizations."
+                    }
+                }
+            }
+        },
+        "/filters/groups": {
+            "get": {
+                "tags": [
+                    "filters"
+                ],
+                "summary": "List Groups",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Localization paremeter. Choose from available languages (en, el).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "el"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with all available groups."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

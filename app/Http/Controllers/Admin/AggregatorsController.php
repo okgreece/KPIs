@@ -150,9 +150,30 @@ class AggregatorsController extends Controller {
 
         return redirect('admin/aggregators');
     }
+    /**
+    * @SWG\Get(
+    *   path="/aggregators/list",
+    *   summary="List Aggregators",
+    *   tags={"aggregators"},
+    *   @SWG\Response(
+    *     response=200,
+    *     description="A list with all available aggregators."
+    *   ),
+    *   @SWG\Parameter(
+     *         name="lang",
+     *         in="query",
+     *         description="Localization paremeter. Choose from available languages (en, el).",
+     *         required=false,
+     *         type="string",
+     *         enum={"en", "el"},        
+     *     ),
+    * )
+    */
 
     public function lineup(Request $request) {
-
+        if (isset($request->lang)) {
+            \App::setLocale($request->lang);
+        }
         $list = Aggregator::all();
         return response()->json($list);
     }

@@ -20,6 +20,7 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "barryvdh/laravel-ide-helper": "^2.2",
         "benestar/asparagus": "dev-obeuviz",
+        "darkaonline/l5-swagger": "~4.0",
         "dimsav/laravel-translatable": "^7.0",
         "doctrine/dbal": "^2.5",
         "easyrdf/easyrdf": "dev-okgreece",

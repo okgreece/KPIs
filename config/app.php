@@ -201,6 +201,9 @@ return [
         //Excel support
         Maatwebsite\Excel\ExcelServiceProvider::class,
         
+        //Swagger
+        \L5Swagger\L5SwaggerServiceProvider::class,
+        
         
 
     ],
