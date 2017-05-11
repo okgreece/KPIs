@@ -42,11 +42,15 @@
     </div>
     
   <div class="mdl-card__actions mdl-card--border">
+    @if($link)
+        <a href="{{$href}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        {{$button}}
+    </a>
+    @else
     <a onclick="clickTab('{{$href}} span')" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
       {{$button}}
     </a>
-<!--    <div class="mdl-layout-spacer"></div>
-    <i class="material-icons">event</i>-->
+    @endif
   </div>
 </div>
     </div>

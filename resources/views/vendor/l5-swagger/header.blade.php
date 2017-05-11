@@ -23,20 +23,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | FrontPage Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used on frontpage
-    |
-    */
-
-    'dashboard' => 'Ταμπλό',
-    'yearly' => 'Δείκτες στο Χρόνο',
-    'map' => 'Προβολή Χάρτη',
-    'api' => 'API',
-    
-];
+?>
+<div id='header'>
+    <div class="swagger-ui-wrap">
+        <span class="input">
+            Powered by
+        </span>
+        <a id="logo" href="http://swagger.io">swagger</a>
+        
+        <form id='api_selector'>
+            <div style="display: none;" class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
+            <div style="display: none;" class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
+            <div class='input'><a id="backlink" href="http://kpi.okfn.gr" data-sw-translate>Back to KPI</a></div>
+        </form>
+    </div>
+</div>

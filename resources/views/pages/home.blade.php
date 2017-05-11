@@ -26,11 +26,11 @@
 ?>
 <div class="mdl-grid home">
     <div class="row">
-    @include('pages.partials.card', ['header' => trans('kpi/frontpage.dashboard'), 'button' => trans('kpi/buttons.go'), 'icon' => "dashboard" , 'href' => "#tab-2"])
+    @include('pages.partials.card', ['header' => trans('kpi/frontpage.dashboard'), 'button' => trans('kpi/buttons.go'), 'icon' => "dashboard" , 'href' => "#tab-2" , 'link' => false])
 
-    @include('pages.partials.card', ['header' => trans('kpi/frontpage.yearly'), 'button' => trans('kpi/buttons.go'), 'icon' => "timeline", 'href' => "#tab-4"])
+    @include('pages.partials.card', ['header' => trans('kpi/frontpage.yearly'), 'button' => trans('kpi/buttons.go'), 'icon' => "timeline", 'href' => "#tab-4" , 'link' => false])
 
-    @include('pages.partials.card', ['header' => trans('kpi/frontpage.map'), 'button' => trans('kpi/buttons.go'), 'icon' => "map", 'href' => "#tab-5"])
+    @include('pages.partials.card', ['header' => trans('kpi/frontpage.api'), 'button' => trans('kpi/buttons.go'), 'icon' => "http", 'href' => "/api/documentation", 'link' => true])
     </div>
 </div>
 <div class="mdl-grid home">     

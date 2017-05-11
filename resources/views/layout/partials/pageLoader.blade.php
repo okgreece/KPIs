@@ -24,9 +24,9 @@
  */
 ?>
 <script>
-    $(document).ready(function () {
+    window.onload = function () {
         $('.page-cover').fadeOut(1914);
-    });
+    };
 </script>
 <div class="page-cover">
     <div class="page-cover-wrapper">

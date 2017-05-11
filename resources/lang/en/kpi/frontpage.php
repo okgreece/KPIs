@@ -37,5 +37,6 @@ return [
     'dashboard' => 'Dashboard',
     'yearly' => 'KPIs over time',
     'map' => 'Map Overlay',
+    'api' => 'API',
     
 ];
