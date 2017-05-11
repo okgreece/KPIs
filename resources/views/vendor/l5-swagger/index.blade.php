@@ -49,25 +49,6 @@ if (app()->environment() != 'testing') {
 
 <div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
 <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
-<div class='footer'>
-    <footer class="mdl-mini-footer">
-    <div class="mdl-mini-footer__left-section">
-    <div class="mdl-logo">
-        <a href="//okfn.gr">
-            <img id="okfgr-footer-logo" class="footer-logo" src="{{asset("images/okfn-white-logo.png")}}"></img>
-        </a>
-        
-    </div>
-    <div class="mdl-logo">
-        <a href="//openbudgets.eu">
-            <img id="obeu-footer-logo" class="footer-logo" src="{{asset("images/openbudgets_logo-white.png")}}"></img>
-        </a>
-        
-    </div>    
-    <strong>Copyright © {{date("Y")}} <a href="http://www.okfn.gr">OKF GREECE</a>.</strong> 
-      <span> @lang('kpi/messages.copyright')</span>
-  </div>
-</footer>
-</div>
+@include('vendor.l5-swagger.footer')
 </body>
 </html>
