@@ -112,6 +112,23 @@ class APIController extends Controller
     }
     
     /**
+     * @SWG\Tag(
+     *   name="filters",
+     *   description="The Filters Endpoint. Get Information about available filters to be used by the API.",
+     *   
+     * )
+     * @SWG\Tag(
+     *   name="indicators",
+     *   description="Information about available indicators and values based on parameters."
+     * )
+     * @SWG\Tag(
+     *   name="aggregators",
+     *   description="Information about the available aggregators.",
+     *   
+     * )
+    */    
+    
+    /**
     * @SWG\Get(
     *   path="/indicators/{indicator}/value",
     *   summary="Evaluate indicators",

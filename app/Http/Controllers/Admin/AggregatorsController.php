@@ -361,7 +361,7 @@ class AggregatorsController extends Controller {
             $queryBuilder->orderBy($order);
         }
         $query = $queryBuilder->getSPARQL();
-
+        //logger($query);
         return $query;
     }
 
