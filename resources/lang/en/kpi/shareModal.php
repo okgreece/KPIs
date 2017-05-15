@@ -28,5 +28,8 @@ return [
     "body" => "Choose your sharing option from the available ones",
     "embed" => "Embed",
     "link" => "Get a shareable link",
-    "close" => "Close"
+    "close" => "Close",
+    "twitter" => "Share this on Twitter",
+    "facebook" => "Share this on Facebook",
+    "api" => "Link to the API",
 ];

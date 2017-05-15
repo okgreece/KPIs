@@ -22,8 +22,10 @@ class DashboardController extends Controller {
         if (isset($request->lang)) {
             \App::setLocale($request->lang);
         }
-        $scripts = view("layout/partials/scripts") . view("embed/embedScripts");
-        return $scripts . $this->dashboard($request);
+        $controller = new APIController;
+        $content = $this->dashboard($request);
+        $indicator = json_decode($controller->value($content["indicators"][0]["indicator"]->indicator, $request)->content())[0];
+        return view("embed/embed", ["content" => $content, "indicator" => $indicator]);
     }
     
     public function dashboard(Request $request) {
@@ -48,7 +50,7 @@ class DashboardController extends Controller {
         ];
         $result = array_merge($allIndicators, $integration);
         if(\Route::currentRouteName() == "embed"){
-            return view('indicators/components', $result);
+            return $result;
         }
         else{
             return view('indicators/gridComponents', $result);
@@ -276,6 +278,7 @@ class DashboardController extends Controller {
                 ->orderBy("?year");
 
         $query = $queryBuilder->getSPARQL();
+        //logger($query);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $labels = $sparql->query($query);
         $years = [];
@@ -556,5 +559,11 @@ class DashboardController extends Controller {
                 cookie()->forever("locale", $lang)
                 );
         return redirect('/');
+    }
+    
+    public function tinyURL(){
+        $url = request()->url;
+        $shorten = file_get_contents('http://tinyurl.com/api-create.php?url='. $url);
+        return response()->json($shorten);
     }
 }

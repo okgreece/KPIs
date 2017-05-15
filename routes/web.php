@@ -48,4 +48,6 @@ Route::get('/lang/{lang}', 'DashboardController@language');
 
 Route::get('/embed', 'DashboardController@embed')->name("embed");
 
+Route::get('/tinyURL', 'DashboardController@tinyURL')->name("tinyURL");
+
 Route::resource('admin/rdf-namespaces', 'Admin\\RdfNamespacesController');

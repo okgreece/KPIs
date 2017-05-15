@@ -40,19 +40,38 @@
     function updateModal(indicator){
         var shareButtons = $(".share-modal-buttons");
         var organization = $("#organization-select option:selected")[0].value;
+        var organizationL = $("#organization-select option:selected")[0].text;
+        var organizationLabel = encodeURIComponent(organizationL.replace(" ", " #"));
         var year = $("#year-select option:selected")[0].value;
+        var yearL = $("#year-select option:selected")[0].text;
         var phase = $("#phase-select option:selected")[0].value;
         var api = "/api/v1/indicators/";
         var host = "{{env('APP_URL')}}";
         var url = host + api + indicator + "/" + "value?" + "organization=" + organization + "&phase=" + phase + "&year=" + year;
         var embed = host + "/embed?" + "indicator=" + indicator + "&organization=" + organization + "&phase=" + phase + "&year=" + year;
-        shareButtons.html('');
-        shareButtons.append('<li><a href="' + url + '" target="_blank"><i class="material-icons">&#xE902;</i> API</a></li>');
-        shareButtons.append('<li><a href="' + embed + '" target="_blank"><i class="fa fa-puzzle-piece" aria-hidden="true"></i> Embed</a></li>');
-        shareButtons.append('<li>&ltiframe src="' + embed + '" height="330" width="330" frameborder="0" scrolling="no"&gtYou need an iframes capable browser to view this content.&lt/iframe&gt</li>');
-        var modal = $("#shareModal");
-        modal.modal();
-        modal.modal("open");
+        var shortURL = $.ajax({
+            type: "GET",
+            url: "/tinyURL",
+            data: {url:embed},
+            success: function (data) {
+                console.log(data);
+                shareButtons.html('');
+                shareButtons.append('<div class="row"><span class="myLabel" for="textarea1">Link</span><div class="input-field col s12"><textarea readonly rows="1" id="textarea1" class="myTextArea">' + data + '</textarea></div></div>');
+                shareButtons.append('<div class="row"><span class="myLabel" for="textarea2">Embed</span><div class="input-field col s12"><textarea readonly id="textarea2" class="myTextArea">&ltiframe src="' + data + '" height="330" width="330" frameborder="0" scrolling="no"&gtYou need an iframes capable browser to view this content.&lt/iframe&gt</textarea></div></div>');
+                var twitter = document.createElement('a');
+                twitter.innerHTML = "<i class='fa fa-twitter' aria-hidden='true'></i> Twitter";
+                twitter.title = "@lang('kpi/shareModal.twitter')";
+                twitter.className = "waves-effect waves-light btn";
+                twitter.href = "https://twitter.com/intent/tweet?url=" + data + "&text=%23" + organizationLabel + "%20%23" + yearL + "%20%23transparency%20%23opendata%20%23" + indicator ;
+                shareButtons.append(twitter);
+                //shareButtons.append("<a title=' class='waves-effect waves-light btn' href='https://twitter.com/intent/tweet?url=" + data + "&text=%23" + organizationLabel + "%20%23" + yearL + "%20%23transparency%20%23opendata%20%23" + indicator + "><i class='fa fa-twitter' aria-hidden='true'></i> Twitter</a>");
+                
+                shareButtons.append('<a title="@lang("kpi/shareModal.facebook")" class="waves-effect waves-light btn" href="https://www.facebook.com/sharer/sharer.php?u=' + data + '"><i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook</a>');
+                shareButtons.append('<a title="@lang("kpi/shareModal.api")" class="waves-effect waves-light btn" href="' + url + '" target="_blank">API</a>');
+                var modal = $("#shareModal");
+                modal.modal();                
+                modal.modal("open");
+                    }
+        });
     }
 </script>
-

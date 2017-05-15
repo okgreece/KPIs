@@ -30,39 +30,39 @@ body{
     overflow: hidden;
 }
 .demo-card-event.mdl-card {
-  width: 256px;
-  height: 256px;
-  background: #3E4EB8;
-  margin:10px auto;
+    width: 256px;
+    height: 256px;
+    background: #3E4EB8;
+    margin:10px auto;
 }
 .demo-card-event > .mdl-card__actions {
-  border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 .demo-card-event > .mdl-card__title {
-  align-items: flex-start;
+    align-items: flex-start;
 }
 .demo-card-event > .mdl-card__title-text {
-  align-items: null;
-  margin:auto;
+    align-items: null;
+    margin:auto;
 }
 .demo-cart-event:hover{
     color:yellow!important;
 }
 .demo-card-event > .mdl-card__title > h4 {
-  margin-top: 0;
+    margin-top: 0;
 }
 .demo-card-event > .mdl-card__actions {
-  display: flex;
-  box-sizing:border-box;
-  align-items: center;
+    display: flex;
+    box-sizing:border-box;
+    align-items: center;
 }
 .demo-card-event > .mdl-card__actions > .material-icons {
-  padding-right: 4px;
+    padding-right: 4px;
 }
 .demo-card-event > .mdl-card__title,
 .demo-card-event > .mdl-card__actions,
 .demo-card-event > .mdl-card__actions > .mdl-button {
-  color: #fff;
+    color: #fff;
 }
 .card-icon{
     font-size: 90px;
@@ -70,9 +70,13 @@ body{
 }
 
 .dashboard{
-    
+
     margin: auto;
     max-width:80%;
+}
+
+.btn {
+    margin: 10px;
 }
 
 .home{    
@@ -94,13 +98,13 @@ body{
 }
 
 .kpi-odometer{
-   margin:auto;
-   font-size: 60px;
-   padding-right:20px;   
-   position: absolute!important;
-   bottom: 70px!important;
-   right: 0px!important;
-   
+    margin:auto;
+    font-size: 60px;
+    padding-right:20px;   
+    position: absolute!important;
+    bottom: 70px!important;
+    right: 0px!important;
+
 }
 
 .odometer .odometer-inside:after {
@@ -108,9 +112,9 @@ body{
 }
 
 dialog {
-  position: fixed;
-  top: 50%;
-  transform: translate(0, -50%);
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
 .form-button{
@@ -143,7 +147,7 @@ dialog {
 .progress{
     margin:0px!important;
     background-color: #0fde1f!important;
-	
+
 }
 
 .progress-hidden{
@@ -169,14 +173,14 @@ button{
 }
 
 .page-cover-wrapper{
-     position: absolute;
-     margin: auto;
-     top: 0;
-     right: 0;
-     bottom: 0;
-     left: 0;
-     width: 64px;
-     height: 64px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 64px;
+    height: 64px;
 }
 
 .cover-text{
@@ -210,9 +214,208 @@ button{
     .mdl-mini-footer.mobile {
         display: block!important;
     }
-    
+
     .mdl-mini-footer.large-screen {
         display: none!important;
     }
-    
+
+}
+.myTextArea {
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    background-image: none;
+    border-bottom-color: rgb(8, 8, 10);
+    border-bottom-left-radius: 2.8px;
+    border-bottom-right-radius: 2.8px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color: rgb(8, 8, 10);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgb(8, 8, 10);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgb(8, 8, 10);
+    border-top-left-radius: 2.8px;
+    border-top-right-radius: 2.8px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px 0px inset;
+    box-sizing: border-box;
+    color: rgb(19, 21, 24);
+    display: block;
+    font-family: Hind,"Open Sans",sans-serif;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: 14px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-synthesis: weight style;
+    font-variant: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-weight: 400;
+    height: 84px;
+    letter-spacing: normal;
+    line-height: 20px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    opacity: 1;
+    outline-color: rgb(19, 21, 24);
+    outline-style: none;
+    outline-width: 0px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    resize: none;
+    text-align: start;
+    text-shadow: none;
+    text-transform: none;
+    transition-delay: 0s, 0s;
+    transition-duration: 0.15s, 0.15s;
+    transition-property: border-color, box-shadow;
+    transition-timing-function: ease-in-out, ease-in-out;
+    white-space: pre-wrap;
+    width: 840px;
+    word-break: normal;
+    word-spacing: 0px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+}
+
+.myTextArea:focus {
+    height: auto;
+    background-color: rgb(255, 255, 255);
+    background-image: none;
+    border-bottom-color: rgb(0, 0, 0);
+    border-bottom-left-radius: 2.8px;
+    border-bottom-right-radius: 2.8px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-image-outset: 0 0 0 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100% 100% 100% 100%;
+    border-image-source: none;
+    border-image-width: 1 1 1 1;
+    border-left-color: rgb(0, 0, 0);
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-right-color: rgb(0, 0, 0);
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-top-color: rgb(0, 0, 0);
+    border-top-left-radius: 2.8px;
+    border-top-right-radius: 2.8px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px 0px inset, rgb(53, 57, 66) 0px 0px 6px 0px;
+    box-sizing: border-box;
+    color: rgb(19, 21, 24);
+    display: block;
+    font-family: Hind,"Open Sans",sans-serif;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: 14px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-synthesis: weight style;
+    font-variant: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-weight: 400;
+    height: 84px;
+    letter-spacing: normal;
+    line-height: 20px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    opacity: 1;
+    outline-color: rgb(19, 21, 24);
+    outline-style: none;
+    outline-width: 0px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    resize: none;
+    text-align: start;
+    text-shadow: none;
+    text-transform: none;
+    transition-delay: 0s, 0s;
+    transition-duration: 0.15s, 0.15s;
+    transition-property: border-color, box-shadow;
+    transition-timing-function: ease-in-out, ease-in-out;
+    white-space: pre-wrap;
+    width: 840px;
+    word-break: normal;
+    word-spacing: 0px;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+
+}
+
+.myLabel{
+    box-sizing: border-box;
+    color: rgb(88, 94, 108);
+    display: inline-block;
+    font-family: Hind,"Open Sans",sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: normal;
+    line-height: 20px;
+    margin-bottom: 5px;
+    max-width: 100%;
+    outline-color: rgb(88, 94, 108);
+    outline-style: none;
+    outline-width: 0px;
+    overflow-wrap: normal;
+    text-align: start;
+    text-shadow: none;
+    text-transform: none;
+    white-space: normal;
+    word-break: normal;
+    word-spacing: 0px;
+}
+
+#textarea1 {
+    height: auto;
+}
+
+
+#textarea2 {
+    height: auto;
 }

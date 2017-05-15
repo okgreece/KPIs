@@ -1,5 +1,6 @@
 <?php
-/*
+
+/* 
  * The MIT License
  *
  * Copyright 2017 Sotiris Karampatakis Open Knowledge Greece.
@@ -23,11 +24,22 @@
  * THE SOFTWARE.
  */
 ?>
-@include('indicators.templates.gauge_script')
-@include('indicators.templates.number_script')
-<link rel="stylesheet" href="/css/materialize.css">
-<link rel="stylesheet" href="/css/indicators.css">
+<!DOCTYPE html>
+<html lang="{{Cookie::get('locale')}}">
+    <head>
+        <title>@yield('page_title', 'Page Title')</title>
+        @include('layout.partials.scripts')
+        @include('embed.embedScripts')
+    </head>
+    <?php App::setLocale(Cookie::get('locale')); ?>
+    
+    <body>
+        @include('layout.partials.pageLoader')
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            @yield('content', 'There is some problem here...')
+            @include('layout.partials.footer', ["screen_size" => "large-screen"])            
+        </div>
+        @include('layout.partials.shareModal')
+    </body>
+</html>
 
-<link href="{{ asset('/css/flag-icon.css') }}" rel="stylesheet" type="text/css" />
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
