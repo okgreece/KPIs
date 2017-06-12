@@ -98,7 +98,7 @@ class DashboardController extends Controller {
     public function getIndigoLink($SPARQLDataset, $OSDataset){
         if ($SPARQLDataset != null) {
             if (isset($OSDataset)) {
-                return env("INDIGO") . "#indigo/cube/analytics/" . $OSDataset->name;
+                return env("INDIGO") . env("INDIGO_ROUTE") . $OSDataset->name;
             }
         }
         else{
@@ -186,8 +186,6 @@ class DashboardController extends Controller {
     
     public function organizations() {
 
-        //$sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-        //$candidates = $sparql->query($this->organizationsQuery());
         $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
         foreach ($candidates as $candidate) {
@@ -214,7 +212,12 @@ class DashboardController extends Controller {
                 ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en") || langMatches(lang(?label), "el")');
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
-        $label = $sparql->query($query)[0]->label->getValue();
+        try{
+            $label = $sparql->query($query)[0]->label->getValue();
+        } catch (\ErrorException $ex) {
+            $label = $uri;
+        }
+        
         Cache::forever($uri . $locale, $label);
         return $label;
     }
