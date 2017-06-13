@@ -48,32 +48,10 @@ class IndicatorsController extends Controller
         
         $requestData = $request->all();
         
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'numerator' =>'required|integer',
-            'denominator' =>'required|integer',
-            //'code' =>'required',
-            'group' =>'required|integer',
-            'type' =>'required|integer',
-            'enabled' =>'required|boolean',
-            'reverse' =>'required|boolean',
-        ]);
+        $this->validate($request, $this->createValidator());
         
         $indicator = Indicator::create($requestData);
         
-        $indicator->translateOrNew('en')->title = $requestData["en_title"];
-        
-        $indicator->translateOrNew('en')->description = $requestData["en_description"];
-        
-        $indicator->translateOrNew('el')->title = $requestData["el_title"];
-        
-        $indicator->translateOrNew('el')->description = $requestData["el_description"];
-        
-        $indicator->save();
-
         Session::flash('flash_message', 'Indicator added!');
 
         return redirect('admin/indicators');
@@ -125,32 +103,9 @@ class IndicatorsController extends Controller
         
         $requestData = $request->all();
         
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'numerator' =>'required|integer',
-            'denominator' =>'required|integer',
-            //'code' =>'required',
-            'group' =>'required|integer',
-            'type' =>'required|integer',
-            'enabled' =>'required|boolean',
-            'reverse' =>'required|boolean',
-        ]);
-        
         $indicator = Indicator::findOrFail($id);
+        $this->validate($request, $this->editValidator($id));
         $indicator->update($requestData);
-        
-        $indicator->translateOrNew('en')->title = $requestData["en_title"];
-        
-        $indicator->translateOrNew('en')->description = $requestData["en_description"];
-        
-        $indicator->translateOrNew('el')->title = $requestData["el_title"];
-        
-        $indicator->translateOrNew('el')->description = $requestData["el_description"];
-        
-        $indicator->save();
         
         Session::flash('flash_message', 'Indicator updated!');
 
@@ -192,6 +147,7 @@ class IndicatorsController extends Controller
         foreach ($aggregators as $aggregator) {
             $key = $aggregator->id;
             $value = $aggregator->title;
+           // logger($aggregator);
             $aggregators_select = array_add($aggregators_select, $key, $value);
         }
         return $aggregators_select;
@@ -291,5 +247,58 @@ class IndicatorsController extends Controller
         }        
         $indicators = \App\Indicator::all();
         return response()->json($indicators);
+    }
+    private $pax = [
+            
+    ];
+     
+             
+             
+    public function editValidator ($id){
+        $rules =  [
+            'numerator' =>'required|integer',
+            'denominator' =>'required|integer',
+            //'code' =>'required',
+            'group' =>'required|integer',
+            'type' =>'required|integer',
+            'enabled' =>'required|boolean',
+            'reverse' =>'required|boolean',
+            'indicator' => 'required|unique:indicators,indicator,'.$id,            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:indicator_translations,indicator_id,'.$id,
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
+    }
+    
+    public function createValidator (){
+        $rules =  [
+            'numerator' =>'required|integer',
+            'denominator' =>'required|integer',
+            //'code' =>'required',
+            'group' =>'required|integer',
+            'type' =>'required|integer',
+            'enabled' =>'required|boolean',
+            'reverse' =>'required|boolean',
+            'indicator' => 'required|unique:indicators,indicator',            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:indicator_translations,title',
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
     }
 }

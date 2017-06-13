@@ -10,15 +10,13 @@ return [
     | Contains an array with the applications available locales.
     |
     */
-    'locales' => [
-        'en',
-//        'fr',
-        'el',
-//        'es' => [
-//            'MX', // mexican spanish
-//            'CO', // colombian spanish
-//        ],
-    ],
+    'locales' => parse_langs_to_array(
+            env('LANG_DETECTOR_LANGUAGES', 
+		[
+		    'en', 
+		]
+	    )
+            ),
 
     /*
     |--------------------------------------------------------------------------

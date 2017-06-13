@@ -28,7 +28,7 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th>
+                                        <th> ID</th>
                                         <td>{{ $aggregator->id }}</td>
                                     </tr>
                                     <tr>
@@ -43,21 +43,19 @@
                                         <th> Excluded </th>
                                         <td> {{ $aggregator->excluded }} </td>
                                     </tr>
-                                    <tr>
-                                        <th> Title EN </th>
-                                        <td> {{ $aggregator->translate('en')->title }} </td>
+                                    @foreach(config('translatable.locales') as $locale)
+                                    <tr> 
+                                        <th> Title {{$locale}} </th>
+                                        <td> {{ $aggregator->translate($locale)->title }} </td>
                                     </tr>
                                     <tr>
-                                        <th> Description EN </th>
-                                        <td> {{ $aggregator->translate('en')->description }} </td>
+                                        <th> Description {{$locale}} </th>
+                                        <td> {{ $aggregator->translate($locale)->description }} </td>
                                     </tr>
+                                    @endforeach
                                     <tr>
-                                        <th> Title EL </th>
-                                        <td> {{ $aggregator->translate('el')->title }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Title EN </th>
-                                        <td> {{ $aggregator->translate('el')->description }} </td>
+                                        <th> Codelist </th>
+                                        <td> {{ $aggregator->codelist }} </td>
                                     </tr>
                                 </tbody>
                             </table>

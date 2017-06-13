@@ -22,7 +22,7 @@ return [
 	|
 	*/
 
-	'label-locale-indicator' => '<span>%label</span><span class="label label-default">%locale</span>',
+	'label-locale-indicator' => '<span class="label label-default">%locale</span><span>%label</span>',
 
 	/*
 	|--------------------------------------------------------------------------

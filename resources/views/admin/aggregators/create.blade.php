@@ -15,12 +15,9 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::open(['url' => '/admin/aggregators', 'class' => 'form-horizontal', 'files' => true]) !!}
-
+                        {!! BootForm::open()->action( route('aggregators.store')) !!}
                         @include ('admin.aggregators.form')
-
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>

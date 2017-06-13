@@ -15,13 +15,9 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::open(['url' => '/admin/groups', 'class' => 'form-horizontal', 'files' => true]) !!}
-
+                        {!! BootForm::open()->action( route('groups.store')) !!}
                         @include ('admin.groups.form')
-
-                        {!! Form::close() !!}
-
+                        {!! BootForm::close() !!}
                     </div>
                 </div>
             </div>

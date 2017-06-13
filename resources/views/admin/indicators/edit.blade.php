@@ -15,18 +15,10 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::model($indicator, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/indicators', $indicator->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
+                        {!! BootForm::open()->action( route('indicators.update', $indicator))->put() !!}
+                        {!! BootForm::bind($indicator) !!}
                         @include ('admin.indicators.form', ['submitButtonText' => 'Update'])
-
-                        {!! Form::close() !!}
-
+                        {!! BootForm::close() !!}
                     </div>
                 </div>
             </div>

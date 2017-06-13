@@ -15,18 +15,10 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::model($group, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/groups', $group->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
+                        {!! BootForm::open()->action( route('groups.update', $group))->put() !!}
+                        {!! BootForm::bind($group) !!}
                         @include ('admin.groups.form', ['submitButtonText' => 'Update'])
-
-                        {!! Form::close() !!}
-
+                        {!! BootForm::close() !!}
                     </div>
                 </div>
             </div>

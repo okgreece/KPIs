@@ -16,11 +16,9 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['url' => '/admin/indicators', 'class' => 'form-horizontal', 'files' => true]) !!}
-
+                        {!! BootForm::open()->action( route('indicators.store')) !!}
                         @include ('admin.indicators.form')
-
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>

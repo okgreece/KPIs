@@ -16,16 +16,11 @@
                             </ul>
                         @endif
 
-                        {!! Form::model($aggregator, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/aggregators', $aggregator->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
+                        {!! BootForm::open()->action( route('aggregators.update', $aggregator))->put() !!}
+                        {!! BootForm::bind($aggregator) !!}
                         @include ('admin.aggregators.form', ['submitButtonText' => 'Update'])
 
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>
