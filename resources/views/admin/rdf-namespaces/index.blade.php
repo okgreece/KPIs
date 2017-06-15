@@ -3,11 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Rdfnamespaces</div>
+                    <div class="panel-heading">RDF Namespaces</div>
                     <div class="panel-body">
                         <a href="{{ url('/admin/rdf-namespaces/create') }}" class="btn btn-success btn-sm" title="Add New RdfNamespace">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
@@ -39,17 +37,17 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->prefix }}</td><td>{{ $item->url }}</td>
                                         <td>
-                                            <a href="{{ url('/admin/rdf-namespaces/' . $item->id) }}" title="View RdfNamespace"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
-                                            <a href="{{ url('/admin/rdf-namespaces/' . $item->id . '/edit') }}" title="Edit RdfNamespace"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                                            <a href="{{ url('/admin/rdf-namespaces/' . $item->id) }}" class="btn btn-success btn-xs" title="View RDF Namespace"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
+                                            <a href="{{ url('/admin/rdf-namespaces/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit RDF Namespace"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                                             {!! Form::open([
                                                 'method'=>'DELETE',
                                                 'url' => ['/admin/rdf-namespaces', $item->id],
                                                 'style' => 'display:inline'
                                             ]) !!}
-                                                {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
+                                                {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete RDF Namespace" />', array(
                                                         'type' => 'submit',
                                                         'class' => 'btn btn-danger btn-xs',
-                                                        'title' => 'Delete RdfNamespace',
+                                                        'title' => 'Delete RDF Namespace',
                                                         'onclick'=>'return confirm("Confirm delete?")'
                                                 )) !!}
                                             {!! Form::close() !!}
