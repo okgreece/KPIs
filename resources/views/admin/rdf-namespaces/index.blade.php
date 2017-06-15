@@ -7,21 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">RDF Namespaces</div>
                     <div class="panel-body">
-                        <a href="{{ url('/admin/rdf-namespaces/create') }}" class="btn btn-success btn-sm" title="Add New RdfNamespace">
-                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                        </a>
-
-                        {!! Form::open(['method' => 'GET', 'url' => '/admin/rdf-namespaces', 'class' => 'navbar-form navbar-right', 'role' => 'search'])  !!}
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Search...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        {!! Form::close() !!}
-
+                        <a href="{{ url('/admin/rdf-namespaces/create') }}" class="btn btn-primary btn-xs" title="Add New RDF Namespace"><span class="glyphicon glyphicon-plus" aria-hidden="true"/></a>
                         <br/>
                         <br/>
                         <div class="table-responsive">

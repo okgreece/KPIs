@@ -82,6 +82,11 @@
                 </div>
             </div>
         </nav>
+        @if(session()->has('flash_message'))
+            @include('utility.info.successnotification')        
+        @elseif(session()->has('error'))
+            @include('utility.info.failnotification')        
+        @endif
 
         @yield('content')
     </div>
