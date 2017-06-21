@@ -48,7 +48,7 @@
         $.ajax({
             type: "GET",
             url: "/admin/codelists",
-            data: {type:type},
+            data: {type:type, func:"getCollections"},
             success: function (data) {
                 var newselect = $("#codelistPlaceholder");
                 $(".overlay-loader").hide();
@@ -82,6 +82,38 @@
                 var newselect = $("#instancePlaceholder");
                 $(".overlay-loader").hide();
                 newselect.html(data);
+            }
+        });
+    }
+    
+    function getConcepts(data){
+        $("#conceptPlaceholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/codelist",
+            data: {codelist: data.value},
+            success: function (data) {
+                var newselect = $("#conceptPlaceholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+                
+                },
+            complete: function(data){
+                $("select#included").treeMultiselect(
+                {
+                    searchable: true,
+                    sortable: false,
+                    startCollapsed: true,
+                    allowBatchSelection: false
+                 });
+                $("select#excluded").treeMultiselect(
+                {
+                    searchable: true,
+                    sortable: false,
+                    startCollapsed: true,
+                    allowBatchSelection: false
+                });
             }
         });
     }

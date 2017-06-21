@@ -29,7 +29,7 @@ class AddAggInstanceAggregatorRelationship extends Migration
     public function down()
     {
         Schema::table('aggregator_instances', function (Blueprint $table) {
-            $table->dropColumn("aggregator_id", "codelist_collection_id", "codelist_collection_url");
+            $table->dropColumn("aggregator_id", "codelist_collection_id", "codelist_collection_uri");
         });
     }
 }

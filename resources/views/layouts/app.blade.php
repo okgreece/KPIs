@@ -19,7 +19,8 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script  src="https://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="  crossorigin="anonymous"></script>
+    
 </head>
 <body>
     <div id="app">
@@ -77,5 +78,10 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/patosai/tree-multiselect/v2.2.1/dist/jquery.tree-multiselect.min.js"></script>
+    <script  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/patosai/tree-multiselect/v2.2.1/dist/jquery.tree-multiselect.min.css"/>
+    @include('admin.codelists.updateScript')
+
 </body>
 </html>

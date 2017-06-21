@@ -73,6 +73,7 @@ class CodelistController extends Controller
         
         return view("admin.codelists.codelistSelect", [
             "codelists" => $codelists,
+            "function" => request()->func,
             "type" => request()->type,
         ]);
     }
@@ -83,5 +84,87 @@ class CodelistController extends Controller
         return view("admin.codelists.collectionSelect", [
             "collections" => $collections,
         ]);
+    }
+    
+    public function getCodelist(){
+        $locale = \App::getLocale();
+        $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+        $sparqlBuilder->selectDistinct("?concept", "?label", "?notation", "?broader" )
+            ->where("?concept", "a", "skos:Concept")
+            ->also("skos:notation","?notation" )
+            ->also("skos:inScheme", "<" . request()->codelist . ">")
+            ->optional("?concept", "skos:broader", "?broader")
+            ->optional(
+                $sparqlBuilder->newSubgraph()
+                ->where('?concept', 'skos:prefLabel', '?label1')
+                ->filter('langMatches(lang(?label1), "' . $locale . '")')
+                )
+            ->optional(
+                $sparqlBuilder->newSubgraph()
+                ->where('?concept', 'skos:prefLabel', '?label2')
+                ->filter('langMatches(lang(?label2), "en")')
+                )
+            ->bind("if(bound(?label1), ?label1, ?label2) as ?label")
+            ->orderBy("?broader");
+        $query = $sparqlBuilder->getSPARQL();
+        //dd($query);
+        $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
+        $results = $endpoint->query($query);
+        $collections = [];
+        foreach ($results as $row) {
+            array_push($collections, 
+                    [
+                        "label" => isset($row->label) ?$row->label->getValue(): $row->notation->getValue(),
+                        "notation" => $row->notation->getValue(),
+                        "value" => $row->concept->getUri(),
+                        "broader" => isset($row->broader) ? $row->broader->getUri(): ""
+                    ]);
+        }
+        return response()->json($collections);
+    }
+    
+    public function codelist2select(){
+        $concepts = $this->constructPaths();
+        return view("admin.codelists.conceptSelect", [
+            "concepts" => $concepts,
+            "scheme" => request()->codelist,
+        ]);
+    }
+    
+    public function constructPaths(){
+        $concepts = collect(json_decode($this->getCodelist()->content()));
+        $concepts->map(function($item, $key) use ($concepts){
+            $path = $this->getBroader($item, $concepts);
+            $item->path = $path;
+            
+            return ;
+        });
+       
+        return $concepts;
+    
+    }
+    
+    public function getBroader($item, $concepts, $path = null){
+        if($item->broader == ""){
+                $path = "scheme" . "/" . $path;
+        }
+        else{
+            //get new item from broader
+            $broader = $concepts->search(function ($item2, $key) use($item) {
+                return $item2->value == $item->broader;
+                
+            });
+//            dd([
+//                "broader" => $broader,
+//                "concept" => $concepts[$broader]
+//            ]);
+            $path = $this->getBroader($concepts[$broader], $concepts , $concepts[$broader]->notation . '/' . $path);
+            
+            //check if it's path is set
+                //get it's path and notation and end the procedure
+            //else make it's path    
+        }
+        
+        return rtrim($path, '/');
     }
 }

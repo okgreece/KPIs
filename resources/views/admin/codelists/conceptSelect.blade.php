@@ -24,16 +24,28 @@
  * THE SOFTWARE.
  */
 ?>
-<div class="form-group updated">
-    <label for="codelist" class="control-label">Codelist</label>
-    @if(isset($codelists) && (sizeOf($codelists) != 0 ))
-    <select name="codelist" id="codelist" class="form-control" onchange="{{$function}}(this)">
-        <option value="" disabled>Please Select a Codelist...</option>
-        @foreach ($codelists as $codelist)
-            <option value="{{$codelist->value}}">{{$codelist->label}}</option>
-        @endforeach
-    </select>
-    @else
-        <p>Error</p>
-    @endif
-</div>
+<label for="included">Included</label>
+<select id="included" multiple="multiple" name='included[]'>
+  @foreach($concepts as $concept)
+  <option 
+      value='{{$concept->notation}}' 
+      data-description='{{$concept->value}}'
+      data-section='{{$concept->path}}'
+      >
+      {{$concept->notation}} - {{$concept->label}}
+  </option>
+  @endforeach
+</select>
+</br>
+<label for="excluded">Excluded</label>
+<select id="excluded" multiple="multiple" name='excluded[]'>
+  @foreach($concepts as $concept)
+  <option 
+      value='{{$concept->notation}}' 
+      data-description='{{$concept->value}}'
+      data-section='{{$concept->path}}'
+      >
+      {{$concept->notation}} - {{$concept->label}}
+  </option>
+  @endforeach
+</select>

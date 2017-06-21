@@ -21,6 +21,8 @@ Route::get('/admin/collections', 'Admin\\CodelistController@getCollectionSelect'
 
 Route::get('/admin/localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
 
+Route::get('/admin/codelist', 'Admin\\CodelistController@codelist2select');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
     Route::resource('admin/indicators', 'Admin\\IndicatorsController');

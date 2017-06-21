@@ -32,4 +32,3 @@
         </div>
     </div>
 @endsection
-@include('admin.aggregator-instances.updateScript')

@@ -42,6 +42,7 @@ class CodelistCollectionsController extends Controller
     public function create()
     {
         $controller = new CodelistController;
+        request()->func = "getConcepts";
         $codelists = $controller->getCodelistSelect();
         
         return view('admin.codelist-collections.create', [
@@ -61,6 +62,13 @@ class CodelistCollectionsController extends Controller
         
         $requestData = $request->all();
         
+        $requestData["included"] = implode(',', $requestData["included"]);
+        try{
+            $requestData["excluded"] = implode(',', $requestData["excluded"]);
+        } catch (\Exception $ex) {
+
+        }
+
         CodelistCollection::create($requestData);
 
         Session::flash('flash_message', 'CodelistCollection added!');
@@ -112,6 +120,15 @@ class CodelistCollectionsController extends Controller
         $requestData = $request->all();
         
         $codelistcollection = CodelistCollection::findOrFail($id);
+        
+        $requestData["included"] = implode(',', $requestData["included"]);
+        
+        try{
+            $requestData["excluded"] = implode(',', $requestData["excluded"]);
+        } catch (\Exception $ex) {
+
+        }
+        
         $codelistcollection->update($requestData);
 
         Session::flash('flash_message', 'CodelistCollection updated!');

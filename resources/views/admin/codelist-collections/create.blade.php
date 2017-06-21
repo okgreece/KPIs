@@ -21,11 +21,11 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['url' => '/admin/codelist-collections', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! BootForm::open()->action( route('codelist-collections.store')) !!}
 
                         @include ('admin.codelist-collections.form', ['codelists' => $codelists])
 
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>
