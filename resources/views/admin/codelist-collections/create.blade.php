@@ -4,10 +4,14 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
+
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Create New Group</div>
+                    <div class="panel-heading">Create New Codelist Collection</div>
                     <div class="panel-body">
+                        <a href="{{ url('/admin/codelist-collections') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <br />
+                        <br />
 
                         @if ($errors->any())
                             <ul class="alert alert-danger">
@@ -16,9 +20,13 @@
                                 @endforeach
                             </ul>
                         @endif
-                        {!! BootForm::open()->action( route('groups.store')) !!}
-                        @include ('admin.groups.form')
-                        {!! BootForm::close() !!}
+
+                        {!! Form::open(['url' => '/admin/codelist-collections', 'class' => 'form-horizontal', 'files' => true]) !!}
+
+                        @include ('admin.codelist-collections.form', ['codelists' => $codelists])
+
+                        {!! Form::close() !!}
+
                     </div>
                 </div>
             </div>

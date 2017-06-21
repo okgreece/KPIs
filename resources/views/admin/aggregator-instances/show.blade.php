@@ -4,21 +4,23 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
+
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Indicator {{ $indicator->id }}</div>
+                    <div class="panel-heading">Aggregator Instance {{ $aggregatorinstance->id }}</div>
                     <div class="panel-body">
 
-                        <a href="{{ url('admin/indicators/' . $indicator->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Indicator"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
+                        <a href="{{ url('/admin/aggregator-instances') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/admin/aggregator-instances/' . $aggregatorinstance->id . '/edit') }}" title="Edit AggregatorInstance"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                         {!! Form::open([
                             'method'=>'DELETE',
-                            'url' => ['admin/indicators', $indicator->id],
+                            'url' => ['admin/aggregatorinstances', $aggregatorinstance->id],
                             'style' => 'display:inline'
                         ]) !!}
-                            {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true"/>', array(
+                            {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
                                     'type' => 'submit',
                                     'class' => 'btn btn-danger btn-xs',
-                                    'title' => 'Delete Indicator',
+                                    'title' => 'Delete AggregatorInstance',
                                     'onclick'=>'return confirm("Confirm delete?")'
                             ))!!}
                         {!! Form::close() !!}
@@ -29,9 +31,9 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th><td>{{ $indicator->id }}</td>
+                                        <th>ID</th><td>{{ $aggregatorinstance->id }}</td>
                                     </tr>
-                                    <tr><th> Indicator </th><td> {{ $indicator->indicator }} </td></tr><tr><th> Group </th><td> {{ $indicator->group }} </td></tr><tr><th> Enabled </th><td> {{ $indicator->enabled }} </td></tr>
+                                    <tr><th> Type </th><td> {{ $aggregatorinstance->type }} </td></tr><tr><th> Resource </th><td> {{ $aggregatorinstance->resource }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

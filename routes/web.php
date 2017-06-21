@@ -15,6 +15,12 @@ Auth::routes();
 
 Route::get('/admin', 'AdminController@index');
 
+Route::get('/admin/codelists', 'Admin\\CodelistController@getCodelistSelect');
+
+Route::get('/admin/collections', 'Admin\\CodelistController@getCollectionSelect');
+
+Route::get('/admin/localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
     Route::resource('admin/indicators', 'Admin\\IndicatorsController');
@@ -23,6 +29,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/organizations', 'Admin\\OrganizationsController');    
     Route::resource('admin/s-p-a-r-q-l-endpoints', 'Admin\\SPARQLEndpointsController');
     Route::resource('admin/o-s-endpoints', 'Admin\\OSEndpointsController');
+    Route::resource('admin/rdf-namespaces', 'Admin\\RdfNamespacesController');
+    Route::resource('admin/aggregator-instances', 'Admin\\AggregatorInstancesController');
+    Route::resource('admin/codelist-collections', 'Admin\\CodelistCollectionsController');
 });
 Route::get('/', 'DashboardController@index');
 
@@ -50,4 +59,3 @@ Route::get('/embed', 'DashboardController@embed')->name("embed");
 
 Route::get('/tinyURL', 'DashboardController@tinyURL')->name("tinyURL");
 
-Route::resource('admin/rdf-namespaces', 'Admin\\RdfNamespacesController');
