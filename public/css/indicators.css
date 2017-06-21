@@ -294,7 +294,7 @@ button{
     transition-property: border-color, box-shadow;
     transition-timing-function: ease-in-out, ease-in-out;
     white-space: pre-wrap;
-    width: 840px;
+    min-width: 400px;
     word-break: normal;
     word-spacing: 0px;
     -moz-border-bottom-colors: none;
@@ -377,7 +377,7 @@ button{
     transition-property: border-color, box-shadow;
     transition-timing-function: ease-in-out, ease-in-out;
     white-space: pre-wrap;
-    width: 840px;
+    min-width: 400px;
     word-break: normal;
     word-spacing: 0px;
     -moz-border-bottom-colors: none;

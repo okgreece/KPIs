@@ -43,27 +43,9 @@ class AggregatorsController extends Controller {
 
         $requestData = $request->all();
 
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'included' => 'required|',
-            'codelist' => 'required|url',
-            'code' => 'required|',
-        ]);
+        $this->validate($request, $this->createValidator());
 
         $aggregator = Aggregator::create($requestData);
-
-        $aggregator->translateOrNew('en')->title = $requestData["en_title"];
-
-        $aggregator->translateOrNew('en')->description = $requestData["en_description"];
-
-        $aggregator->translateOrNew('el')->title = $requestData["el_title"];
-
-        $aggregator->translateOrNew('el')->description = $requestData["el_description"];
-
-        $aggregator->save();
 
         Session::flash('flash_message', 'Aggregator added!');
 
@@ -107,33 +89,53 @@ class AggregatorsController extends Controller {
     public function update($id, Request $request) {
 
         $requestData = $request->all();
-
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'included' => 'required|',
-            'codelist' => 'required|url',
-            'code' => 'required|',
-        ]);
-
         $aggregator = Aggregator::findOrFail($id);
+        $this->validate($request, $this->editValidator($id));
         $aggregator->update($requestData);
-
-        $aggregator->translateOrNew('en')->title = $requestData["en_title"];
-
-        $aggregator->translateOrNew('en')->description = $requestData["en_description"];
-
-        $aggregator->translateOrNew('el')->title = $requestData["el_title"];
-
-        $aggregator->translateOrNew('el')->description = $requestData["el_description"];
 
         $aggregator->save();
 
         Session::flash('flash_message', 'Aggregator updated!');
 
         return redirect('admin/aggregators');
+    }
+    
+    public function editValidator ($id){
+        $rules =  [
+            'included' => 'required|',
+            'codelist' => 'required|url',
+            'code' => 'required|unique:aggregators,code,'.$id,            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:aggregator_translations,aggregator_id,'.$id,
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
+    }
+    
+    public function createValidator (){
+        $rules =  [
+            'included' => 'required|',
+            'codelist' => 'required|url',
+            'code' => 'required|unique:aggregators,code',            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:aggregator_translations,title',
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
     }
 
     /**
@@ -320,9 +322,6 @@ class AggregatorsController extends Controller {
         $queryBuilder->select($select)
                 ->where('?dataset', 'obeu-dimension:fiscalYear', '?year')
                 ->also('obeu-dimension:organization', '?organization')
-               // ->also('qb:slice', '?slice')
-                //->where('?slice', 'qb:observation', '?observation')
-                //->also('gr-dimension:economicClassification', '?classification')
                 ->where('?classification', 'skos:broader+', '?topConcept')
                 ->where('?topConcept', 'skos:prefLabel', '?label')
                 ->also('skos:notation', '?notation')

@@ -19,6 +19,7 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -33,24 +34,7 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="{{route("aggregators.index")}}">Aggregators</a>
-                        </li>
-                        <li>
-                            <a href="{{route("groups.index")}}">Groups</a>
-                        </li>
-                        <li>
-                            <a href="{{route("indicators.index")}}">Indicators</a>
-                        </li>
-                        <li>
-                            <a href="{{route("organizations.index")}}">Organizations</a>
-                        </li>
-                        <li>
-                            <a href="{{route("rdf-namespaces.index")}}">RDF Namespaces</a>
-                        </li>
-                    </ul>
-
+                    
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
@@ -82,6 +66,11 @@
                 </div>
             </div>
         </nav>
+        @if(session()->has('flash_message'))
+            @include('utility.info.successnotification')        
+        @elseif(session()->has('error'))
+            @include('utility.info.failnotification')        
+        @endif
 
         @yield('content')
     </div>

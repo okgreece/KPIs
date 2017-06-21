@@ -60,5 +60,12 @@ Route::group(['prefix' => 'v1'], function() {
        Route::get('/groups', 'FiltersController@groups');
     });
     
+    //Codelists Endpoint
+    
+    Route::group(['prefix' => 'codelists'], function(){
+    
+       Route::get('/list', 'Admin\CodelistController@getCodelists');
+       
+    });
     
 });

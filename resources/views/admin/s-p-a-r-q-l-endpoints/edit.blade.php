@@ -4,10 +4,9 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
-
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit SPARQLEndpoint #{{ $sparqlendpoint->id }}</div>
+                    <div class="panel-heading">Edit SPARQL Endpoint #{{ $sparqlendpoint->id }}</div>
                     <div class="panel-body">
                         <a href="{{ url('/admin/s-p-a-r-q-l-endpoints') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />

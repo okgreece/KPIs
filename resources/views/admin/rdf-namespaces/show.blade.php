@@ -4,23 +4,22 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
-
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">RdfNamespace {{ $rdfnamespace->id }}</div>
+                    <div class="panel-heading">RDF Namespace {{ $rdfnamespace->id }}</div>
                     <div class="panel-body">
 
                         <a href="{{ url('/admin/rdf-namespaces') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <a href="{{ url('/admin/rdf-namespaces/' . $rdfnamespace->id . '/edit') }}" title="Edit RdfNamespace"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                        <a href="{{ url('/admin/rdf-namespaces/' . $rdfnamespace->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit RDF Namespace"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['admin/rdfnamespaces', $rdfnamespace->id],
                             'style' => 'display:inline'
                         ]) !!}
-                            {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
+                            {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete RDF Namespace" />', array(
                                     'type' => 'submit',
                                     'class' => 'btn btn-danger btn-xs',
-                                    'title' => 'Delete RdfNamespace',
+                                    'title' => 'Delete RDF Namespace',
                                     'onclick'=>'return confirm("Confirm delete?")'
                             ))!!}
                         {!! Form::close() !!}

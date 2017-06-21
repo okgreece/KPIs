@@ -3,7 +3,8 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        @include('admin.sidebar')
+        <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">Group {{ $group->id }}</div>
                 <div class="panel-body">
@@ -35,22 +36,16 @@
                                     <th> Code </th>
                                     <td> {{ $group->code }} </td>
                                 </tr>
-                                <tr>
-                                    <th> Title EN </th>
-                                    <td> {{ $group->translate('en')->title }} </td>
+                                @foreach(config('translatable.locales') as $locale)
+                                <tr> 
+                                    <th> Title {{$locale}} </th>
+                                    <td> {{ $aggregator->translate($locale)->title }} </td>
                                 </tr>
                                 <tr>
-                                    <th> Description EN </th>
-                                    <td> {{ $group->translate('en')->description }} </td>
+                                    <th> Description {{$locale}} </th>
+                                    <td> {{ $aggregator->translate($locale)->description }} </td>
                                 </tr>
-                                <tr>
-                                    <th> Title EL </th>
-                                    <td> {{ $group->translate('el')->title }} </td>
-                                </tr>
-                                <tr>
-                                    <th> Description EL </th>
-                                    <td> {{ $group->translate('el')->description }} </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

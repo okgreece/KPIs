@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            @include('admin.sidebar')
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">Edit Aggregator {{ $aggregator->id }}</div>
                     <div class="panel-body">
@@ -16,16 +17,11 @@
                             </ul>
                         @endif
 
-                        {!! Form::model($aggregator, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/aggregators', $aggregator->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
+                        {!! BootForm::open()->action( route('aggregators.update', $aggregator))->put() !!}
+                        {!! BootForm::bind($aggregator) !!}
                         @include ('admin.aggregators.form', ['submitButtonText' => 'Update'])
 
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>

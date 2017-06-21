@@ -4,20 +4,19 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
-
             <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">Organization {{ $organization->id }}</div>
                     <div class="panel-body">
 
                         <a href="{{ url('/admin/organizations') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <a href="{{ url('/admin/organizations/' . $organization->id . '/edit') }}" title="Edit Organization"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                        <a href="{{ url('/admin/organizations/' . $organization->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Organization"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
                         {!! Form::open([
                             'method'=>'DELETE',
                             'url' => ['admin/organizations', $organization->id],
                             'style' => 'display:inline'
                         ]) !!}
-                            {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
+                            {!! Form::button('<span class="glyphicon glyphicon-trash" aria-hidden="true" title="Delete Organization" />', array(
                                     'type' => 'submit',
                                     'class' => 'btn btn-danger btn-xs',
                                     'title' => 'Delete Organization',

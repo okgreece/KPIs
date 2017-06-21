@@ -98,7 +98,7 @@ class DashboardController extends Controller {
     public function getIndigoLink($SPARQLDataset, $OSDataset){
         if ($SPARQLDataset != null) {
             if (isset($OSDataset)) {
-                return env("INDIGO") . "#indigo/cube/analytics/" . $OSDataset->name;
+                return env("INDIGO") . env("INDIGO_ROUTE") . $OSDataset->name;
             }
         }
         else{
@@ -186,8 +186,6 @@ class DashboardController extends Controller {
     
     public function organizations() {
 
-        //$sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
-        //$candidates = $sparql->query($this->organizationsQuery());
         $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
         foreach ($candidates as $candidate) {
@@ -214,7 +212,12 @@ class DashboardController extends Controller {
                 ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en") || langMatches(lang(?label), "el")');
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
-        $label = $sparql->query($query)[0]->label->getValue();
+        try{
+            $label = $sparql->query($query)[0]->label->getValue();
+        } catch (\ErrorException $ex) {
+            $label = $uri;
+        }
+        
         Cache::forever($uri . $locale, $label);
         return $label;
     }
@@ -228,7 +231,7 @@ class DashboardController extends Controller {
         }
         $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
         $locale = \App::getLocale();
-        $queryBuilder->selectDistinct("?phase", "?label")
+        $queryBuilder->selectDistinct("?phase", "?label_placeholder")
                 ->where('?dataset', 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', $organization)
                 ->also('qb:structure', '?dsd')
@@ -237,19 +240,29 @@ class DashboardController extends Controller {
                 ->where('?dimension', 'rdfs:subPropertyOf', '<http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase>')
                 ->also('qb:codeList', '?codelist')
                 ->where('?codelist', 'skos:hasTopConcept', '?phase')
-                ->optional('?phase', 'skos:prefLabel', '?label')
-                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en")')
+                ->optional(
+                        $queryBuilder->newSubgraph()
+                        ->where('?phase', 'skos:prefLabel', '?label')
+                        ->filter('langMatches(lang(?label), "' . $locale . '")')
+                        )
+                
+                ->optional(
+                        $queryBuilder->newSubgraph()
+                        ->where('?phase', 'skos:prefLabel', '?label2')
+                        ->filter('langMatches(lang(?label2), "en")')
+                        )
+                ->bind("if(bound(?label), ?label, ?label2) as ?label_placeholder")
                 ->orderBy("?phase");
         $query = $queryBuilder->getSPARQL();
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $labels = $sparql->query($query);
         $phases = [];
         foreach ($labels as $label) {
-            if ($label->label->getValue() == "Reserved") {
+            if ($label->label_placeholder->getValue() == "Reserved") {
                 continue;
             }
-            Cache::forever($label->phase . "_" .$locale, $label->label->getValue());
-            array_push($phases, ["label" => $label->label->getValue(), "value" => $label->phase]);
+            Cache::forever($label->phase . "_" .$locale, $label->label_placeholder->getValue());
+            array_push($phases, ["label" => $label->label_placeholder->getValue(), "value" => $label->phase]);
         }
         return $phases;
     }
@@ -344,7 +357,7 @@ class DashboardController extends Controller {
                     return $item->value;
                 })->all();
         $dataset = [
-            "label" => cache($request->organization . Cache::get('locale')) . " " . $indicator->title . " " . cache($request->phase) ,
+            "label" => implode(", ", [cache($request->organization . Cache::get('locale')), $indicator->title, cache($request->phase . "_" . \App::getLocale())]) ,
             "fill" => false,
             "lineTension" => "0.1",
             "type" => "bar",
@@ -518,7 +531,7 @@ class DashboardController extends Controller {
         $request = request();
         //dd($request);
         $dataset = [
-            "label" => $data->label . " " . cache($request->organization) . " " . cache($request->phase) . " " . cache($request->year),
+            "label" => implode(", ", [$data->label, cache($request->organization), cache($request->phase . "_" . \App::getLocale()), cache($request->year)]),
             'backgroundColor' => "rgba(38, 185, 154, 0.3)",
             'borderColor' => "rgba(38, 185, 154, 1)",
             "pointBackgroundColor" => "rgba(179,181,198,1)",

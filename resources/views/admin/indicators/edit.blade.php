@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            @include('admin.sidebar')
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">Edit Indicator {{ $indicator->id }}</div>
                     <div class="panel-body">
@@ -15,18 +16,10 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::model($indicator, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/indicators', $indicator->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
-
+                        {!! BootForm::open()->action( route('indicators.update', $indicator))->put() !!}
+                        {!! BootForm::bind($indicator) !!}
                         @include ('admin.indicators.form', ['submitButtonText' => 'Update'])
-
-                        {!! Form::close() !!}
-
+                        {!! BootForm::close() !!}
                     </div>
                 </div>
             </div>

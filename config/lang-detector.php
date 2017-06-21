@@ -29,7 +29,6 @@ return [
         env('LANG_DETECTOR_LANGUAGES', 
 		[
 			'en', 
-			'el',
 		]
 	    )
     ),

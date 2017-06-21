@@ -47,26 +47,10 @@ class GroupsController extends Controller
         
         $requestData = $request->all();
         
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'code' =>'required|',
-        ]);
+        $this->validate($request, $this->createValidator());
         
         $group = Group::create($requestData);
         
-        $group->translateOrNew('en')->title = $requestData["en_title"];
-        
-        $group->translateOrNew('en')->description = $requestData["en_description"];
-        
-        $group->translateOrNew('el')->title = $requestData["el_title"];
-        
-        $group->translateOrNew('el')->description = $requestData["el_description"];
-        
-        $group->save();
-                
         Session::flash('flash_message', 'Group added!');
 
         return redirect('admin/groups');
@@ -112,28 +96,13 @@ class GroupsController extends Controller
     {
         
         $requestData = $request->all();
-        
-        $this->validate($request, [
-            'en_title' => 'required|max:120',
-            'en_description' => 'required|max:400',
-            'el_title' => 'required|max:120',
-            'el_description' => 'required|max:400',
-            'code' =>'required|',
-        ]);
-        
-        $group = Group::findOrFail($id);
-        $group->update($requestData);
 
-        $group->translateOrNew('en')->title = $requestData["en_title"];
+        $group = Group::findOrFail($id);
+
+        $this->validate($request, $this->editValidator($id));
         
-        $group->translateOrNew('en')->description = $requestData["en_description"];
-        
-        $group->translateOrNew('el')->title = $requestData["el_title"];
-        
-        $group->translateOrNew('el')->description = $requestData["el_description"];
-        
+        $group->update($requestData);
         $group->save();
-        
         
         Session::flash('flash_message', 'Group updated!');
 
@@ -154,5 +123,39 @@ class GroupsController extends Controller
         Session::flash('flash_message', 'Group deleted!');
 
         return redirect('admin/groups');
+    }
+    
+    public function editValidator ($id){
+        $rules =  [
+            'code' => 'required|unique:groups,code,'.$id,            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:group_translations,aggregator_id,'.$id,
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
+    }
+    
+    public function createValidator (){
+        $rules =  [
+            'code' => 'required|unique:groups,code',            
+            ];
+        $translationRules = ['title' => 'required|max:150|unique:group_translations,title',
+                             'description' => 'required|max:400'
+            ];
+
+        // Add translation rules to rules array for each defined locale.
+        foreach (config('translatable.locales') as $locale) {
+            foreach ($translationRules as $key => $rule) {
+                $rules["$locale.$key"] = $rule;
+                }
+        }
+        return $rules;
     }
 }

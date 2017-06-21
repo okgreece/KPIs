@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            @include('admin.sidebar')
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">Create New Group</div>
                     <div class="panel-body">
@@ -15,13 +16,9 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        {!! Form::open(['url' => '/admin/groups', 'class' => 'form-horizontal', 'files' => true]) !!}
-
+                        {!! BootForm::open()->action( route('groups.store')) !!}
                         @include ('admin.groups.form')
-
-                        {!! Form::close() !!}
-
+                        {!! BootForm::close() !!}
                     </div>
                 </div>
             </div>

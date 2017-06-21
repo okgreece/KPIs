@@ -54,10 +54,22 @@ class FiltersController extends Controller {
     *     response=200,
     *     description="A list with all Budget Phases that can be used."
     *   ),
+     * @SWG\Parameter(
+     *         name="lang",
+     *         in="query",
+     *         description="Localization paremeter. Choose from available languages (en, el).",
+     *         required=false,
+     *         type="string",
+     *         enum={"en", "el"},         
+     *     ),
     * )
     */
 
     public function phases() {
+        
+        if (isset(request()->lang)) {
+            \App::setLocale(request()->lang);
+        }
 
         $controller = new DashboardController;
         Admin\RdfNamespacesController::setNamespaces();

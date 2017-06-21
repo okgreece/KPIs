@@ -4,10 +4,9 @@
     <div class="container">
         <div class="row">
             @include('admin.sidebar')
-
             <div class="col-md-9">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Edit RdfNamespace #{{ $rdfnamespace->id }}</div>
+                    <div class="panel-heading">Edit RDF Namespace #{{ $rdfnamespace->id }}</div>
                     <div class="panel-body">
                         <a href="{{ url('/admin/rdf-namespaces') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
