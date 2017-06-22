@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Local Codelist Collections')
+@section('subtitle', 'Define local codelist collections to be used on aggregation calculations.')
+
 @section('content')
     <div class="container">
         <div class="row">

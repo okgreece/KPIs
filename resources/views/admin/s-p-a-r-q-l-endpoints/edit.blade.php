@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'SPARQL Endpoints')
+@section('subtitle', 'Define SPARQL Endpoint to be used.')
+
 @section('content')
     <div class="container">
         <div class="row">

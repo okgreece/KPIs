@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Organizations')
+@section('subtitle', 'Enable or Disable Organizations to show on your Dashboard.')
+
 @section('content')
     <div class="container">
         <div class="row">

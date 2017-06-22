@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'RDF Namespaces')
+@section('subtitle', 'To make our world a little prettier!')
+
 @section('content')
     <div class="container">
         <div class="row">

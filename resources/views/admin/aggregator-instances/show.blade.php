@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Aggregator Instances')
+@section('subtitle', 'Define Aggregators Instances, that little comparison enablers!')
+
 @section('content')
     <div class="container">
         <div class="row">

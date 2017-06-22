@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Indicators')
+@section('subtitle', 'Define indicators to be shown.')
+
 @section('content')
     <div class="container">
         <div class="row">

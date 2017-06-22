@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'OS Endpoints')
+@section('subtitle', 'Define OS Endpoint to be used for further data visualizations.')
+
 @section('content')
     <div class="container">
         <div class="row">
