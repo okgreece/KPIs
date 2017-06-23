@@ -26,19 +26,19 @@
 <nav class="footer-nav">
     <ul>
         <li>
-            <a href="/openbudgets.eu/about">About</a>
+            <a href="//openbudgets.eu/about">About</a>
         </li>
         <li>
-            <a href="/openbudgets.eu/about/work-packages">Work Packages</a>
+            <a href="//openbudgets.eu/about/work-packages">Work Packages</a>
         </li>
         <li>
-            <a href="/openbudgets.eu/about/deliverables">Deliverables</a>
+            <a href="//openbudgets.eu/about/deliverables">Deliverables</a>
         </li>
         <li>
-            <a href="/openbudgets.eu/about/technical-structure">Technical Structure</a>
+            <a href="//openbudgets.eu/about/technical-structure">Technical Structure</a>
         </li>
         <li>
-            <a href="/openbudgets.eu/resources">Resources</a>
+            <a href="//openbudgets.eu/resources">Resources</a>
         </li>
     </ul>
 </nav>

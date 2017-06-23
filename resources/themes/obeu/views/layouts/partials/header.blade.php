@@ -25,7 +25,7 @@
 ?>
 <header class="site-header">
     <div class="wrapper">
-        <a href="/openbudgets.eu" class="logo">
+        <a href="//openbudgets.eu" class="logo">
             <img src="http://okfnlabs.org/openbudgets.github.io/img/openbudgets-logo.svg" alt="OpenBudgets">
         </a>
         <nav>
