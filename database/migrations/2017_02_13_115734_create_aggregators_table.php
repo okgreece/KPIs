@@ -14,9 +14,6 @@ class CreateAggregatorsTable extends Migration {
         Schema::create('aggregators', function(Blueprint $table) {
             $table->increments('id');
             $table->string('code');
-            $table->text('included');
-            $table->text('excluded')->nullable()->default(null);
-            $table->string('codelist')->nullable()->default(null);
             $table->timestamps();
         });
         

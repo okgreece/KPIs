@@ -102,8 +102,7 @@ class AggregatorsController extends Controller {
     
     public function editValidator ($id){
         $rules =  [
-            'included' => 'required|',
-            'codelist' => 'required|url',
+            
             'code' => 'required|unique:aggregators,code,'.$id,            
             ];
         $translationRules = ['title' => 'required|max:150|unique:aggregator_translations,aggregator_id,'.$id,
@@ -121,8 +120,6 @@ class AggregatorsController extends Controller {
     
     public function createValidator (){
         $rules =  [
-            'included' => 'required|',
-            'codelist' => 'required|url',
             'code' => 'required|unique:aggregators,code',            
             ];
         $translationRules = ['title' => 'required|max:150|unique:aggregator_translations,title',
@@ -204,9 +201,9 @@ class AggregatorsController extends Controller {
         $organization = $request->organization;
         $aggregator = \App\Aggregator::find($request->aggregatorID);
         if ($aggregator->code == "population") {
-            $property = $aggregator->included;
-            $endpoint = $aggregator->codelist;
-            return $this->getRemote($organization, $property, $endpoint);
+            $org = \App\Organization::where('uri', '=', $organization)->first();
+            $population = $org->geonamesInstance->population;
+            return response()->json($population);
         }
         $year = $request->year;
         $phase = $request->phase;
@@ -257,7 +254,7 @@ class AggregatorsController extends Controller {
         return response()->json($result);
     }
 
-    public function notations(Request $request) {
+    public function notations2(Request $request) {
 
         $aggregator = $request->aggregatorCode;
         $aggregatorID = $request->aggregatorID;
@@ -266,9 +263,29 @@ class AggregatorsController extends Controller {
             $notations[0] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->included);
             $notations[1] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->excluded);
         } elseif ($aggregatorID != null) {
-
+            
             $notations[0] = explode(",", Aggregator::find($aggregatorID)->included);
             $notations[1] = explode(",", Aggregator::find($aggregatorID)->excluded);
+        } else {
+            $notations[0] = explode(",", $request->included);
+            $notations[1] = explode(",", $request->excluded);
+        }
+        if (sizeof($notations[1]) == 1 && $notations[1][0] == "") {
+            $notations[1] = [];
+        }
+        return $notations;
+    }
+    
+    public function notations(Request $request) {
+        
+        if ($request->aggregatorCode != null) {
+            $aggregator = Aggregator::where('code', '=', $request->aggregatorCode)->first();
+            $notations[0] = explode(",", $aggregator->included);
+            $notations[1] = explode(",", $aggregator->excluded);
+        } elseif ($request->aggregatorID != null) {
+            $collection = Aggregator::find($request->aggregatorID)->collection();
+            $notations[0] = explode(",", $collection->included);
+            $notations[1] = explode(",", $collection->excluded);
         } else {
             $notations[0] = explode(",", $request->included);
             $notations[1] = explode(",", $request->excluded);
@@ -287,7 +304,7 @@ class AggregatorsController extends Controller {
         }
         else{
             $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
-            $sparqlBuilder->selectDistinct("?dimension", "?attachment")
+            $sparqlBuilder->selectDistinct("?dimension", "?attachment", "(group_concat(distinct ?codelist;separator=\"|||\") as ?codelist)")
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', "<" . $request->organization . ">")
                 ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
@@ -295,16 +312,20 @@ class AggregatorsController extends Controller {
                 ->where('?dsd', 'qb:component', '?component')
                 ->where('?component', 'qb:dimension', '?dimension')
                 ->where('?dimension', 'rdfs:subPropertyOf', 'obeu-dimension:economicClassification')
-                ->optional('?component', 'qb:componentAttachment', '?attachment');        
+                ->where('?dimension', 'qb:codeList', '?codelist')    
+                ->optional('?component', 'qb:componentAttachment', '?attachment')
+                ->groupBy("?dimension", "?attachment");
             $query = $sparqlBuilder->getSPARQL();
+            //dd($query);
             $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
             $result = $endpoint->query($query);
             try {
                 $dimension = [
                     "dimension" => $result[0]->dimension->getUri(),
                     "attachment" => isset($result[0]->attachment) ? $result[0]->attachment->shorten() : 'qb:Observation',
+                    "codelist"=> $result[0]->codelist->getValue()
                 ];
-
+                
             } catch (\ErrorException $ex) {
                 logger($ex);
                 $dimension = null;
@@ -325,7 +346,8 @@ class AggregatorsController extends Controller {
                 ->where('?classification', 'skos:broader+', '?topConcept')
                 ->where('?topConcept', 'skos:prefLabel', '?label')
                 ->also('skos:notation', '?notation')
-                ->where('?observation', 'gr-dimension:budgetPhase', '?phase')
+                ->where('?phaseDimension', 'rdfs:subPropertyOf', 'obeu-dimension:budgetPhase')
+                ->where('?observation', '?phaseDimension', '?phase')
                 ->also('obeu-measure:amount', '?amount');
         if($dimension["attachment"] == 'qb:DataSet'){
             $queryBuilder->where('?dataset', '<'. $dimension["dimension"] . '>', '?classification')

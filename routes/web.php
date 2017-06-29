@@ -23,6 +23,16 @@ Route::get('/admin/localcollections', 'Admin\\CodelistController@getLocalCollect
 
 Route::get('/admin/codelist', 'Admin\\CodelistController@codelist2select');
 
+Route::get('/admin/geonames/continents', 'Admin\\GeonamesInstanceController@getContinents');
+
+Route::get('/admin/geonames/countries', 'Admin\\GeonamesInstanceController@getCountries');
+
+Route::get('/admin/geonames/adm1', 'Admin\\GeonamesInstanceController@getAdm1');
+
+Route::get('/admin/geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2');
+
+Route::get('/admin/geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
     Route::resource('admin/indicators', 'Admin\\IndicatorsController');

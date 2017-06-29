@@ -30,5 +30,7 @@ class CodelistCollection extends Model
      */
     protected $fillable = ['codelist', 'included', 'excluded'];
 
-    
+    public function instance(){
+        return $this->belongsTo("\App\AggregatorInstance", "resource");
+    }
 }

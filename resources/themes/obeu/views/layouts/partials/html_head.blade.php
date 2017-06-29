@@ -44,5 +44,5 @@
     <script src="http://okfnlabs.org/openbudgets.github.io/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="http://okfnlabs.org/openbudgets.github.io/js/plugins.js"></script>
     <script src="http://okfnlabs.org/openbudgets.github.io/js/main.js"></script>
-    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <!--<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>-->
 </head>

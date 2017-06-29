@@ -25,9 +25,13 @@ class AggregatorInstance extends Model
      *
      * @var array
      */
-    protected $fillable = ['type', 'resource', 'aggregator_id'];
+    protected $fillable = ['type', 'resource', 'aggregator_id', 'codelist'];
 
     public function aggregator(){
-        return $this->hasOne("\App\Aggregator", "id", "aggregator_id");
+        return $this->belongsTo("\App\Aggregator", "aggregator_id", "id");
+    }
+    
+    public function collection(){
+        return $this->belongsTo("\App\CodelistCollection","resource");
     }
 }

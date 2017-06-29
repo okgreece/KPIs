@@ -25,15 +25,17 @@
  */
 ?>
 <div class="form-group updated">
-    <label for="resource" class="control-label">Collection</label>
-    @if(isset($collections) && (sizeOf($collections) != 0 ))
-    <select name="resource" id="collection" class="form-control">
-        <option value="" disabled>Please Select a Collection...</option>
-        @foreach ($collections as $collection)
-            <option value="{{$collection->value}}">{{$collection->label}}</option>
+    <label for="{{$id}}" class="col-md-4 control-label">{{$label}}</label>
+    <div class='col-md-6'>
+    @if(isset($items) && (sizeOf($items) != 0 ))
+    <select name="{{$id}}" id="{{$id}}" class="form-control" onchange="{{$function}}(this)">
+        <option value="">Please Select a {{$label}}...</option>
+        @foreach ($items as $item)
+            <option value="{{$item->value}}">{{$item->label}}</option>
         @endforeach
     </select>
     @else
-        <p>There is none collection found for this codelist. Please either create a SKOS Collection for this codelist or create a Local Collection.</p>
+        <p>No further administrative divisions found</p>
     @endif
+    </div>
 </div>

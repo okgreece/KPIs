@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Asparagus\QueryBuilder;
 use EasyRdf;
 use App\Organization;
+use App\GeonamesInstance;
 use Illuminate\Http\Request;
 use Session;
 
@@ -54,18 +55,46 @@ class OrganizationsController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $requestData = $request->all();
+        $this->geonamesId();
+        $requestData = request()->all();
         
         $this->validate($request, [
            'uri' => 'unique:organizations|url'
         ]);
+        
+        $geoinstance = GeonamesInstance::create($requestData);
+        
+        $requestData["geonames_instance_id"] = $geoinstance->id;
         
         Organization::create($requestData);
 
         Session::flash('flash_message', 'Organization added!');
 
         return redirect('admin/organizations');
+    }
+    
+    public function geonamesId(){
+        
+        
+        if(isset(request()->adm4)){
+            request()->merge(["geonames_id" => request()->adm4]);
+        }
+        elseif(isset(request()->adm3)){
+            request()->merge(["geonames_id" => request()->adm3]);
+        }
+        elseif(isset(request()->adm2)){
+            request()->merge(["geonames_id" => request()->adm2]);
+        }
+        elseif(isset(request()->adm1)){
+            request()->merge(["geonames_id" => request()->adm1]);
+        }
+        elseif(isset(request()->country)){
+            request()->merge(["geonames_id" => request()->country]);
+        }
+        $controller = new GeonamesInstanceController;
+       
+        request()->merge((array)json_decode($controller->get()->content())[0]);
+        return;        
     }
 
     /**

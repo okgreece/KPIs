@@ -25,9 +25,9 @@
  */
 ?>
 <div class="form-group updated">
-    <label for="collection" class="control-label">Collection</label>
+    <label for="resource" class="control-label">Collection</label>
     @if(isset($collections) && (sizeOf($collections) != 0 ))
-    <select name="collection" id="collection" class="form-control">
+    <select name="resource" id="collection" class="form-control">
         <option value="" disabled>Please Select a Collection...</option>
         @foreach ($collections as $collection)
             <option value="{{$collection->value}}">{{$collection->label}}</option>

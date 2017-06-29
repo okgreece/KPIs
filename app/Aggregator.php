@@ -29,9 +29,35 @@ class Aggregator extends Model
      *
      * @var array
      */
-    protected $fillable = ['code', 'included', 'excluded', 'codelist'];
+    protected $fillable = ['code'];
     
     public function indicators(){
         return $this->belongsToMany("Indicator");
+    }
+    
+    public function instances(){
+        return $this->hasMany('\App\AggregatorInstance');
+    }
+    
+    public function collection(){
+        $controller = new Http\Controllers\Admin\AggregatorsController;
+        $attachment = $controller->getAttachement();
+        $instance = $this->instances()->whereIn("codelist", explode('|||', $attachment["codelist"]))->first();
+        try {
+            if($instance->type == 0){
+               return $instance->resource;
+            }// codelist SKOS Collection
+            else if($instance->type == 1){
+                return $instance->collection;
+            }// local codelist collection
+            else{
+                throw new Exception("This is not a collection.");
+            }
+        } catch (\Exception $ex) {
+            dd($ex);
+        }
+        
+        
+        
     }
 }

@@ -86,6 +86,79 @@
         });
     }
     
+    function getContinents(){
+        $("#continentPlaceholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/continents",
+            success: function (data) {
+                var newselect = $("#continentPlaceholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
+    function getCountries(){
+        $("#countryPlaceholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/countries",
+            success: function (data) {
+                var newselect = $("#countryPlaceholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
+    function getAdm1(country){
+        $("#adm1Placeholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm1",
+            data: {country:country.value},
+            success: function (data) {
+                var newselect = $("#adm1Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
+    function getAdm2(country){
+        $("#adm2Placeholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm2",
+            data: {adm1:adm1.value},
+            success: function (data) {
+                var newselect = $("#adm2Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
+    function getAdm3(country){
+        $("#adm3Placeholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm3",
+            data: {adm2:adm2.value},
+            success: function (data) {
+                var newselect = $("#adm3Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
     function getConcepts(data){
         $("#conceptPlaceholder > .updated").remove();
         $(".overlay-loader").show();        

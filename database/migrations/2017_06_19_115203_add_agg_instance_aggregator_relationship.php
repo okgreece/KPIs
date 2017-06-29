@@ -17,6 +17,7 @@ class AddAggInstanceAggregatorRelationship extends Migration
             $table->integer("codelist_collection_id")->nullable();
             $table->string("codelist_collection_uri")->nullable();
             $table->integer("aggregator_id")->nullable();
+            $table->string("codelist")->nullable();
             //
         });
     }
@@ -29,7 +30,7 @@ class AddAggInstanceAggregatorRelationship extends Migration
     public function down()
     {
         Schema::table('aggregator_instances', function (Blueprint $table) {
-            $table->dropColumn("aggregator_id", "codelist_collection_id", "codelist_collection_uri");
+            $table->dropColumn("aggregator_id", "codelist_collection_id", "codelist_collection_uri", "codelist");
         });
     }
 }

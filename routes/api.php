@@ -68,4 +68,22 @@ Route::group(['prefix' => 'v1'], function() {
        
     });
     
+    Route::group(['prefix' => 'geonames'], function(){
+    
+       Route::get('/countries', 'Admin\GeonamesInstanceController@countries');
+       
+       Route::get('/continents', 'Admin\GeonamesInstanceController@continents');
+       
+       Route::get('/continentregions', 'Admin\GeonamesInstanceController@continentRegions');
+       
+       Route::get('/adm1', 'Admin\GeonamesInstanceController@adm1');
+       
+       Route::get('/adm2', 'Admin\GeonamesInstanceController@adm2');
+       
+       Route::get('/adm3', 'Admin\GeonamesInstanceController@adm3');
+       
+       Route::get('/adm4', 'Admin\GeonamesInstanceController@adm4');
+       
+    });
+    
 });

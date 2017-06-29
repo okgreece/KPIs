@@ -79,8 +79,11 @@ class CodelistController extends Controller
     }
     
     public function getCollectionSelect(){
-        $collections = collect(json_decode($this->getCollections()->content()));
-        
+        $collections = \App\CodelistCollection::where('codelist', '=', request()->codelist)->get()->map(function($item, $key){            
+            $item->label = $item->title;
+            $item->value = $item->id;
+            return $item;
+        });
         return view("admin.codelists.collectionSelect", [
             "collections" => $collections,
         ]);

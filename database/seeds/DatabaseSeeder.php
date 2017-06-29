@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(GroupsTableSeeder::class);
         $this->call(IndicatorTranslationsTableSeeder::class);
         $this->call(IndicatorsTableSeeder::class);
+        $this->call(RdfNamespacesTableSeeder::class);
+        $this->call(CodelistCollectionsTableSeeder::class);
+        $this->call(CodelistCollectionTranslationsTableSeeder::class);
     }
 }

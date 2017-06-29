@@ -25,15 +25,15 @@
  */
 ?>
 <div class="form-group updated">
-    <label for="resource" class="control-label">Collection</label>
-    @if(isset($collections) && (sizeOf($collections) != 0 ))
-    <select name="resource" id="collection" class="form-control">
-        <option value="" disabled>Please Select a Collection...</option>
-        @foreach ($collections as $collection)
-            <option value="{{$collection->value}}">{{$collection->label}}</option>
+    <label for="continent" class="control-label">Continent</label>
+    @if(isset($continents) && (sizeOf($continents) != 0 ))
+    <select name="continent" id="continent" class="form-control" onchange="getCountries(this)">
+        <option value="" disabled>Please Select a Continent...</option>
+        @foreach ($continents as $continent)
+            <option value="{{$continent->value}}">{{$continent->label}}</option>
         @endforeach
     </select>
     @else
-        <p>There is none collection found for this codelist. Please either create a SKOS Collection for this codelist or create a Local Collection.</p>
+        <p>Error</p>
     @endif
 </div>

@@ -16,11 +16,11 @@
                     <a href="{{ route('groups.index') }}">
                         Groups
                     </a>
-                    <a href="{{ route('indicators.index') }}">
-                        Indicators
-                    </a>
                     <a href="{{ route('aggregators.index') }}">
                         Aggregators
+                    </a>
+                    <a href="{{ route('indicators.index') }}">
+                        Indicators
                     </a>
                     <a href="{{ route('aggregator-instances.index') }}">
                         Aggregator Instances

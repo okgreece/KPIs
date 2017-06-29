@@ -86,6 +86,20 @@
         });
     }
     
+    function getContinents(){
+        $("#instancePlaceholder > .updated").remove();
+        $(".overlay-loader").show();        
+        $.ajax({
+            type: "GET",
+            url: "/admin/localcollections",
+            success: function (data) {
+                var newselect = $("#instancePlaceholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+    
     function getConcepts(data){
         $("#conceptPlaceholder > .updated").remove();
         $(".overlay-loader").show();        

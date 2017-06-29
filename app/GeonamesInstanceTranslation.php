@@ -4,14 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Organization extends Model
+class GeonamesInstanceTranslation extends Model
 {
+    public $timestamps = false;
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'organizations';
+    protected $table = 'geonames_instances_translations';
 
     /**
     * The database primary key value.
@@ -19,17 +20,11 @@ class Organization extends Model
     * @var string
     */
     protected $primaryKey = 'id';
-
+    
     /**
      * Attributes that should be mass-assignable.
      *
      * @var array
      */
-    protected $fillable = ['uri', 'enabled', 'geonames_instance_id'];
-    
-    public function geonamesInstance(){
-        return $this->belongsTo("\App\GeonamesInstance");
-    }
-
-    
+    protected $fillable = ['label', 'altlabel', 'locale'];
 }
