@@ -12,27 +12,27 @@ class GeonamesInstanceController extends Controller {
     public function get() {
         $sparql = new \EasyRdf_Sparql_Client(env("GEONAMES_ENDPOINT"));
         $query = new QueryBuilder(RdfNamespacesController::prefixes());
-        $query->select("?uri", '?name', '?population', '?countryCode', '?country', '?lat', '?long', "?map",'?parent', '?children', '?dbpedia')
+        $query->select("?geonames_id", '?name', '?population', '?countryCode', '?country', '?lat', '?long', "?map",'?parent', '?children', '?dbpedia')
                 
-                ->where("?uri", "<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#A>")
+                ->where("?geonames_id", "<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#A>")
                 ->also("rdf:type", "<http://www.geonames.org/ontology#Feature>")
                 ->also("<http://www.geonames.org/ontology#name>", '?name')
-                ->optional( "?uri", "<http://www.geonames.org/ontology#population>", '?population')
-                ->where( "?uri", "<http://www.geonames.org/ontology#countryCode>", '?countryCode')
-                ->where( "?uri", "<http://www.geonames.org/ontology#parentCountry>", '?country')
-                ->optional( "?uri", '<http://www.w3.org/2003/01/geo/wgs84_pos#lat>', '?lat')
-                ->optional( "?uri", '<http://www.w3.org/2003/01/geo/wgs84_pos#long>', '?long')
+                ->optional( "?geonames_id", "<http://www.geonames.org/ontology#population>", '?population')
+                ->where( "?geonames_id", "<http://www.geonames.org/ontology#countryCode>", '?countryCode')
+                ->where( "?geonames_id", "<http://www.geonames.org/ontology#parentCountry>", '?country')
+                ->optional( "?geonames_id", '<http://www.w3.org/2003/01/geo/wgs84_pos#lat>', '?lat')
+                ->optional( "?geonames_id", '<http://www.w3.org/2003/01/geo/wgs84_pos#long>', '?long')
                 ->also("<http://www.geonames.org/ontology#parentFeature>", '?parent')
-                ->optional("?uri", "<http://www.geonames.org/ontology#childrenFeatures>", '?children')
+                ->optional("?geonames_id", "<http://www.geonames.org/ontology#childrenFeatures>", '?children')
                 ->optional($query->newSubgraph()
-                        ->where("?ppl", "<http://www.geonames.org/ontology#parentFeature>", "?uri")
+                        ->where("?ppl", "<http://www.geonames.org/ontology#parentFeature>", "?geonames_id")
                         ->also("rdfs:seeAlso", "?dbpedia")
                         ->also("<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#P>")
                         ->also("<http://www.geonames.org/ontology#locationMap>", "?map")
                         ->also("<http://www.geonames.org/ontology#featureCode>", '?featureCode')
                         ->values(["?featureCode" => ["<http://www.geonames.org/ontology#P.PPLC>", "<http://www.geonames.org/ontology#P.PPLA>"]])
                         )                
-                ->values(["?uri" => [request()->geonames_id]]);  
+                ->values(["?geonames_id" => [request()->geonames_id]]);  
         $results = $sparql->query($query);
         return response()->json($this->transform($results));
         
@@ -86,7 +86,6 @@ class GeonamesInstanceController extends Controller {
     }
 
     public function countries() {
-        $continent = request()->continent;
         $sparql = new \EasyRdf_Sparql_Client(env("GEONAMES_ENDPOINT"));
         $query = new QueryBuilder(RdfNamespacesController::prefixes());
         $query->select("?uri", '?name', '?population', '?countryCode', '?lat', '?long', '?parent', '?children')
@@ -312,18 +311,6 @@ class GeonamesInstanceController extends Controller {
             "id" => "adm3",
             "function" => "getAdm4"
         ]);
-    }
-    
-    public function regions($filter = null) {
-        
-    }
-
-    public function cities($filter = null) {
-        
-    }
-
-    public function districts($filter = null) {
-        
     }
 
 }

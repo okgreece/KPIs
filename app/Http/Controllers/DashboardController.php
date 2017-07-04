@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Asparagus\QueryBuilder;
-use EasyRdf;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 
@@ -38,10 +37,16 @@ class DashboardController extends Controller {
         $values = [];
         foreach ($indicators as $indicator) {
             $request->request->set("indicatorID", $indicator->id);
-            array_push($values, [
+            try{
+                $value = $this->getValue($request);
+                array_push($values, [
                 "indicator" => $indicator,
-                "value" => $this->getValue($request),
+                "value" => $value,
             ]);
+            } catch (\Exception $ex) {
+                
+            }
+            
         }
         $integration = $this->integration();
         
@@ -214,7 +219,7 @@ class DashboardController extends Controller {
         $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
         try{
             $label = $sparql->query($query)[0]->label->getValue();
-        } catch (\ErrorException $ex) {
+        } catch (\EasyRdf_Exception $ex) {
             $label = $uri;
         }
         

@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use \App\Exceptions;
+
 class Aggregator extends Model 
 {
-
+    
     use \Dimsav\Translatable\Translatable;
 
     public $translatedAttributes = ['title', 'description'];
@@ -51,13 +53,11 @@ class Aggregator extends Model
                 return $instance->collection;
             }// local codelist collection
             else{
-                throw new Exception("This is not a collection.");
+                throw new \Exception("This is not a collection.");
             }
         } catch (\Exception $ex) {
-            dd($ex);
+            $exception = new Exceptions\AggregatorInstanceNotFoundException("Aggregator Instance was not defined for this codelist");
+            throw $exception;
         }
-        
-        
-        
     }
 }

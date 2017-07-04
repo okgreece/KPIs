@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Indicator;
 use Illuminate\Http\Request;
 use Session;
@@ -32,7 +30,7 @@ class IndicatorsController extends Controller
     {
         return view('admin.indicators.create', 
                 [
-                    "groups"=>$this->groups(),
+                    "groups" => $this->groups(),
                     "aggregators" => $this->aggregators(),
                 ]);
     }
@@ -50,7 +48,7 @@ class IndicatorsController extends Controller
         
         $this->validate($request, $this->createValidator());
         
-        $indicator = Indicator::create($requestData);
+        Indicator::create($requestData);
         
         Session::flash('flash_message', 'Indicator added!');
 
@@ -84,7 +82,7 @@ class IndicatorsController extends Controller
         
         return view('admin.indicators.edit', compact('indicator'),
                 [
-                    "groups"=>$this->groups(),
+                    "groups" => $this->groups(),
                     "aggregators" => $this->aggregators(),
                 ]);
                 
@@ -163,7 +161,22 @@ class IndicatorsController extends Controller
         }
         //calculate value if cache does not exist
         else{
-            $result = $this->calculateValue();
+            try{
+                $result = $this->calculateValue();
+            }
+            catch (\App\Exceptions\AggregatorInstanceNotFoundException $ex){
+                throw new \App\Exceptions\IndicatorCouldNotBeCalculatedException(
+                        "Indicator:" 
+                        . Indicator::find($request->indicatorID)->title 
+                        . " could not be calculated for this dataset. "
+                        . "A proper Aggregator Instance for the codelist"
+                        . " specified was not defined.");
+                
+            }
+            catch (\Exception $ex) {
+                throw $ex;
+            }
+            
         }
         //return value in json format
         return response()->json($result);
@@ -171,10 +184,8 @@ class IndicatorsController extends Controller
     
     public function calculateValue(){
         $request = request();
-        $indicatorCode = $request->indicatorCode;
-        $indicatorID = $request->indicatorID;
         $aggregator = new AggregatorsController;
-        $indicator = Indicator::find($indicatorID);
+        $indicator = Indicator::find($request->indicatorID);
         $request["aggregatorID"] = $indicator->numerator;
         $numerator = $aggregator->value($request)->getData();
         $request["aggregatorID"] = $indicator->denominator;
@@ -185,7 +196,7 @@ class IndicatorsController extends Controller
         }
         $key = $this->cacheValueKey();
         $rounded_result = round($result, 2);
-        //cache value forever
+        //cache value
         \Cache::add($key, $rounded_result, env("CACHE_TIME"));
         return $rounded_result;
     }
@@ -258,7 +269,6 @@ class IndicatorsController extends Controller
         $rules =  [
             'numerator' =>'required|integer',
             'denominator' =>'required|integer',
-            //'code' =>'required',
             'group' =>'required|integer',
             'type' =>'required|integer',
             'enabled' =>'required|boolean',
@@ -282,7 +292,6 @@ class IndicatorsController extends Controller
         $rules =  [
             'numerator' =>'required|integer',
             'denominator' =>'required|integer',
-            //'code' =>'required',
             'group' =>'required|integer',
             'type' =>'required|integer',
             'enabled' =>'required|boolean',
