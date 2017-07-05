@@ -93,7 +93,7 @@ class RdfNamespacesTableSeeder extends Seeder
             array (
                 'id' => '10',
                 'prefix' => 'gn',
-                'url' => 'http://sws.geonames.org/',
+                'url' => 'http://www.geonames.org/ontology#',
                 'created_at' => '2017-04-27 16:48:23',
                 'updated_at' => '2017-04-27 16:48:23',
             ),

@@ -24,6 +24,9 @@
  * THE SOFTWARE.
  */
 ?>
+<div id="organization-info">
+    
+</div>
 <div class="mdl-grid">    
     @include("indicators/components")
 </div>

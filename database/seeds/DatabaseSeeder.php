@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RdfNamespacesTableSeeder::class);
         $this->call(CodelistCollectionsTableSeeder::class);
         $this->call(CodelistCollectionTranslationsTableSeeder::class);
+        $this->call(AggregatorInstancesTableSeeder::class);
     }
 }

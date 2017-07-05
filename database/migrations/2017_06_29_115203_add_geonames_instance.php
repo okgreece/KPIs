@@ -33,6 +33,7 @@ class AddGeonamesInstance extends Migration
             $table->decimal("long")->nullable();
             $table->decimal("lat")->nullable();
             $table->string("type")->nullable();
+            $table->string("ppl")->nullable();
             $table->integer("population")->nullable();
             $table->timestamps();
         });
@@ -41,7 +42,6 @@ class AddGeonamesInstance extends Migration
             $table->increments('id');
             $table->integer('geonames_instance_id')->unsigned();
             $table->string('label');
-            $table->text('altlabel');
             $table->string('locale')->index();
             $table->unique(['geonames_instance_id', 'locale']);
             $table->foreign('geonames_instance_id')->references('id')->on('geonames_instances')->onDelete('cascade');

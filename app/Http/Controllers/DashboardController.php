@@ -53,7 +53,10 @@ class DashboardController extends Controller {
         $allIndicators = [
             "indicators" => $values,
         ];
-        $result = array_merge($allIndicators, $integration);
+        $organization = [
+            "organization" => \App\Organization::where("uri", '=', request()->organization)->first(),
+        ];
+        $result = array_merge($allIndicators, $integration, $organization);
         if(\Route::currentRouteName() == "embed"){
             return $result;
         }
@@ -194,7 +197,7 @@ class DashboardController extends Controller {
         $candidates = \App\Organization::where('enabled', '=', '1')->get();
         $organizations = [];
         foreach ($candidates as $candidate) {
-            array_push($organizations, ["label" => $this->getLabel($candidate->uri), "value" => $candidate->uri, "id" => $candidate->id]);
+            array_push($organizations, ["label" => $this->getLabel($candidate), "value" => $candidate->uri, "id" => $candidate->id]);
         }
         return $organizations;
     }
@@ -209,21 +212,8 @@ class DashboardController extends Controller {
         return $query;
     }
     
-    public function getLabel($uri) {
-        $locale = \App::getLocale();
-        $queryBuilder = new QueryBuilder(Admin\RdfNamespacesController::prefixes());
-        $queryBuilder->selectDistinct("?label")
-                ->where('<' . $uri . '>', 'rdfs:label', '?label')
-                ->filter('langMatches(lang(?label), "' . $locale . '") || langMatches(lang(?label), "en") || langMatches(lang(?label), "el")');
-        $query = $queryBuilder->getSPARQL();
-        $sparql = new \EasyRdf_Sparql_Client(parse_url($uri, PHP_URL_SCHEME) . "://" . parse_url($uri, PHP_URL_HOST) . "/sparql");
-        try{
-            $label = $sparql->query($query)[0]->label->getValue();
-        } catch (\EasyRdf_Exception $ex) {
-            $label = $uri;
-        }
-        
-        Cache::forever($uri . $locale, $label);
+    public function getLabel(\App\Organization $organization) {
+        $label = $organization->geonamesInstance->label;
         return $label;
     }
     

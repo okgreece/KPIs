@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Asparagus\QueryBuilder;
-use EasyRdf;
 
 class GeonamesInstanceController extends Controller {
 
     public function get() {
         $sparql = new \EasyRdf_Sparql_Client(env("GEONAMES_ENDPOINT"));
         $query = new QueryBuilder(RdfNamespacesController::prefixes());
-        $query->select("?geonames_id", '?name', '?population', '?countryCode', '?country', '?lat', '?long', "?map",'?parent', '?children', '?dbpedia')
-                
+        $select = ["?geonames_id", '?name', '?population', '?countryCode', '?country', '?lat', '?long', "?map",'?parent', '?children', '?dbpedia', '?wikipedia', '?ppl'];
+        foreach(config("translatable.locales") as $key=>$locale){
+            array_push($select, "?label_".$locale);
+        }
+        $ppl = $query->newSubgraph()
+                        ->where("?ppl", "<http://www.geonames.org/ontology#parentFeature>", "?geonames_id")
+                        ->also("<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#P>")
+                        ->also("<http://www.geonames.org/ontology#locationMap>", "?map")
+                        ->also("<http://www.geonames.org/ontology#featureCode>", '?featureCode')
+                        ->optional("?ppl", "rdfs:seeAlso", "?dbpedia")
+                        ->optional("?ppl", "gn:wikipediaArticle", "?wikipedia")
+                        ->filter("regex(str(?wikipedia), 'en.wikipedia')")
+                        ->values(["?featureCode" => ["<http://www.geonames.org/ontology#P.PPLC>", "<http://www.geonames.org/ontology#P.PPLA>", "<http://www.geonames.org/ontology#P.PPLA2>"]]);
+        $query->select($select)
                 ->where("?geonames_id", "<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#A>")
                 ->also("rdf:type", "<http://www.geonames.org/ontology#Feature>")
                 ->also("<http://www.geonames.org/ontology#name>", '?name')
@@ -24,19 +34,19 @@ class GeonamesInstanceController extends Controller {
                 ->optional( "?geonames_id", '<http://www.w3.org/2003/01/geo/wgs84_pos#long>', '?long')
                 ->also("<http://www.geonames.org/ontology#parentFeature>", '?parent')
                 ->optional("?geonames_id", "<http://www.geonames.org/ontology#childrenFeatures>", '?children')
-                ->optional($query->newSubgraph()
-                        ->where("?ppl", "<http://www.geonames.org/ontology#parentFeature>", "?geonames_id")
-                        ->also("rdfs:seeAlso", "?dbpedia")
-                        ->also("<http://www.geonames.org/ontology#featureClass>", "<http://www.geonames.org/ontology#P>")
-                        ->also("<http://www.geonames.org/ontology#locationMap>", "?map")
-                        ->also("<http://www.geonames.org/ontology#featureCode>", '?featureCode')
-                        ->values(["?featureCode" => ["<http://www.geonames.org/ontology#P.PPLC>", "<http://www.geonames.org/ontology#P.PPLA>"]])
-                        )                
+                ->optional($ppl)  
                 ->values(["?geonames_id" => [request()->geonames_id]]);  
+        foreach(config("translatable.locales") as $key=>$locale){
+            $query->optional(
+                        $query->newSubgraph()
+                        ->where('?ppl', 'gn:officialName', '?label'.$key)
+                        ->where('?ppl', 'gn:name', '?def_label')
+                        ->filter('langMatches(lang(?label'. $key.'), "' . $locale . '")')
+                        )
+                ->bind("if(bound(?label" . $key. "), ?label" . $key. ", ?def_label) as ?label_". $locale); 
+        }
         $results = $sparql->query($query);
         return response()->json($this->transform($results));
-        
-        
     }
 
     public function getContains() {

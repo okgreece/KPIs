@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Asparagus\QueryBuilder;
-use EasyRdf;
 use App\Organization;
 use App\GeonamesInstance;
 use Illuminate\Http\Request;
@@ -63,8 +61,14 @@ class OrganizationsController extends Controller
         ]);
         
         $geoinstance = GeonamesInstance::create($requestData);
+        foreach(config("translatable.locales") as $key=>$locale){
+            $geoinstance->translateOrNew($locale)->label = $requestData["label_".$locale];
+        }
+        $geoinstance->save();
         
         $requestData["geonames_instance_id"] = $geoinstance->id;
+        
+        
         
         Organization::create($requestData);
 

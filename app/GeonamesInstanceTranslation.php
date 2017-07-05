@@ -26,5 +26,5 @@ class GeonamesInstanceTranslation extends Model
      *
      * @var array
      */
-    protected $fillable = ['label', 'altlabel', 'locale'];
+    protected $fillable = ['label', 'locale'];
 }
