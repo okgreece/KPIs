@@ -13,6 +13,22 @@
 
 Auth::routes();
 
+if(env("REGISTRATION_ENABLED")){
+    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('register', 'Auth\RegisterController@register');
+}
+else{
+    Route::get('register', function(){
+        abort(403,"Registrations are closed by the Admin.");
+        
+    });
+    Route::post('register', function(){
+        abort(403, "Registrations are closed by the Admin.");        
+    });
+}
+
+
+
 Route::get('/admin', 'AdminController@index');
 
 Route::get('/admin/codelists', 'Admin\\CodelistController@getCodelistSelect');
