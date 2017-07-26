@@ -125,7 +125,7 @@ class OrganizationsController extends Controller
     public function edit($id)
     {
         $organization = Organization::findOrFail($id);
-        $availableOrganizations = $this->availableOrganizationsSelect();
+        $availableOrganizations = $this->availableOrganizationsSelect(true);
         return view('admin.organizations.edit', [
             "organization" => $organization,
             "availableOrganizations" => $availableOrganizations,
@@ -163,7 +163,12 @@ class OrganizationsController extends Controller
      */
     public function destroy($id)
     {
-        Organization::destroy($id);
+        $organization = Organization::findOrFail($id);
+        $geonames = $organization->geonamesInstance;
+        $geonames->deleteTranslations();
+        GeonamesInstance::destroy($geonames->id);        
+        
+        Organization::destroy($id);        
 
         Session::flash('flash_message', 'Organization deleted!');
 
@@ -180,7 +185,7 @@ class OrganizationsController extends Controller
         return $query;
     }
     
-    public function availableOrganizationsSelect(){
+    public function availableOrganizationsSelect($keep = FALSE ){
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $candidates = $sparql->query($this->availableOrganizationsQuery());
         $includedOrganizations = Organization::all();
@@ -191,7 +196,7 @@ class OrganizationsController extends Controller
             $valid = $includedOrganizations->search(function($item, $key) use ($candidate){   
                 return ($item->uri == $candidate->organization->getURI());  
             });
-            if($valid !== false || strpos($candidate->organization->getUri(), "codelist/cl-geo") !== FALSE){
+            if(($valid !== false && $keep === false) || strpos($candidate->organization->getUri(), "codelist/cl-geo") !== FALSE){
                 continue;
             }
             else{

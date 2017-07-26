@@ -45,6 +45,7 @@ class GeonamesInstanceController extends Controller {
                         )
                 ->bind("if(bound(?label" . $key. "), ?label" . $key. ", ?def_label) as ?label_". $locale); 
         }
+        logger($query);
         $results = $sparql->query($query);
         return response()->json($this->transform($results));
     }
