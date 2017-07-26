@@ -11,14 +11,14 @@ class CacheValues extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'kpi:cacheValues';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Calculate all values for all indicators defined for all organizations included';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,36 @@ class CacheValues extends Command
      */
     public function handle()
     {
-        //
+        echo "Caching Values\n";
+        $organizations = \App\Organization::all();
+        $bar = $this->output->createProgressBar(count($organizations));
+        
+        foreach($organizations as $organization){
+            $this->line($organization->geonamesInstance->label);
+            $this->calculateValues($organization);
+            $bar->advance();
+            $this->line("");
+        }
+        
     }
+    public function calculateValues(\App\Organization $organization){
+        
+        
+        $indicators = \App\Indicator::all();
+        $bar =$this->output->createProgressBar(count($indicators));
+        $client = new \GuzzleHttp\Client();
+        foreach($indicators as $indicator){
+            try{
+                $res = $client->get("http://kpi.okfn.gr/api/v1/indicators/" . $indicator->indicator. "/value", ["query" => ["organization" => $organization->uri]]);
+                $bar->advance();
+            } catch (\Exception $ex) {
+                //$this->line(var_dump($ex));
+                $bar->advance();
+            }
+        }
+        $bar->finish();
+        
+    }
+    
+    
 }
