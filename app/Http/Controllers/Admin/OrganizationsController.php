@@ -183,9 +183,21 @@ class OrganizationsController extends Controller
     public function availableOrganizationsSelect(){
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $candidates = $sparql->query($this->availableOrganizationsQuery());
+        $includedOrganizations = Organization::all();
+        
         $organizations = [];
         foreach ($candidates as $candidate) {
-            array_push($organizations, [ "$candidate->organization" => $candidate->organization]);
+            //eliminate already included organizations
+            $valid = $includedOrganizations->search(function($item, $key) use ($candidate){   
+                return ($item->uri == $candidate->organization->getURI());  
+            });
+            if($valid !== false || strpos($candidate->organization->getUri(), "codelist/cl-geo") !== FALSE){
+                continue;
+            }
+            else{
+                array_push($organizations, [ "$candidate->organization" => $candidate->organization]);
+            }
+            
         }
         return $organizations;
     }
