@@ -8,6 +8,7 @@ npm install
 gulp
 
 cp .env.example .env
+cp database/database.sqlite.new database/database.sqlite
 
 ```
 
