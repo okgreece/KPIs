@@ -23,8 +23,15 @@ class DashboardController extends Controller {
         }
         $controller = new APIController;
         $content = $this->dashboard($request);
+        if(sizeof(explode(",", $request->indicator)) > 1){
+            $multiple = true;
+        }
+        else{
+            $multiple = false;
+
+        }
         $indicator = json_decode($controller->value($content["indicators"][0]["indicator"]->indicator, $request)->content())[0];
-        return view("embed/embed", ["content" => $content, "indicator" => $indicator]);
+        return view("embed/embed", ["content" => $content, "indicator" => $indicator, "multiple" => $multiple, "form" => false]);
     }
     
     public function dashboard(Request $request) {
@@ -32,7 +39,9 @@ class DashboardController extends Controller {
             $indicators = $this->getEnabled();
         }
         else{
-            $indicators = \App\Indicator::where("indicator", "=", $request->indicator)->get();
+            $indicators = \App\Indicator::whereIn("indicator", explode(",", $request->indicator))
+                //->orWhereIn("id", "=", explode(",", $request->indicator))
+                ->get();
         }
         $values = [];
         foreach ($indicators as $indicator) {

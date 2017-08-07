@@ -25,12 +25,14 @@
  */
 ?>
 @extends('embed.layout')
-    
-@section('page_title', $indicator->organization . " " . $indicator->indicatorTitle . " " . $indicator->year . " " . $indicator->phase . " " . "| KPI app | OpenBudgets.eu")   
+
+@section('page_title', $indicator->organization . " " . $indicator->year . " " . $indicator->phase . " " . "| KPI app | OpenBudgets.eu")
 
 @section('content')
+    @if($form)
+        @include('indicators.templates.form')
+    @endif
+
     @include('indicators/components', $content)
 
 @endsection
-
-

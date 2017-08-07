@@ -36,8 +36,9 @@
     <body>
         @include('layout.partials.pageLoader')
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <div class="mdl-grid" style="margin: auto; width:80%">
             @yield('content', 'There is some problem here...')
-            @include('layout.partials.footer', ["screen_size" => "large-screen"])            
+            </div>
         </div>
         @include('layout.partials.shareModal')
     </body>
