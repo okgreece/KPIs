@@ -31,10 +31,10 @@
 <!--    <a onclick="yearly({{ltrim($indicator_id,"indicator")}})" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
         @lang('kpi/buttons.yearly')
     </a>-->
-<!--    <button id="demo-menu-lower-right-{{$indicator_id}}"
+    <button id="demo-menu-lower-right-{{$indicator_id}}"
             class="mdl-button mdl-js-button mdl-button--icon"
             onclick="updateModal('{{$indicator_code}}')"
             >
         <i class="material-icons">share</i>
-    </button>-->
+    </button>
 </div>

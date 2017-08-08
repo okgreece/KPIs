@@ -18,6 +18,10 @@ class DashboardController extends Controller {
     
     public function embed(){
         $request = request();
+        $urls = new \stdClass();
+        $urls->organization = $request->organization;
+        $urls->phase = $request->phase;
+        $urls->year = $request->year;
         if (isset($request->lang)) {
             \App::setLocale($request->lang);
         }
@@ -28,10 +32,16 @@ class DashboardController extends Controller {
         }
         else{
             $multiple = false;
-
         }
         $indicator = json_decode($controller->value($content["indicators"][0]["indicator"]->indicator, $request)->content())[0];
-        return view("embed/embed", ["content" => $content, "indicator" => $indicator, "multiple" => $multiple, "form" => false]);
+        $view_elements = [
+            "content" => $content,
+            "indicator" => $indicator,
+            "multiple" => $multiple,
+            "form" => false,
+            "urls" => $urls
+        ];
+        return view("embed/embed", $view_elements);
     }
     
     public function dashboard(Request $request) {

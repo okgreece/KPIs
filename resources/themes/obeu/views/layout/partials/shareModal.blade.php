@@ -39,12 +39,22 @@
 <script>
     function updateModal(indicator){
         var shareButtons = $(".share-modal-buttons");
-        var organization = $("#organization-select option:selected")[0].value;
-        var organizationL = $("#organization-select option:selected")[0].text;
-        var organizationLabel = encodeURIComponent(organizationL.replace(" ", " #"));
-        var year = $("#year-select option:selected")[0].value;
-        var yearL = $("#year-select option:selected")[0].text;
-        var phase = $("#phase-select option:selected")[0].value;
+        @if(Route::currentRouteName() === "embed")
+            var organization = "{{$urls->organization}}";
+            var organizationL = "{{$indicator->organization}}";
+            var organizationLabel = encodeURIComponent(organizationL.replace(" ", " #"));
+            var year = "{{$urls->year}}";
+            var yearL = "{{$indicator->year}}";
+            var phase = "{{$urls->phase}}";
+        @else
+            var organization = $("#organization-select option:selected")[0].value;
+            var organizationL = $("#organization-select option:selected")[0].text;
+            var organizationLabel = encodeURIComponent(organizationL.replace(" ", " #"));
+            var year = $("#year-select option:selected")[0].value;
+            var yearL = $("#year-select option:selected")[0].text;
+            var phase = $("#phase-select option:selected")[0].value;
+        @endif
+
         var api = "/api/v1/indicators/";
         var host = "{{env('APP_URL')}}";
         var url = host + api + indicator + "/" + "value?" + "organization=" + organization + "&phase=" + phase + "&year=" + year;
