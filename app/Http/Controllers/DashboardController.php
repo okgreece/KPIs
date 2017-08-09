@@ -50,7 +50,6 @@ class DashboardController extends Controller {
         }
         else{
             $indicators = \App\Indicator::whereIn("indicator", explode(",", $request->indicator))
-                //->orWhereIn("id", "=", explode(",", $request->indicator))
                 ->get();
         }
         $values = [];
@@ -67,15 +66,19 @@ class DashboardController extends Controller {
             }
             
         }
+
         $integration = $this->integration();
         
         $allIndicators = [
             "indicators" => $values,
         ];
+
         $organization = [
             "organization" => \App\Organization::where("uri", '=', request()->organization)->first(),
         ];
+
         $result = array_merge($allIndicators, $integration, $organization);
+
         if(\Route::currentRouteName() == "embed"){
             return $result;
         }

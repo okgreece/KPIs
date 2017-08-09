@@ -36,7 +36,12 @@
     <body>
         @include('layout.partials.pageLoader')
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <div class="mdl-grid" style="margin: auto; width:80%">
+            <div class="embed-title">
+                <h1>
+                    @yield('embed_title', 'Embed Title')
+                </h1>
+            </div>
+            <div class="mdl-grid" style="width:80%">
             @yield('content', 'There is some problem here...')
             </div>
         </div>
