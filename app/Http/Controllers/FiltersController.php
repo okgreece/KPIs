@@ -125,6 +125,9 @@ class FiltersController extends Controller {
     */
     
     public function organizations() {
+        if (isset($request->lang)) {
+            \App::setLocale($request->lang);
+        }
 
         $controller = new DashboardController;
         Admin\RdfNamespacesController::setNamespaces();

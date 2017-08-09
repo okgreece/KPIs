@@ -10,6 +10,7 @@
                     <a href="{{ url('/admin') }}">
                         Dashboard
                     </a>
+                    @if(\Entrust::can('manage-options'))
                     <a href="{{ route('organizations.index') }}">
                         Organizations
                     </a>
@@ -22,12 +23,16 @@
                     <a href="{{ route('indicators.index') }}">
                         Indicators
                     </a>
+                    @endif
+                    @if(\Entrust::can('manage-ontology'))
                     <a href="{{ route('aggregator-instances.index') }}">
                         Aggregator Instances
                     </a>
                     <a href="{{ route('codelist-collections.index') }}">
                         Codelist Collections
                     </a>
+                    @endif
+                    @if(\Entrust::can('manage-options'))
                     <a href="{{ route('rdf-namespaces.index') }}">
                         RDF Namespaces
                     </a>
@@ -37,6 +42,7 @@
                     <a href="{{ route('s-p-a-r-q-l-endpoints.index') }}">
                         SPARQL Endpoints
                     </a>
+                    @endif
                 </li>
             </ul>
         </div>

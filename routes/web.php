@@ -13,6 +13,8 @@
 
 Auth::routes();
 
+Route::get('/admin', 'AdminController@index');
+
 if(env("REGISTRATION_ENABLED")){
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'Auth\RegisterController@register');
@@ -27,40 +29,45 @@ else{
     });
 }
 
+Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin']], function () {
+    Route::resource('aggregators', 'Admin\\AggregatorsController');
+    Route::resource('indicators', 'Admin\\IndicatorsController');
+    Route::resource('groups', 'Admin\\GroupsController');
+    Route::resource('aggregators', 'Admin\\AggregatorsController');
+    Route::resource('organizations', 'Admin\\OrganizationsController');
+    Route::resource('s-p-a-r-q-l-endpoints', 'Admin\\SPARQLEndpointsController');
+    Route::resource('o-s-endpoints', 'Admin\\OSEndpointsController');
+    Route::resource('rdf-namespaces', 'Admin\\RdfNamespacesController');
 
+    Route::get('codelists', 'Admin\\CodelistController@getCodelistSelect');
 
-Route::get('/admin', 'AdminController@index');
+    Route::get('collections', 'Admin\\CodelistController@getCollectionSelect');
 
-Route::get('/admin/codelists', 'Admin\\CodelistController@getCodelistSelect');
+    Route::get('localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
 
-Route::get('/admin/collections', 'Admin\\CodelistController@getCollectionSelect');
-
-Route::get('/admin/localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
-
-Route::get('/admin/codelist', 'Admin\\CodelistController@codelist2select');
-
-Route::get('/admin/geonames/continents', 'Admin\\GeonamesInstanceController@getContinents');
-
-Route::get('/admin/geonames/countries', 'Admin\\GeonamesInstanceController@getCountries');
-
-Route::get('/admin/geonames/adm1', 'Admin\\GeonamesInstanceController@getAdm1');
-
-Route::get('/admin/geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2');
-
-Route::get('/admin/geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3');
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::resource('admin/aggregators', 'Admin\\AggregatorsController');
-    Route::resource('admin/indicators', 'Admin\\IndicatorsController');
-    Route::resource('admin/groups', 'Admin\\GroupsController');
-    Route::resource('admin/aggregators', 'Admin\\AggregatorsController');   
-    Route::resource('admin/organizations', 'Admin\\OrganizationsController');    
-    Route::resource('admin/s-p-a-r-q-l-endpoints', 'Admin\\SPARQLEndpointsController');
-    Route::resource('admin/o-s-endpoints', 'Admin\\OSEndpointsController');
-    Route::resource('admin/rdf-namespaces', 'Admin\\RdfNamespacesController');
-    Route::resource('admin/aggregator-instances', 'Admin\\AggregatorInstancesController');
-    Route::resource('admin/codelist-collections', 'Admin\\CodelistCollectionsController');
+    Route::get('codelist', 'Admin\\CodelistController@codelist2select');
 });
+
+Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositeadmin']], function () {
+    Route::resource('aggregator-instances', 'Admin\\AggregatorInstancesController');
+    Route::resource('codelist-collections', 'Admin\\CodelistCollectionsController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositeadmin|ontology']], function () {
+    Route::resource('aggregator-instances', 'Admin\\AggregatorInstancesController');
+    Route::resource('codelist-collections', 'Admin\\CodelistCollectionsController');
+
+    Route::get('geonames/continents', 'Admin\\GeonamesInstanceController@getContinents');
+
+    Route::get('geonames/countries', 'Admin\\GeonamesInstanceController@getCountries');
+
+    Route::get('geonames/adm1', 'Admin\\GeonamesInstanceController@getAdm1');
+
+    Route::get('geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2');
+
+    Route::get('geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3');
+});
+
 Route::get('/', 'DashboardController@index');
 
 Route::get('/dashboard', 'DashboardController@dashboard');

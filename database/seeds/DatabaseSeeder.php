@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CodelistCollectionsTableSeeder::class);
         $this->call(CodelistCollectionTranslationsTableSeeder::class);
         $this->call(AggregatorInstancesTableSeeder::class);
+        $this->call(EntrustSeeder::class);
     }
 }

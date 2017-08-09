@@ -29,7 +29,7 @@ class Indicator extends Model
      */
     protected $fillable = ['indicator', 'group', 'enabled', 'type', 'numerator', 'denominator', 'reverse'];
 
-    public function nom(){
+    public function num(){
         return $this->hasOne("\App\Aggregator", "id", "numerator");
     }
     

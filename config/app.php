@@ -203,9 +203,9 @@ return [
         
         //Swagger
         \L5Swagger\L5SwaggerServiceProvider::class,
-        
-        
 
+        //Entrust user management package
+        Zizaco\Entrust\EntrustServiceProvider::class,
     ],
 
     /*
@@ -260,12 +260,13 @@ return [
         //debugbar
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         //bootforms
-        'BootForm' => 'AdamWathan\BootForms\Facades\BootForm'::class,
+        'BootForm' => AdamWathan\BootForms\Facades\BootForm::class,
         //translatable models bootforms
         'TranslatableBootForm' => Propaganistas\LaravelTranslatableBootForms\Facades\TranslatableBootForm::class,
         //Excel
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-
+        //Entrust user management package
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];

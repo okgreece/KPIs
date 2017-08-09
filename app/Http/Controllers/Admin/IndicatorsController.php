@@ -256,7 +256,20 @@ class IndicatorsController extends Controller
         if(isset($request->lang)){
             \App::setLocale($request->lang);
         }        
-        $indicators = \App\Indicator::all();
+
+        $indicators = \App\Indicator::all()->map(function($item, $key) {
+            return [
+                "id" => $item["id"],
+                "label" => $item["title"],
+                "description" => $item["description"],
+                "numerator" =>$item->num->title,
+                "denominator" => $item->denom->title,
+                "indicator" => $item["indicator"],
+                "group" => $item->indicatorGroup->title,
+                "type" => $item->type(),
+                "reverse" => $item->reverse(),
+            ];
+        });
         return response()->json($indicators);
     }
     private $pax = [
