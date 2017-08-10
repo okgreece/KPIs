@@ -125,6 +125,7 @@ class FiltersController extends Controller {
     */
     
     public function organizations() {
+        $request = request();
         if (isset($request->lang)) {
             \App::setLocale($request->lang);
         }
