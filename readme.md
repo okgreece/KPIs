@@ -1,4 +1,4 @@
-#Installation Instructions
+# Installation Instructions
 
 ```
 composer install
@@ -24,6 +24,6 @@ php artisan db:seed
 
 your app should be ready
 
-#Admin Panel
+# Admin Panel
 go to app-url/admin
 register a new user and access the admin panel
