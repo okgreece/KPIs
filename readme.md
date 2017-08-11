@@ -17,13 +17,16 @@ edit the .env file to reflect your endpoint
 ```
 php artisan key:generate
 
-php artisan migrate 
+php artisan migrate --seed
 
-php artisan db:seed
 ```
 
 your app should be ready
 
 # Admin Panel
-go to app-url/admin
-register a new user and access the admin panel
+First create a new admin user through command line
+```
+php artisan kpi:createSuperUser
+```
+
+Then follow the instructions
