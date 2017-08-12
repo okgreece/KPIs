@@ -28,11 +28,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="KPI Admin Panel. An application for Creation and Visualization of fiscal KPIs.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'KPI App') - KPI APP || openbudgets.eu </title>
-    <!-- Styles -->
-    <link href="/css/app_obeu.css" rel="stylesheet">
     <script  src="https://code.jquery.com/jquery-1.12.4.min.js"  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="  crossorigin="anonymous"></script>
     <link href="//fonts.googleapis.com/css?family=Cabin:400,400i,600,700" rel="stylesheet"> 
     <script>
@@ -40,9 +37,9 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
-    <link rel="stylesheet" href="http://okfnlabs.org/openbudgets.github.io/css/main.css">
-    <script src="http://okfnlabs.org/openbudgets.github.io/js/vendor/modernizr-2.8.3.min.js"></script>
-    <script src="http://okfnlabs.org/openbudgets.github.io/js/plugins.js"></script>
-    <script src="http://okfnlabs.org/openbudgets.github.io/js/main.js"></script>
-    <!--<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>-->
+    <link rel="stylesheet"href="{{asset("theme/" . env("APP_THEME") . "/css/app.css")}}" >
+    <link rel="stylesheet" href="{{asset("theme/" . env("APP_THEME") . "/css/main.css")}}">
+    <script src="{{asset("theme/" . env("APP_THEME") . "/js/vendor/modernizr-2.8.3.min.js")}}"></script>
+    <script src="{{asset("theme/" . env("APP_THEME") . "/js/plugins.js")}}"></script>
+    <script src="{{asset("theme/" . env("APP_THEME") . "/js/main.js")}}"></script>
 </head>
