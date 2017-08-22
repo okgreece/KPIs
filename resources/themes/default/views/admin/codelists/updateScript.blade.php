@@ -42,7 +42,7 @@
             $("#codelistPlaceholder > .updated").remove();
         }
     }
-    
+
     function getCodelists(type){
         $(".updated").remove();
         $.ajax({
@@ -56,10 +56,10 @@
             }
         });
     }
-    
+
     function getCollections(data){
         $("#instancePlaceholder > .updated").remove();
-        $(".overlay-loader").show();        
+        $(".overlay-loader").show();
         $.ajax({
             type: "GET",
             url: "/admin/collections",
@@ -71,10 +71,10 @@
             }
         });
     }
-    
+
     function getLocalCollections(){
         $("#instancePlaceholder > .updated").remove();
-        $(".overlay-loader").show();        
+        $(".overlay-loader").show();
         $.ajax({
             type: "GET",
             url: "/admin/localcollections",
@@ -85,24 +85,83 @@
             }
         });
     }
-    
+
     function getContinents(){
-        $("#instancePlaceholder > .updated").remove();
-        $(".overlay-loader").show();        
+        $("#continentPlaceholder > .updated").remove();
+        $(".overlay-loader").show();
         $.ajax({
             type: "GET",
-            url: "/admin/localcollections",
+            url: "/admin/geonames/continents",
             success: function (data) {
-                var newselect = $("#instancePlaceholder");
+                var newselect = $("#continentPlaceholder");
                 $(".overlay-loader").hide();
                 newselect.html(data);
             }
         });
     }
-    
+
+    function getCountries(){
+        $("#countryPlaceholder > .updated").remove();
+        $(".overlay-loader").show();
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/countries",
+            success: function (data) {
+                var newselect = $("#countryPlaceholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+
+    function getAdm1(country){
+        $("#adm1Placeholder > .updated").remove();
+        $(".overlay-loader").show();
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm1",
+            data: {country:country.value},
+            success: function (data) {
+                var newselect = $("#adm1Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+
+    function getAdm2(country){
+        $("#adm2Placeholder > .updated").remove();
+        $(".overlay-loader").show();
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm2",
+            data: {adm1:adm1.value},
+            success: function (data) {
+                var newselect = $("#adm2Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+
+    function getAdm3(country){
+        $("#adm3Placeholder > .updated").remove();
+        $(".overlay-loader").show();
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm3",
+            data: {adm2:adm2.value},
+            success: function (data) {
+                var newselect = $("#adm3Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
+
     function getConcepts(data){
         $("#conceptPlaceholder > .updated").remove();
-        $(".overlay-loader").show();        
+        $(".overlay-loader").show();
         $.ajax({
             type: "GET",
             url: "/admin/codelist",
@@ -111,23 +170,23 @@
                 var newselect = $("#conceptPlaceholder");
                 $(".overlay-loader").hide();
                 newselect.html(data);
-                
-                },
+
+            },
             complete: function(data){
                 $("select#included").treeMultiselect(
-                {
-                    searchable: true,
-                    sortable: false,
-                    startCollapsed: true,
-                    allowBatchSelection: false
-                 });
+                    {
+                        searchable: true,
+                        sortable: false,
+                        startCollapsed: true,
+                        allowBatchSelection: false
+                    });
                 $("select#excluded").treeMultiselect(
-                {
-                    searchable: true,
-                    sortable: false,
-                    startCollapsed: true,
-                    allowBatchSelection: false
-                });
+                    {
+                        searchable: true,
+                        sortable: false,
+                        startCollapsed: true,
+                        allowBatchSelection: false
+                    });
             }
         });
     }
