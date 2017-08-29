@@ -66,6 +66,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositead
     Route::get('geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2');
 
     Route::get('geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3');
+
+    Route::get('geonames/adm4', 'Admin\\GeonamesInstanceController@getAdm4');
 });
 
 Route::get('/', 'DashboardController@index');

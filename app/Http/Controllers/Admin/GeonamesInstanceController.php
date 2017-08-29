@@ -42,13 +42,15 @@ class GeonamesInstanceController extends Controller {
         foreach(config("translatable.locales") as $key=>$locale){
             $query->optional(
                         $query->newSubgraph()
-                        ->where('?ppl', 'gn:officialName', '?label'.$key)
+                        ->where('?ppl', 'gn:officialName|gn:alternateName', '?label'.$key)
                         ->where('?ppl', 'gn:name', '?def_label')
                         ->filter('langMatches(lang(?label'. $key.'), "' . $locale . '")')
                         )
                 ->bind("if(bound(?label" . $key. "), ?label" . $key. ", ?def_label) as ?label_". $locale); 
         }
+        //dd($query->getSPARQL());
         $results = $sparql->query($query);
+        //dd($results);
         return response()->json($this->transform($results));
     }
 
@@ -319,6 +321,20 @@ class GeonamesInstanceController extends Controller {
             "label" => "Administrative Level 3",
             "id" => "adm3",
             "function" => "getAdm4"
+        ]);
+    }
+
+    public function getAdm4(){
+        $items = collect(json_decode($this->adm4()->content()))->map(function($item, $key){
+            $item->value = $item->uri;
+            $item->label = $item->name;
+            return $item;
+        });
+        return view("admin.codelists.geonamesSelect", [
+            "items" => $items,
+            "label" => "Administrative Level 4",
+            "id" => "adm4",
+            "function" => ""
         ]);
     }
 
