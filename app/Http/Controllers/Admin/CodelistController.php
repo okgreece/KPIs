@@ -107,10 +107,13 @@ class CodelistController extends Controller
                 ->where('?concept', 'skos:prefLabel', '?label2')
                 ->filter('langMatches(lang(?label2), "en")')
                 )
-            ->bind("if(bound(?label1), ?label1, ?label2) as ?label")
+            ->optional(
+                $sparqlBuilder->newSubgraph()
+                    ->where('?concept', 'skos:prefLabel', '?label3')
+            )
+            ->bind("coalesce(?label1, ?label2, ?label3) as ?label")
             ->orderBy("?broader");
         $query = $sparqlBuilder->getSPARQL();
-        //dd($query);
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $results = $endpoint->query($query);
         $collections = [];
