@@ -158,7 +158,7 @@ class DashboardController extends Controller {
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', "<" . $request->organization . ">")
                 ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
-                ->also('obeu-dimension:operationCharacter', 'obeu-operation:' . $operation);
+                ->optional("?dataset",'obeu-dimension:operationCharacter', 'obeu-operation:' . $operation);
         $query = $sparqlBuilder->getSPARQL();
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $result = $endpoint->query($query);
