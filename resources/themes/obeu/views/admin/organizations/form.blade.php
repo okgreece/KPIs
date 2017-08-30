@@ -51,6 +51,10 @@
     
 </div>
 
+<div id="adm4Placeholder">
+
+</div>
+
 <div class="overlay-loader">
 	<div class="loader">
 		<div></div>

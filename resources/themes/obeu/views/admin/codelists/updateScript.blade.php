@@ -158,6 +158,21 @@
             }
         });
     }
+
+    function getAdm4(country){
+        $("#adm4Placeholder > .updated").remove();
+        $(".overlay-loader").show();
+        $.ajax({
+            type: "GET",
+            url: "/admin/geonames/adm4",
+            data: {adm3:adm3.value},
+            success: function (data) {
+                var newselect = $("#adm4Placeholder");
+                $(".overlay-loader").hide();
+                newselect.html(data);
+            }
+        });
+    }
     
     function getConcepts(data){
         $("#conceptPlaceholder > .updated").remove();
