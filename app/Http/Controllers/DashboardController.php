@@ -253,10 +253,10 @@ class DashboardController extends Controller {
                 ->also('obeu-dimension:organization', $organization)
                 ->also('qb:structure', '?dsd')
                 ->where('?dsd', 'qb:component', '?component')
-                ->where('?component', 'qb:dimension', "?dimension")
-                ->where('?dimension', 'rdfs:subPropertyOf', '<http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase>')
-                ->also('qb:codeList', '?codelist')
+                ->where('?component', 'qb:dimension/rdfs:subPropertyOf*', "?dimension")
+                ->where('?dimension','qb:codeList', '?codelist')
                 ->where('?codelist', 'skos:hasTopConcept', '?phase')
+                ->values(["?dimension"=>['<http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase>']])
                 ->optional(
                         $queryBuilder->newSubgraph()
                         ->where('?phase', 'skos:prefLabel', '?label')
