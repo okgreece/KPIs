@@ -39,14 +39,6 @@
                                         <th> Code </th>
                                         <td> {{ $aggregator->code }} </td>
                                     </tr>
-                                    <tr>
-                                        <th> Included </th>
-                                        <td> {{ $aggregator->included }} </td>
-                                    </tr>
-                                    <tr>
-                                        <th> Excluded </th>
-                                        <td> {{ $aggregator->excluded }} </td>
-                                    </tr>
                                     @foreach(config('translatable.locales') as $locale)
                                     <tr> 
                                         <th> Title {{$locale}} </th>
@@ -57,10 +49,6 @@
                                         <td> {{ $aggregator->translate($locale)->description }} </td>
                                     </tr>
                                     @endforeach
-                                    <tr>
-                                        <th> Codelist </th>
-                                        <td> {{ $aggregator->codelist }} </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>

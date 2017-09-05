@@ -19,14 +19,15 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th> Code </th><th> Included </th><th> Excluded </th><th>Actions</th>
+                                        <th>ID</th><th> Title </th><th> Description </th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($aggregators as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->code }}</td><td>{{ str_replace(',', ', ',$item->included) }}</td><td>{{ str_replace(',', ', ',$item->excluded) }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->description }}</td>
                                         <td>
                                             <a href="{{ url('/admin/aggregators/' . $item->id) }}" class="btn btn-success btn-xs" title="View Aggregator"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                             <a href="{{ url('/admin/aggregators/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Aggregator"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>
