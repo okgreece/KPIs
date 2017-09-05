@@ -36,12 +36,13 @@
                     <a href="{{ route('rdf-namespaces.index') }}">
                         RDF Namespaces
                     </a>
+<!--                    
                     <a href="{{ route('o-s-endpoints.index') }}">
                         OS Endpoints
                     </a>
                     <a href="{{ route('s-p-a-r-q-l-endpoints.index') }}">
                         SPARQL Endpoints
-                    </a>
+                    </a>-->
                     @endif
                 </li>
             </ul>
