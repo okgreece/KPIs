@@ -33,4 +33,10 @@ class CodelistCollection extends Model
     public function instance(){
         return $this->belongsTo("\App\AggregatorInstance", "resource");
     }
+    
+    public function codelist(){
+        $resource = new \EasyRdf_Namespace();
+        
+        return $resource->shorten($this->codelist, true);
+    }
 }

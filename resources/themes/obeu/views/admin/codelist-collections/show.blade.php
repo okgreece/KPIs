@@ -34,9 +34,21 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th><td>{{ $codelistcollection->id }}</td>
+                                        <th>ID</th>
+                                        <td>{{ $codelistcollection->id }}</td>
                                     </tr>
-                                    <tr><th> Codelist </th><td> {{ $codelistcollection->codelist }} </td></tr><tr><th> Included </th><td> {{ $codelistcollection->included }} </td></tr><tr><th> Excluded </th><td> {{ $codelistcollection->excluded }} </td></tr>
+                                    <tr>
+                                        <th> Codelist </th>
+                                        <td> <a target="_blank"  href="{{ $codelistcollection->codelist }}">{{ $codelistcollection->codelist() }} </a></td>
+                                    </tr>
+                                    <tr>
+                                        <th> Included </th>
+                                        <td> {{ $codelistcollection->included }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Excluded </th>
+                                        <td> {{ $codelistcollection->excluded }} </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -33,14 +33,20 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th>Codelist</th><th>Included</th><th>Excluded</th><th>Actions</th>
+                                        <th>ID</th>
+                                        <th>Codelist</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($codelistcollections as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->codelist }}</td><td>{{ $item->included }}</td><td>{{ $item->excluded }}</td>
+                                        <td>{{ $item->codelist() }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->description }}</td>
                                         <td>
                                             <a href="{{ url('/admin/codelist-collections/' . $item->id) }}" title="View CodelistCollection"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/admin/codelist-collections/' . $item->id . '/edit') }}" title="Edit CodelistCollection"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
