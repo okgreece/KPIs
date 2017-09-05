@@ -198,6 +198,7 @@ class AggregatorsController extends Controller {
     }
 
     public function value(Request $request) {
+        logger("i am here");
         $organization = $request->organization;
         $aggregator = \App\Aggregator::find($request->aggregatorID);
         if ($aggregator->code == "population") {
@@ -205,10 +206,13 @@ class AggregatorsController extends Controller {
             $population = $org->geonamesInstance->population;
             return response()->json($population);
         }
+        logger("i am here 2");
         $year = $request->year;
         $phase = $request->phase;
-
+        logger("i am here 3");
         $notations = $this->notations($request);
+        logger("i am here 4");
+        logger($notations);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $query = $this->query($notations[0], $organization, $year, $phase);
         $query_result = $sparql->query($query);
@@ -298,7 +302,8 @@ class AggregatorsController extends Controller {
         
     public function getAttachement() {
         $request = request();
-        $key = "attachment_" . $request->organization . "_" . $request->year;
+        $organization = \App\Organization::where("uri", '=', $request->organization)->first();
+        $key = "attachment_" . $organization->uri . "_" . $request->year;
         if(env("VALUE_CACHE") && \Cache::has($key)){
             $dimension = \Cache::get($key);
         }
@@ -306,17 +311,17 @@ class AggregatorsController extends Controller {
             $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
             $sparqlBuilder->selectDistinct("?dimension", "?attachment", "(group_concat(distinct ?codelist;separator=\"|||\") as ?codelist)")
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
-                ->also('obeu-dimension:organization', "<" . $request->organization . ">")
+                ->also('obeu-dimension:organization', "<" . $organization->uri . ">")
                 ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
                 ->also('qb:structure', '?dsd')
                 ->where('?dsd', 'qb:component', '?component')
                 ->where('?component', 'qb:dimension', '?dimension')
-                ->where('?dimension', 'rdfs:subPropertyOf', 'obeu-dimension:economicClassification')
+                ->where('?dimension', 'rdfs:subPropertyOf', '<' . $organization->dimension . '>')
                 ->where('?dimension', 'qb:codeList', '?codelist')    
                 ->optional('?component', 'qb:componentAttachment', '?attachment')
                 ->groupBy("?dimension", "?attachment");
             $query = $sparqlBuilder->getSPARQL();
-            //dd($query);
+            logger($query);
             $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
             $result = $endpoint->query($query);
             try {
@@ -331,7 +336,7 @@ class AggregatorsController extends Controller {
                 $dimension = null;
             }
             \Cache::add($key, $dimension, env("CACHE_TIME"));
-        }        
+        }
         return $dimension;
     }
 
@@ -382,7 +387,7 @@ class AggregatorsController extends Controller {
             $queryBuilder->orderBy($order);
         }
         $query = $queryBuilder->getSPARQL();
-        //logger($query);
+        logger($query);
         return $query;
     }
 

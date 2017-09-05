@@ -25,7 +25,7 @@ class Organization extends Model
      *
      * @var array
      */
-    protected $fillable = ['uri', 'enabled', 'geonames_instance_id'];
+    protected $fillable = ['uri', 'enabled', 'geonames_instance_id', 'dimension'];
     
     public function geonamesInstance(){
         return $this->belongsTo("\App\GeonamesInstance");

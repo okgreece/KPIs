@@ -5,6 +5,15 @@
         {!! $errors->first('uri', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+
+<div class="form-group {{ $errors->has('dimension') ? 'has-error' : ''}}">
+    {!! Form::label('dimension', 'Dimension', ['class' => 'col-md-4 control-label']) !!}
+    <div class="col-md-6">
+        {!! Form::select('dimension', $dimensions, null, ['class' => 'form-control', 'placeholder' => 'Pick an dimension...']) !!}
+        {!! $errors->first('dimension', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
 <div class="form-group {{ $errors->has('enabled') ? 'has-error' : ''}}">
     {!! Form::label('enabled', 'Enabled', ['class' => 'col-md-4 control-label']) !!}
     <div class="col-md-6">

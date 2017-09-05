@@ -62,7 +62,7 @@ class DashboardController extends Controller {
                 "value" => $value,
             ]);
             } catch (\Exception $ex) {
-                
+                logger($ex);
             }
             
         }

@@ -33,9 +33,29 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th><td>{{ $organization->id }}</td>
+                                        <th>ID</th>
+                                        <td>{{ $organization->id }}</td>
                                     </tr>
-                                    <tr><th> Uri </th><td> {{ $organization->uri }} </td></tr><tr><th> Enabled </th><td> {{ $organization->enabled }} </td></tr>
+                                    <tr>
+                                        <th> Uri </th>
+                                        <td> {{ $organization->uri }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Enabled </th>
+                                        <td> {{ $organization->enabled }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Label </th>
+                                        <td> {{ $organization->geonamesInstance->label }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Population </th>
+                                        <td> {{ $organization->geonamesInstance->population }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Dimension </th>
+                                        <td> {{ $organization->dimension }} </td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>

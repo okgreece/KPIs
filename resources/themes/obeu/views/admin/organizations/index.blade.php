@@ -18,14 +18,14 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th>Uri</th><th>Enabled</th><th>Actions</th>
+                                        <th>ID</th><th>Label</th><th>Enabled</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($organizations as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->uri }}</td>
+                                        <td>{{ $item->geonamesInstance->label}}</td>
                                         <td>{{ $item->enabled }}</td>
                                         <td>
                                             <a href="{{ url('/admin/organizations/' . $item->id) }}" class="btn btn-success btn-xs" title="View Organization"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>

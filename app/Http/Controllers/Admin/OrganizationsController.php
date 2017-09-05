@@ -41,7 +41,37 @@ class OrganizationsController extends Controller
     public function create()
     {
         $availableOrganizations = $this->availableOrganizationsSelect();
-        return view('admin.organizations.create', compact('availableOrganizations'));
+        $dimensions = $this->dimensionsSelect();
+        return view('admin.organizations.create', [
+            "availableOrganizations" => $availableOrganizations,
+            "dimensions" => $dimensions
+        ]);
+    }
+    
+    public function dimensions(){
+        $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+        $queryBuilder->selectDistinct("?dimension", "?label")
+                ->where('?dimension', 'rdfs:isDefinedBy', '<http://data.openbudgets.eu/ontology>')                
+                ->also('?dimension', 'rdfs:subPropertyOf', 'obeu-dimension:classification')
+                ->optional(
+                        $queryBuilder->newSubgraph()
+                        ->where('?dimension', 'rdfs:label', '?label')
+                        ->filter('langMatches(lang(?label), "' . app()->getLocale(). '")')
+                        )                
+                ->orderBy('?label');
+        $query = $queryBuilder->getSPARQL();
+        return $query;
+    }
+    
+    public function dimensionsSelect(){
+        $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
+        $candidates = $sparql->query($this->dimensions());
+        $dimensions = [];
+        foreach ($candidates as $candidate) {
+                array_push($dimensions, [ "$candidate->dimension" => $candidate->dimension]);
+            
+        }
+        return $dimensions;
     }
 
     /**
@@ -67,8 +97,6 @@ class OrganizationsController extends Controller
         $geoinstance->save();
         
         $requestData["geonames_instance_id"] = $geoinstance->id;
-        
-        
         
         Organization::create($requestData);
 
@@ -126,8 +154,11 @@ class OrganizationsController extends Controller
     {
         $organization = Organization::findOrFail($id);
         $availableOrganizations = $this->availableOrganizationsSelect(true);
+        $dimensions = $this->dimensionsSelect();
         return view('admin.organizations.edit', [
             "organization" => $organization,
+            "dimensions" => $dimensions,
+            "linked" => 1,
             "availableOrganizations" => $availableOrganizations,
         ]);
     }
@@ -201,8 +232,7 @@ class OrganizationsController extends Controller
             }
             else{
                 array_push($organizations, [ "$candidate->organization" => $candidate->organization]);
-            }
-            
+            }            
         }
         return $organizations;
     }

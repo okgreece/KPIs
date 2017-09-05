@@ -2,7 +2,7 @@
 
 @section('title', 'Organizations')
 @section('subtitle', 'Enable or Disable Organizations to show on your Dashboard.')
-
+@include('admin.organizations.scripts')
 @section('content')
     <div class="container">
         <div class="row">
