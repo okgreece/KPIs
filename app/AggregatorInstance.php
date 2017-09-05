@@ -34,4 +34,19 @@ class AggregatorInstance extends Model
     public function collection(){
         return $this->belongsTo("\App\CodelistCollection","resource");
     }
+    
+    public function codelist(){
+        $resource = new \EasyRdf_Namespace();
+        
+        return $resource->shorten($this->codelist, true);
+    }
+    
+   public function type(){
+        $types = [            
+            "Codelist",
+            "Local Collection",
+            "Property"
+        ];
+        return $types[$this->type];
+    }
 }

@@ -33,7 +33,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin']], functio
     Route::resource('aggregators', 'Admin\\AggregatorsController');
     Route::resource('indicators', 'Admin\\IndicatorsController');
     Route::resource('groups', 'Admin\\GroupsController');
-    Route::resource('aggregators', 'Admin\\AggregatorsController');
+    
     Route::resource('organizations', 'Admin\\OrganizationsController');
     Route::resource('s-p-a-r-q-l-endpoints', 'Admin\\SPARQLEndpointsController');
     Route::resource('o-s-endpoints', 'Admin\\OSEndpointsController');

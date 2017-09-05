@@ -34,9 +34,25 @@
                             <table class="table table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>ID</th><td>{{ $aggregatorinstance->id }}</td>
+                                        <th>ID</th>
+                                        <td>{{ $aggregatorinstance->id }}</td>
                                     </tr>
-                                    <tr><th> Type </th><td> {{ $aggregatorinstance->type }} </td></tr><tr><th> Resource </th><td> {{ $aggregatorinstance->resource }} </td></tr>
+                                    <tr>
+                                        <th> Type </th>
+                                        <td> {{ $aggregatorinstance->type() }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Codelist </th>
+                                        <td> <a target="_blank"  href="{{ $aggregatorinstance->codelist }}">{{ $aggregatorinstance->codelist() }} </a></td>
+                                    </tr>
+                                    <tr>
+                                        <th> Related Aggregator </th>
+                                        <td> <a target="_blank" href="{{route("aggregators.show", ["aggregator" => $aggregatorinstance->aggregator->id])}}"> {{ $aggregatorinstance->aggregator->title }} </a></td>
+                                    </tr>
+                                    <tr>
+                                        <th> Related Collection </th>
+                                        <td> <a target="_blank" href="{{route("codelist-collections.show", ["collection" => $aggregatorinstance->collection->id])}}"> {{ $aggregatorinstance->collection->title }} </a> </td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>
