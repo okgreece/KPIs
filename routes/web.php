@@ -46,8 +46,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin']], functio
     Route::get('localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
 
     Route::get('codelist', 'Admin\\CodelistController@codelist2select');
-    
-    Route::get('dimensions', 'Admin\\OrganizationsController@dimensionsSelect');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositeadmin']], function () {

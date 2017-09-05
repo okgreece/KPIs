@@ -153,12 +153,13 @@ class OrganizationsController extends Controller
     public function edit($id)
     {
         $organization = Organization::findOrFail($id);
+        $organization->linked = true;
         $availableOrganizations = $this->availableOrganizationsSelect(true);
         $dimensions = $this->dimensionsSelect();
         return view('admin.organizations.edit', [
             "organization" => $organization,
             "dimensions" => $dimensions,
-            "linked" => 1,
+           
             "availableOrganizations" => $availableOrganizations,
         ]);
     }
