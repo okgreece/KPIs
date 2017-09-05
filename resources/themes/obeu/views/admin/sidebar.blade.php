@@ -7,9 +7,9 @@
         <div class="panel-body">
             <ul class="nav" role="tablist">
                 <li role="presentation">
-                    <a href="{{ url('/admin') }}">
+<!--                    <a href="{{ url('/admin') }}">
                         Dashboard
-                    </a>
+                    </a>-->
                     @if(\Entrust::can('manage-options'))
                     <a href="{{ route('organizations.index') }}">
                         Organizations

@@ -63,7 +63,7 @@
                                         <td> {{ $indicator->num->title }} </td>
                                     </tr>
                                     <tr>
-                                        <th> Dominator </th>
+                                        <th> Denominator </th>
                                         <td> {{ $indicator->denom->title }} </td>
                                     </tr>
                                     

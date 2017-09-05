@@ -40,7 +40,7 @@
                                 @foreach($aggregatorinstances as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->collection->title }}</td>
+                                        <td>{{ $item->collection->title  }}</td>
                                         <td>{{ $item->codelist() }}</td>
                                         <td>
                                             <a href="{{ url('/admin/aggregator-instances/' . $item->id) }}" title="View AggregatorInstance"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
