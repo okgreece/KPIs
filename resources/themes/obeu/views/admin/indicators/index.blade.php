@@ -26,7 +26,9 @@
                                 @foreach($indicators as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->indicator }}</td><td>{{ $item->group }}</td><td>{{ $item->enabled }}</td>
+                                        <td>{{ $item->title }}</td>
+                                        <td>{{ $item->indicatorGroup->title }}</td>
+                                        <td>{{ $item->enabled }}</td>
                                         <td>
                                             <a href="{{ url('/admin/indicators/' . $item->id) }}" class="btn btn-success btn-xs" title="View Indicator"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"/></a>
                                             <a href="{{ url('/admin/indicators/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs" title="Edit Indicator"><span class="glyphicon glyphicon-pencil" aria-hidden="true"/></a>

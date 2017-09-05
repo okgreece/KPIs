@@ -34,7 +34,39 @@
                                     <tr>
                                         <th>ID</th><td>{{ $indicator->id }}</td>
                                     </tr>
-                                    <tr><th> Indicator </th><td> {{ $indicator->indicator }} </td></tr><tr><th> Group </th><td> {{ $indicator->group }} </td></tr><tr><th> Enabled </th><td> {{ $indicator->enabled }} </td></tr>
+                                    <tr>
+                                        <th> Indicator </th>
+                                        <td> {{ $indicator->indicator }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Title </th>
+                                        <td> {{ $indicator->title }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Description </th>
+                                        <td> {{ $indicator->description }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Enabled </th>
+                                        <td> {{ $indicator->enabled }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Direction </th>
+                                        <td> {{ $indicator->direction() }} </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <th> Group </th>
+                                        <td> {{ $indicator->indicatorGroup->title }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Numerator </th>
+                                        <td> {{ $indicator->num->title }} </td>
+                                    </tr>
+                                    <tr>
+                                        <th> Dominator </th>
+                                        <td> {{ $indicator->denom->title }} </td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>

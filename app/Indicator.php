@@ -54,4 +54,8 @@ class Indicator extends Model
         return $this->reverse ? TRUE : FALSE;
     }
     
+    public function direction(){
+        return $this->reverse ? "Reverse" : "Forward";
+    }
+    
 }
