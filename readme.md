@@ -26,7 +26,7 @@ your app should be ready
 # Admin Panel
 First create a new admin user through command line
 ```
-php artisan kpi:createSuperUser
+php artisan kpi:createSuperAdmin
 ```
 
 Then follow the instructions
