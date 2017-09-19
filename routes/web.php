@@ -10,6 +10,9 @@
   | contains the "web" middleware group. Now create something great!
   |
  */
+if(env("APP_ENV") != 'local'){
+      \URL::forceRootUrl(env('APP_URL'));
+    }
 
 Auth::routes();
 
