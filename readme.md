@@ -39,5 +39,5 @@ L5_SWAGGER_BASE_PATH= {your_path}/api/v1
 Update the Swagger docs by running 
 
 ```
-php artisan l5-swagger:regenerate
+php artisan l5-swagger:generate
 ```
