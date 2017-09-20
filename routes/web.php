@@ -42,13 +42,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin']], functio
     Route::resource('o-s-endpoints', 'Admin\\OSEndpointsController');
     Route::resource('rdf-namespaces', 'Admin\\RdfNamespacesController');
 
-    Route::get('codelists', 'Admin\\CodelistController@getCodelistSelect');
+    Route::get('codelists', 'Admin\\CodelistController@getCodelistSelect')->name("codelists");
 
-    Route::get('collections', 'Admin\\CodelistController@getCollectionSelect');
+    Route::get('collections', 'Admin\\CodelistController@getCollectionSelect')->name("collections");
 
-    Route::get('localcollections', 'Admin\\CodelistController@getLocalCollectionSelect');
+    Route::get('localcollections', 'Admin\\CodelistController@getLocalCollectionSelect')->name("localcollections");
 
-    Route::get('codelist', 'Admin\\CodelistController@codelist2select');
+    Route::get('codelist', 'Admin\\CodelistController@codelist2select')->name("codelist");
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositeadmin']], function () {
@@ -60,38 +60,38 @@ Route::group(['prefix' => 'admin', 'middleware' => ['role:superadmin|micrositead
     Route::resource('aggregator-instances', 'Admin\\AggregatorInstancesController');
     Route::resource('codelist-collections', 'Admin\\CodelistCollectionsController');
 
-    Route::get('geonames/continents', 'Admin\\GeonamesInstanceController@getContinents');
+    Route::get('geonames/continents', 'Admin\\GeonamesInstanceController@getContinents')->name("continents");
 
-    Route::get('geonames/countries', 'Admin\\GeonamesInstanceController@getCountries');
+    Route::get('geonames/countries', 'Admin\\GeonamesInstanceController@getCountries')->name("countries");
 
-    Route::get('geonames/adm1', 'Admin\\GeonamesInstanceController@getAdm1');
+    Route::get('geonames/adm1', 'Admin\\GeonamesInstanceController@getAdm1')->name("adm1");
 
-    Route::get('geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2');
+    Route::get('geonames/adm2', 'Admin\\GeonamesInstanceController@getAdm2')->name("adm2");
 
-    Route::get('geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3');
+    Route::get('geonames/adm3', 'Admin\\GeonamesInstanceController@getAdm3')->name("adm3");
 
-    Route::get('geonames/adm4', 'Admin\\GeonamesInstanceController@getAdm4');    
+    Route::get('geonames/adm4', 'Admin\\GeonamesInstanceController@getAdm4')->name("adm4");    
 });
 
-Route::get('/', 'DashboardController@index');
+Route::get('/', 'DashboardController@index')->name("index");
 
-Route::get('/dashboard', 'DashboardController@dashboard');
+Route::get('/dashboard', 'DashboardController@dashboard')->name("dashboard");
 
-Route::get('/phases', 'DashboardController@phases');
+Route::get('/phases', 'DashboardController@phases')->name("phases");
 
-Route::get('/years', 'DashboardController@years');
+Route::get('/years', 'DashboardController@years')->name("years");
 
-Route::get('/evolution', 'DashboardController@evolution');
+Route::get('/evolution', 'DashboardController@evolution')->name("evolution");
 
-Route::get('/update', 'DashboardController@update');
+Route::get('/update', 'DashboardController@update')->name("update");
 
-Route::get('/dimension', 'DashboardController@dimension');
+Route::get('/dimension', 'DashboardController@dimension')->name("dimension");
 
-Route::get('/compare', 'DashboardController@compare');
+Route::get('/compare', 'DashboardController@compare')->name("compare");
 
-Route::get('/radar', 'DashboardController@radar');
+Route::get('/radar', 'DashboardController@radar')->name("radar");
 
-Route::get('/updateRadar', 'DashboardController@updateRadar');
+Route::get('/updateRadar', 'DashboardController@updateRadar')->name("updateRadar");
 
 Route::get('/lang/{lang}', 'DashboardController@language')->name('lang');
 

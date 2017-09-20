@@ -47,7 +47,7 @@
         $(".updated").remove();
         $.ajax({
             type: "GET",
-            url: "/admin/codelists",
+            url: '{{route("codelists")}}',
             data: {type:type, func:"getCollections"},
             success: function (data) {
                 var newselect = $("#codelistPlaceholder");
@@ -62,7 +62,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/collections",
+            url: '{{route("collections")}}',
             data: {codelist : data.value},
             success: function (data) {
                 var newselect = $("#instancePlaceholder");
@@ -77,7 +77,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/localcollections",
+            url: '{{route("localcollections")}}',
             success: function (data) {
                 var newselect = $("#instancePlaceholder");
                 $(".overlay-loader").hide();
@@ -91,7 +91,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/continents",
+            url: '{{route("continents")}}',
             success: function (data) {
                 var newselect = $("#continentPlaceholder");
                 $(".overlay-loader").hide();
@@ -105,7 +105,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/countries",
+            url: '{{route("countries")}}',
             success: function (data) {
                 var newselect = $("#countryPlaceholder");
                 $(".overlay-loader").hide();
@@ -119,7 +119,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/adm1",
+            url: '{{route("adm1")}}',
             data: {country:country.value},
             success: function (data) {
                 var newselect = $("#adm1Placeholder");
@@ -134,7 +134,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/adm2",
+            url: '{{route("adm2")}}',
             data: {adm1:adm1.value},
             success: function (data) {
                 var newselect = $("#adm2Placeholder");
@@ -149,7 +149,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/adm3",
+            url: '{{route("adm3")}}',
             data: {adm2:adm2.value},
             success: function (data) {
                 var newselect = $("#adm3Placeholder");
@@ -164,7 +164,7 @@
         $(".overlay-loader").show();
         $.ajax({
             type: "GET",
-            url: "/admin/geonames/adm4",
+            url: '{{route("adm4")}}',
             data: {adm3:adm3.value},
             success: function (data) {
                 var newselect = $("#adm4Placeholder");
@@ -179,7 +179,7 @@
         $(".overlay-loader").show();        
         $.ajax({
             type: "GET",
-            url: "/admin/codelist",
+            url: '{{route("codelist")}}',
             data: {codelist: data.value},
             success: function (data) {
                 var newselect = $("#conceptPlaceholder");
