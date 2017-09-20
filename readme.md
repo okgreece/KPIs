@@ -30,3 +30,14 @@ php artisan kpi:createSuperUser
 ```
 
 Then follow the instructions
+
+# Swagger
+Edit your .env file to match your configuration. You should fill the variable
+```
+L5_SWAGGER_BASE_PATH= {your_path}/api/v1
+```
+Update the Swagger docs by running 
+
+```
+php artisan l5-swagger:regenerate
+```
