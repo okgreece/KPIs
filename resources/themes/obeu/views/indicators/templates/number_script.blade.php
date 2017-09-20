@@ -24,5 +24,5 @@
  * THE SOFTWARE.
  */
 ?>
-<link rel="stylesheet" href="/js/plugins/odometer/themes/odometer-theme-default.css" />
-<script src="/js/plugins/odometer/odometer.min.js"></script>
+<link rel="stylesheet" href="{{asset("/js/plugins/odometer/themes/odometer-theme-default.css")}}" />
+<script src="{{asset("/js/plugins/odometer/odometer.min.js")}}"></script>

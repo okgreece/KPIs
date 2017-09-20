@@ -30,7 +30,7 @@
 
     @include('pages.partials.card', ['header' => trans('kpi/frontpage.yearly'), 'button' => trans('kpi/buttons.go'), 'icon' => "timeline", 'href' => "#tab-4" , 'link' => false])
 
-    @include('pages.partials.card', ['header' => trans('kpi/frontpage.api'), 'button' => trans('kpi/buttons.go'), 'icon' => "http", 'href' => "/api/documentation", 'link' => true])
+    @include('pages.partials.card', ['header' => trans('kpi/frontpage.api'), 'button' => trans('kpi/buttons.go'), 'icon' => "http", 'href' => env("APP_URL"). "/api/documentation", 'link' => true])
     </div>
 </div>
 <div class="mdl-grid home">     
