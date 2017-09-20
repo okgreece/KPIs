@@ -93,7 +93,7 @@ Route::get('/radar', 'DashboardController@radar');
 
 Route::get('/updateRadar', 'DashboardController@updateRadar');
 
-Route::get('/lang/{lang}', 'DashboardController@language');
+Route::get('/lang/{lang}', 'DashboardController@language')->name('lang');
 
 Route::get('/embed', 'DashboardController@embed')->name("embed");
 

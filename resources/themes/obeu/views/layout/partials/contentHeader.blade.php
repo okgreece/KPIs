@@ -39,7 +39,7 @@
         <div class='spacer'></div>
         <div class="language-switch">
             @foreach(config('lang-detector.languages') as $language)
-                <a href="/lang/{{$language}}" title="Switch Language to {{$language}}" class="mdl-layout__tab"><span class="flag-icon flag-icon-{{$language}}"></span></a>
+                <a href="{{route("lang", ['lang' => $language])}}" title="Switch Language to {{$language}}" class="mdl-layout__tab"><span class="flag-icon flag-icon-{{$language}}"></span></a>
             @endforeach
         </div>
     </div>
