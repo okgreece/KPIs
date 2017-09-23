@@ -65,7 +65,7 @@ class CreateSuperAdmin extends Command
             $user->email = $email;
             $user->save();
             $user->attachRole($role);
-            $this->info("User successfully created. Got to " . env("APP_URL") . "/admin" . " to access the admin panel");
+            $this->info("User successfully created. Got to " . env("APP_URL") . "/login" . " to access the admin panel");
         }
 
     }

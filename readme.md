@@ -26,10 +26,12 @@ your app should be ready
 # Admin Panel
 First create a new admin user through command line
 ```
-php artisan kpi:createSuperUser
+php artisan kpi:createSuperAdmin
 ```
 
 Then follow the instructions
+
+The Admin panel will be available on $APP_URL/login
 
 # Swagger
 Edit your .env file to match your configuration. You should fill the variable
