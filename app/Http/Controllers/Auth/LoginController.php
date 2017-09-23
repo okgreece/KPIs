@@ -28,9 +28,7 @@ class LoginController extends Controller
      */
 
 
-    public function redirectTo(){
-        return route("admin");
-    }
+    protected $redirectTo = "/admin";
 
     public function logout(Request $request)
     {
