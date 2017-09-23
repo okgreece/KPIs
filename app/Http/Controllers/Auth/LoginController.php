@@ -28,7 +28,9 @@ class LoginController extends Controller
      */
 
 
-    protected $redirectTo = "/admin";
+    public function redirectTo(){
+        return env("APP_URL") . "/admin";
+    }
 
     public function logout(Request $request)
     {
