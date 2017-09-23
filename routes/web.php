@@ -16,7 +16,7 @@ if(env("APP_ENV") != 'local'){
 
 Auth::routes();
 
-Route::get('/admin', 'AdminController@index')->name('admin');
+Route::get('admin', 'AdminController@index')->name('admin');
 
 if(env("REGISTRATION_ENABLED")){
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
