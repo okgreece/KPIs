@@ -71,7 +71,7 @@ class CodelistCollectionsController extends Controller
 
         CodelistCollection::create($requestData);
 
-        Session::flash('flash_message', 'CodelistCollection added!');
+        Session::flash('flash_message', 'Codelist Collection added!');
 
         return redirect('admin/codelist-collections');
     }
@@ -131,7 +131,7 @@ class CodelistCollectionsController extends Controller
         
         $codelistcollection->update($requestData);
 
-        Session::flash('flash_message', 'CodelistCollection updated!');
+        Session::flash('flash_message', 'Codelist Collection updated!');
 
         return redirect('admin/codelist-collections');
     }
@@ -145,9 +145,25 @@ class CodelistCollectionsController extends Controller
      */
     public function destroy($id)
     {
+        
+        $instances = CodelistCollection::find($id)->instances;
+        if($instances->count() != 0 ){
+            foreach($instances as $instance){
+                try{
+                    $instance->delete();
+                } catch (\Exception $ex) {
+                    dd($ex);
+                }            
+            }
+            $cascade = "Found and deleted related Aggregator instances";
+        }
+        else{
+            $cascade = "There was no related Aggregator Instances";
+        }
+        
         CodelistCollection::destroy($id);
-
-        Session::flash('flash_message', 'CodelistCollection deleted!');
+        
+        Session::flash('flash_message', 'Codelist Collection deleted! ' . $cascade);
 
         return redirect('admin/codelist-collections');
     }
