@@ -13,7 +13,7 @@ use EasyRdf;
 
 class CodelistController extends Controller
 {
-    public function getCodelists(){
+    public function getCodelists($localCodelists = null){
         $locale = \App::getLocale();
         $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $sparqlBuilder->selectDistinct("?codelist", "?label")
@@ -30,6 +30,9 @@ class CodelistController extends Controller
                     ->filter('langMatches(lang(?label2), "en")')
                     )
             ->bind("if(bound(?label1), ?label1, ?label2) as ?label");
+        if (!empty($localCodelists)) {
+            $sparqlBuilder->values(["?codelist" => $localCodelists]);
+        }
         $query = $sparqlBuilder->getSPARQL();
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $results = $endpoint->query($query);
@@ -69,13 +72,24 @@ class CodelistController extends Controller
     }
     
     public function getCodelistSelect(){
-        $codelists = collect(json_decode($this->getCodelists()->content()));
-        
+        $type = request()->type;
+        if($type === 0){
+            $codelists = collect(json_decode($this->getCodelists()->content()));
+        }
+        else{
+            $codelists = collect(json_decode($this->getLocalCodelists()));
+        }
         return view("admin.codelists.codelistSelect", [
             "codelists" => $codelists,
             "function" => request()->func,
             "type" => request()->type,
         ]);
+    }
+    
+    public function getLocalCodelists(){
+        $codelistsInitial = \DB::table("codelist_collections")->pluck("codelist")->unique()->toArray();
+        $codelists = $this->getCodelists($codelistsInitial)->content();
+        return $codelists;
     }
     
     public function getCollectionSelect(){
