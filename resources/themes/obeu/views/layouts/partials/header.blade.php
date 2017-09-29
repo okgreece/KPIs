@@ -26,7 +26,7 @@
 <header class="site-header">
     <div class="wrapper">
         <a href="//openbudgets.eu" class="logo">
-            <img src="http://okfnlabs.org/openbudgets.github.io/img/openbudgets-logo.svg" alt="OpenBudgets">
+            <img src="{{asset("images/openbudgets-logo.svg")}}" alt="OpenBudgets">
         </a>
         <nav>
             <ul>

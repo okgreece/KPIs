@@ -61,7 +61,7 @@
         var embed = host + "/embed?" + "indicator=" + indicator + "&organization=" + organization + "&phase=" + phase + "&year=" + year;
         var shortURL = $.ajax({
             type: "GET",
-            url: "/tinyURL",
+            url: host + "/tinyURL",
             data: {url:embed},
             success: function (data) {
                 console.log(data);
