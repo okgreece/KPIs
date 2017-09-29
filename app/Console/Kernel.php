@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\CacheValues::class,
         Commands\CreateSuperAdmin::class,
+        Commands\FixMissing::class,
     ];
 
     /**
