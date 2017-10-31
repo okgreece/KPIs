@@ -43,6 +43,7 @@ class CodelistCollectionsController extends Controller
     {
         $controller = new CodelistController;
         request()->func = "getConcepts";
+        request()->type = 0;
         $codelists = $controller->getCodelistSelect();
         
         return view('admin.codelist-collections.create', [
