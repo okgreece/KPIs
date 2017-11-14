@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Aggregator;
 use Illuminate\Http\Request;
 use Session;
 use Asparagus\QueryBuilder;
-use EasyRdf;
 
 class AggregatorsController extends Controller {
 
@@ -339,10 +337,69 @@ class AggregatorsController extends Controller {
         }
         return $dimension;
     }
+    
+    public function getDimensionsAttachment(Request $request) {
+        $organization = \App\Organization::where("uri", '=', $request->organization)->first();
+        $key = "attachment_dimensions" . $organization->uri . "_" . $request->year;
+        if(env("VALUE_CACHE") && \Cache::has($key)){
+            $dimension = \Cache::get($key);
+        }
+        else{
+            $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+            $sparqlBuilder->selectDistinct("?dimension", "?attachment", "?property")
+                ->where("?dataset", 'rdf:type', 'qb:DataSet')
+                ->also('obeu-dimension:organization', "<" . $organization->uri . ">")
+                ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
+                ->also('qb:structure', '?dsd')
+                ->where('?dsd', 'qb:component', '?component')
+                ->where('?component', 'qb:dimension', '?dimension')
+                ->optional('?dimension', 'rdfs:subPropertyOf', '?property')    
+                ->optional('?component', 'qb:componentAttachment', '?attachment')
+                ->groupBy("?dimension", "?attachment");
+            $query = $sparqlBuilder->getSPARQL();
+            logger($query);
+            $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
+            $result = $endpoint->query($query);
+            
+            try {
+                foreach($result as $row=>$element){
+                    $dimension[$row] = [
+                    "dimension" => $element->dimension->getUri(),
+                    "attachment" => isset($element->attachment) ? $element->attachment->shorten() : 'qb:Observation',
+                    "property"=> isset($element->property) ? $element->property->getUri() : $element->dimension->getUri()
+                            ];
+                    }
+            } catch (\ErrorException $ex) {
+                logger($ex);
+                $dimension = null;
+            }
+            foreach($dimension as $row=>$element){
+                switch($element["attachment"]){
+                    case "qb:Observation":
+                        $dimension[$row]["attach_element"] = "?observation";
+                        break;
+                    case "qb:Slice":
+                        $dimension[$row]["attach_element"] = "?slice";
+                        break;
+                    case "qb:DataSet":
+                        $dimension[$row]["attach_element"] = "?dataset";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            \Cache::add($key, $dimension, env("CACHE_TIME"));
+        }
+        return collect($dimension);
+    }
 
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
         $dimension = $this->getAttachement();
         $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
+        $attachments = $this->getDimensionsAttachment(request());
+        $dim = "http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase";
+        $budgetPhase = $attachments->where("property", $dim)->first(); 
+        
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
         $queryBuilder->select($select)
@@ -351,9 +408,8 @@ class AggregatorsController extends Controller {
                 ->where('?classification', 'skos:broader+', '?topConcept')
                 ->where('?topConcept', 'skos:prefLabel', '?label')
                 ->also('skos:notation', '?notation')
-                ->where('?phaseDimension', 'rdfs:subPropertyOf', 'obeu-dimension:budgetPhase')
-                ->where('?observation', '?phaseDimension', '?phase')
-                ->also('obeu-measure:amount', '?amount');
+                ->where('?observation', 'obeu-measure:amount', '?amount')
+                ->where($budgetPhase["attach_element"], "<" . $budgetPhase["dimension"] . ">", "?phase");                
         if($dimension["attachment"] == 'qb:DataSet'){
             $queryBuilder->where('?dataset', '<'. $dimension["dimension"] . '>', '?classification')
                     ->where('?observation', 'qb:dataSet', '?dataset');
