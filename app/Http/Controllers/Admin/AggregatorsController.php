@@ -196,7 +196,7 @@ class AggregatorsController extends Controller {
     }
 
     public function value(Request $request) {
-        logger("i am here");
+
         $organization = $request->organization;
         $aggregator = \App\Aggregator::find($request->aggregatorID);
         if ($aggregator->code == "population") {
@@ -204,22 +204,17 @@ class AggregatorsController extends Controller {
             $population = $org->geonamesInstance->population;
             return response()->json($population);
         }
-        logger("i am here 2");
+
         $year = $request->year;
         $phase = $request->phase;
-        logger("i am here 3");
+
         $notations = $this->notations($request);
-        logger("i am here 4");
-        logger($notations);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $query = $this->query($notations[0], $organization, $year, $phase);
         $query_result = $sparql->query($query);
-        //dd(isset($query_result[0]->sum));
         if (isset($query_result[0]->sum)) {
-            //dd(isset($query_result[0]->sum));
             $included = $query_result[0]->sum->getValue();
         } else {
-            //dd(isset($query_result[0]->sum));
             return response()->json(0);
         }
         if (!empty($notations[1])) {
@@ -305,6 +300,7 @@ class AggregatorsController extends Controller {
         if(env("VALUE_CACHE") && \Cache::has($key)){
             $dimension = \Cache::get($key);
         }
+
         else{
             $sparqlBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
             $sparqlBuilder->selectDistinct("?dimension", "?attachment", "(group_concat(distinct ?codelist;separator=\"|||\") as ?codelist)")
