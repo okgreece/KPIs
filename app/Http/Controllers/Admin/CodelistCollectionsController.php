@@ -100,11 +100,16 @@ class CodelistCollectionsController extends Controller
      */
     public function edit($id)
     {
-        $controller = new CodelistController;
-        $codelists = $controller->getCodelistSelect();
         $codelistcollection = CodelistCollection::findOrFail($id);
+        $controller = new CodelistController;
+        request()->func = "getConcepts";
+        request()->type = 0;
+        $codelists = $controller->getCodelistSelect($codelistcollection);
+        return view('admin.codelist-collections.edit', [
+            "codelistcollection" => $codelistcollection,
+            "codelists" => $codelists,
+        ]);
 
-        return view('admin.codelist-collections.edit', compact('codelistcollection', 'codelists'));
     }
 
     /**
@@ -122,10 +127,10 @@ class CodelistCollectionsController extends Controller
         
         $codelistcollection = CodelistCollection::findOrFail($id);
         
-        $requestData["included"] = implode(',', $requestData["included"]);
+        $requestData["included"] = isset($requestData["included"])? implode(',', $requestData["included"]) : $codelistcollection->included;
         
         try{
-            $requestData["excluded"] = implode(',', $requestData["excluded"]);
+            $requestData["excluded"] = isset($requestData["excluded"])? implode(',', $requestData["excluded"]) : $codelistcollection->excluded;
         } catch (\Exception $ex) {
 
         }

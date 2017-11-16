@@ -27,10 +27,10 @@
 <div class="form-group updated">
     <label for="codelist" class="control-label">Codelist</label>
     @if(isset($codelists) && (sizeOf($codelists) != 0 ))
-    <select name="codelist" id="codelist" class="form-control" onchange="{{$function}}(this)">
+    <select autocomplete="off" name="codelist" id="codelist" class="form-control" onchange="{{$function}}(this)">
         <option value="" disabled>Please Select a Codelist...</option>
         @foreach ($codelists as $codelist)
-            <option value="{{$codelist->value}}">{{$codelist->label}}</option>
+            <option value="{{$codelist->value}}" {{ isset($codelist->selected) ? 'selected' : null}}>{{$codelist->label}}</option>
         @endforeach
     </select>
     @else

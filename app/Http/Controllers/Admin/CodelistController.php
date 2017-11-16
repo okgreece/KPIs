@@ -71,13 +71,23 @@ class CodelistController extends Controller
         return response()->json($collections);
     }
     
-    public function getCodelistSelect(){
+    public function getCodelistSelect($selected = null){
         $type = request()->type;
         if($type === 0){
             $codelists = collect(json_decode($this->getCodelists()->content()));
         }
         else{
             $codelists = collect(json_decode($this->getLocalCodelists()));
+        }
+        if($selected){
+
+            $codelists->transform(function($item) use ($selected){
+                if($item->value === $selected->codelist){
+                    $item->selected = true;
+
+                }
+                return $item;
+            });
         }
         return view("admin.codelists.codelistSelect", [
             "codelists" => $codelists,

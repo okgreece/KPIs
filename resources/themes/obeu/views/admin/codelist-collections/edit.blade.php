@@ -23,17 +23,14 @@
                                 @endforeach
                             </ul>
                         @endif
+                        {!! BootForm::open()->action( route('codelist-collections.update', $codelistcollection))->put() !!}
+                        {!! BootForm::bind($codelistcollection) !!}
 
-                        {!! Form::model($codelistcollection, [
-                            'method' => 'PATCH',
-                            'url' => ['/admin/codelist-collections', $codelistcollection->id],
-                            'class' => 'form-horizontal',
-                            'files' => true
-                        ]) !!}
+
 
                         @include ('admin.codelist-collections.form', ['codelists' => $codelists , 'submitButtonText' => 'Update'])
 
-                        {!! Form::close() !!}
+                        {!! BootForm::close() !!}
 
                     </div>
                 </div>

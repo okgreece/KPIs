@@ -151,6 +151,19 @@
                     "filters"
                 ],
                 "summary": "List Phases",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "description": "Localization paremeter. Choose from available languages (en, el).",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "en",
+                            "el"
+                        ]
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A list with all Budget Phases that can be used."
