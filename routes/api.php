@@ -40,6 +40,8 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('/list', 'Admin\IndicatorsController@indicators');
     
         Route::get('{id}/value', 'APIController@value');
+
+        Route::get('/value', 'APIController@value');
     
     });
     

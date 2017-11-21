@@ -195,10 +195,23 @@ class AggregatorsController extends Controller {
         return response()->json($result);
     }
 
+    public function elements(Request $request){
+//        $organization = $request->organization;
+//
+//        $year = $request->year;
+//        $phase = $request->phase;
+        $notations = $this->notations($request);
+        return $notations;
+//        $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
+//        $query = $this->elementsQuery($notations[0], $organization, $year, $phase);
+//        $query_result = $sparql->query($query);
+    }
+
     public function value(Request $request) {
 
         $organization = $request->organization;
         $aggregator = \App\Aggregator::find($request->aggregatorID);
+
         if ($aggregator->code == "population") {
             $org = \App\Organization::where('uri', '=', $organization)->first();
             $population = $org->geonamesInstance->population;
@@ -207,7 +220,6 @@ class AggregatorsController extends Controller {
 
         $year = $request->year;
         $phase = $request->phase;
-
         $notations = $this->notations($request);
         $sparql = new \EasyRdf_Sparql_Client(env('ENDPOINT'));
         $query = $this->query($notations[0], $organization, $year, $phase);
@@ -250,31 +262,8 @@ class AggregatorsController extends Controller {
         }
         return response()->json($result);
     }
-
-    public function notations2(Request $request) {
-
-        $aggregator = $request->aggregatorCode;
-        $aggregatorID = $request->aggregatorID;
-
-        if ($aggregator != null) {
-            $notations[0] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->included);
-            $notations[1] = explode(",", Aggregator::where('code', '=', $aggregator)->first()->excluded);
-        } elseif ($aggregatorID != null) {
-            
-            $notations[0] = explode(",", Aggregator::find($aggregatorID)->included);
-            $notations[1] = explode(",", Aggregator::find($aggregatorID)->excluded);
-        } else {
-            $notations[0] = explode(",", $request->included);
-            $notations[1] = explode(",", $request->excluded);
-        }
-        if (sizeof($notations[1]) == 1 && $notations[1][0] == "") {
-            $notations[1] = [];
-        }
-        return $notations;
-    }
     
     public function notations(Request $request) {
-        
         if ($request->aggregatorCode != null) {
             $aggregator = Aggregator::where('code', '=', $request->aggregatorCode)->first();
             $notations[0] = explode(",", $aggregator->included);
@@ -292,7 +281,7 @@ class AggregatorsController extends Controller {
         }
         return $notations;
     }
-        
+    //TODO: fix multiple dimensions
     public function getAttachement() {
         $request = request();
         $organization = \App\Organization::where("uri", '=', $request->organization)->first();
@@ -388,14 +377,14 @@ class AggregatorsController extends Controller {
         }
         return collect($dimension);
     }
-
+    //TODO: fix multiple dimensions
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
         $dimension = $this->getAttachement();
         $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $attachments = $this->getDimensionsAttachment(request());
         $dim = "http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase";
-        $budgetPhase = $attachments->where("property", $dim)->first(); 
-        
+        $budgetPhase = $attachments->where("property", $dim);
+
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
         $queryBuilder->select($select)
@@ -405,7 +394,8 @@ class AggregatorsController extends Controller {
                 ->where('?topConcept', 'skos:prefLabel', '?label')
                 ->also('skos:notation', '?notation')
                 ->where('?observation', 'obeu-measure:amount', '?amount')
-                ->where($budgetPhase["attach_element"], "<" . $budgetPhase["dimension"] . ">", "?phase");                
+                ->where($budgetPhase->pluck("attach_element")[0], "?budgetDimension", "?phase")
+                ->values(["?budgetDimension" => $budgetPhase->pluck("dimension")]);
         if($dimension["attachment"] == 'qb:DataSet'){
             $queryBuilder->where('?dataset', '<'. $dimension["dimension"] . '>', '?classification')
                     ->where('?observation', 'qb:dataSet', '?dataset');

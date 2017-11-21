@@ -185,61 +185,78 @@ class APIController extends Controller
     * )
     */
     
-    public function value($id, Request $request){
+    public function value($id = null, Request $request){
 
         if (isset($request->lang)) {
             \App::setLocale($request->lang);
         }
-        
-        $indicator = \App\Indicator::where("indicator", "=", $id)->first();
-        
-        $request->request->set("indicatorID", $indicator->id);
-        
+
+        if($id === null){
+            $indicators = \App\Indicator::all();
+
+        }
+        else{
+            $indicators = \App\Indicator::where("indicator", "=", $id)->get();
+        }
+        $results = [];
+
         $organizations = $request->organization ? $this->getOrganizations($request->organization): $this->getOrganizations();
 
-        $results = [];
-        
         $tempPhase = $request->phase;
-        
-        $tempYear = $request->year;
-        
-        foreach(json_decode($organizations->content()) as $organization){
-            
-            $request->request->set("organization", $organization->url);
-           
-            $years = $tempYear ? $this->getYears($tempYear): $this->getYears();
-            
-            $phases = $tempPhase ? $this->getPhases($tempPhase): $this->getPhases();
-            
-            foreach(json_decode($years->content()) as $year){               
-                
-                $request->request->set("year", $year->url);
-                
-                foreach(json_decode($phases->content()) as $phase){
 
-                    $controller = new Admin\IndicatorsController;
-                    
-                    $request->request->set("phase", $phase->url);
-                    
-                    $value = $controller->value($request)->content();
-                    
-                    $result = [
-                        "organization" => $organization->label,
-                        "indicatorID" => $indicator->indicator,
-                        "indicatorTitle" => $indicator->title,
-                        "indicatorType" => $indicator->type(),
-                        "indicatorValue" => $value,
-                        "group" => $indicator->indicatorGroup->title,
-                        "year" => $year->label,
-                        "phase" => $phase->label,
-                    ];
-                    array_push($results, $result);
-                    $request->request->remove("phase");
-                }                
-                $request->request->remove("year");
+        $tempYear = $request->year;
+
+        foreach($indicators as $indicator){
+            //dd($indicator);
+            $request->request->set("indicatorID", $indicator->id);
+
+
+
+            foreach(json_decode($organizations->content()) as $organization){
+
+                $request->request->set("organization", $organization->url);
+
+                $years = $tempYear ? $this->getYears($tempYear): $this->getYears();
+
+                $phases = $tempPhase ? $this->getPhases($tempPhase): $this->getPhases();
+
+                foreach(json_decode($years->content()) as $year){
+
+                    $request->request->set("year", $year->url);
+
+                    foreach(json_decode($phases->content()) as $phase){
+
+                        $controller = new Admin\IndicatorsController;
+
+                        $request->request->set("phase", $phase->url);
+
+                        $value = $controller->value($request)->content();
+
+                        $result = [
+                            "organization" => $organization->label,
+                            "indicatorID" => $indicator->indicator,
+                            "indicatorTitle" => $indicator->title,
+                            "indicatorType" => $indicator->type(),
+                            "indicatorValue" => $value,
+                            "numerator" => $indicator->num->title,
+                            "numeratorIn" => "'" . implode("' '", explode(",", $indicator->num->collection()->included)) . "'" ,
+                            "numeratorEx" => "'" . implode("' '", explode(",", $indicator->num->collection()->excluded)) . "'" ,
+                            "denom" => $indicator->denom->title,
+                            "denominatorIn" => $indicator->denom->code === "population" ? null : "'" . implode("' '", explode(",", $indicator->denom->collection()->included)) . "'",
+                            "denominatorEx" => $indicator->denom->code === "population" ? null : "'" . implode("' '", explode(",", $indicator->denom->collection()->excluded)) . "'",
+                            "group" => $indicator->indicatorGroup->title,
+                            "year" => $year->label,
+                            "phase" => $phase->label,
+                        ];
+                        array_push($results, $result);
+                        $request->request->remove("phase");
+                    }
+                    $request->request->remove("year");
+                }
+                $request->request->remove("organization");
             }
-            $request->request->remove("organization");
         }
+
         if(isset($request->format)){
             return $this->transformResults($results);
         }

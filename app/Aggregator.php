@@ -44,7 +44,8 @@ class Aggregator extends Model
     public function collection(){
         $controller = new Http\Controllers\Admin\AggregatorsController;
         $attachment = $controller->getAttachement();
-        $instance = $this->instances()->whereIn("codelist", explode('|||', $attachment["codelist"]))->first();
+        $instance = $this->instances()->whereIn("codelist", explode('|||', $attachment["codelist"]))
+            ->first();
         try {
             if($instance->type == 0){
                return $instance->resource;
@@ -56,6 +57,7 @@ class Aggregator extends Model
                 throw new \Exception("This is not a collection.");
             }
         } catch (\Exception $ex) {
+            dd($this);
             $exception = new Exceptions\AggregatorInstanceNotFoundException("Aggregator Instance was not defined for this codelist");
             throw $exception;
         }
