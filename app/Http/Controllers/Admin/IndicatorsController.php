@@ -165,6 +165,7 @@ class IndicatorsController extends Controller
                 $result = $this->calculateValue();
             }
             catch (\App\Exceptions\AggregatorInstanceNotFoundException $ex){
+
                 throw new \App\Exceptions\IndicatorCouldNotBeCalculatedException(
                         "Indicator:" 
                         . Indicator::find($request->indicatorID)->title 
@@ -273,10 +274,10 @@ class IndicatorsController extends Controller
         return response()->json($indicators);
     }
     private $pax = [
-            
+
     ];
-     
-             
+
+
              
     public function editValidator ($id){
         $rules =  [
