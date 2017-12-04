@@ -236,6 +236,7 @@ class DashboardController extends Controller {
     
     public function getLabel(\App\Organization $organization) {
         $label = $organization->geonamesInstance->label;
+        cache($organization->uri, $label);
         return $label;
     }
     
@@ -548,7 +549,7 @@ class DashboardController extends Controller {
         $request = request();
         //dd($request);
         $dataset = [
-            "label" => implode(", ", [$data->label, cache($request->organization), cache($request->phase . "_" . \App::getLocale()), cache($request->year)]),
+            "label" => implode(", ", [$data->label, $this->getLabel(\App\Organization::where("uri", $request->organization)->first()), cache($request->phase . "_" . \App::getLocale()), cache($request->year)]),
             'backgroundColor' => "rgba(38, 185, 154, 0.3)",
             'borderColor' => "rgba(38, 185, 154, 1)",
             "pointBackgroundColor" => "rgba(179,181,198,1)",
