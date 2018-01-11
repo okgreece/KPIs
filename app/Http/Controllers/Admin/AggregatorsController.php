@@ -281,7 +281,7 @@ class AggregatorsController extends Controller {
         }
         return $notations;
     }
-    //TODO: fix multiple dimensions
+    
     public function getAttachement() {
         $request = request();
         $organization = \App\Organization::where("uri", '=', $request->organization)->first();
@@ -306,21 +306,22 @@ class AggregatorsController extends Controller {
             $query = $sparqlBuilder->getSPARQL();
             logger($query);
             $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
-            $result = $endpoint->query($query);
+            $results = $endpoint->query($query);
             try {
-                $dimension = [
-                    "dimension" => $result[0]->dimension->getUri(),
-                    "attachment" => isset($result[0]->attachment) ? $result[0]->attachment->shorten() : 'qb:Observation',
-                    "codelist"=> $result[0]->codelist->getValue()
+                foreach($results as $index=>$result){
+                    $dimension[$index] = [
+                    "dimension" => $result->dimension->getUri(),
+                    "attachment" => isset($result->attachment) ? $result->attachment->shorten() : 'qb:Observation',
+                    "codelist"=> $result->codelist->getValue()
                 ];
-                
+                }
             } catch (\ErrorException $ex) {
                 logger($ex);
                 $dimension = null;
             }
-            \Cache::add($key, $dimension, env("CACHE_TIME"));
+            \Cache::add($key, collect($dimension), env("CACHE_TIME"));
         }
-        return $dimension;
+        return collect($dimension);
     }
     
     public function getDimensionsAttachment(Request $request) {
@@ -377,14 +378,24 @@ class AggregatorsController extends Controller {
         }
         return collect($dimension);
     }
-    //TODO: fix multiple dimensions
+    
+    public function dimensions(){
+        $dimensions = $this->getAttachement();
+        $dummy = [];
+        foreach($dimensions as $instance){
+            $dummy[] = '<' . $instance["dimension"] . '>';
+            $dimension["attachment"] = $instance["attachment"];
+        }
+        $dimension["dimension"] = implode("|", $dummy);
+        return $dimension;
+    }
+    
     public function query($notation = null, $organization = null, $year = null, $phase = null, $order = null, $group = array()) {
-        $dimension = $this->getAttachement();
+        $dimension = $this->dimensions();
         $queryBuilder = new QueryBuilder(RdfNamespacesController::prefixes());
         $attachments = $this->getDimensionsAttachment(request());
         $dim = "http://data.openbudgets.eu/ontology/dsd/dimension/budgetPhase";
         $budgetPhase = $attachments->where("property", $dim);
-
         $sum = ['(SUM(?amount) AS ?sum)'];
         $select = array_merge($group, $sum);
         $queryBuilder->select($select)
@@ -397,17 +408,17 @@ class AggregatorsController extends Controller {
                 ->where($budgetPhase->pluck("attach_element")[0], "?budgetDimension", "?phase")
                 ->values(["?budgetDimension" => $budgetPhase->pluck("dimension")]);
         if($dimension["attachment"] == 'qb:DataSet'){
-            $queryBuilder->where('?dataset', '<'. $dimension["dimension"] . '>', '?classification')
+            $queryBuilder->where('?dataset', $dimension["dimension"], '?classification')
                     ->where('?observation', 'qb:dataSet', '?dataset');
         }
         elseif($dimension["attachment"] == 'qb:Slice'){
             $queryBuilder->where('?dataset', 'qb:slice', '?slice')
-                    ->where('?slice', '<'. $dimension["dimension"] . '>', '?classification')
+                    ->where('?slice', $dimension["dimension"] , '?classification')
                     ->where('?slice', 'qb:observation', '?observation');
         }
         else{
             $queryBuilder->where('?observation', 'qb:dataSet', '?dataset')
-                    ->where('?observation', '<'. $dimension["dimension"] . '>', '?classification');
+                    ->where('?observation', $dimension["dimension"], '?classification');
         }
         
         if (!empty($notation)) {
