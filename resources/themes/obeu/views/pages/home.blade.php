@@ -33,8 +33,7 @@
     @include('pages.partials.card', ['header' => trans('kpi/frontpage.api'), 'button' => trans('kpi/buttons.go'), 'icon' => "http", 'href' => env("APP_URL"). "/api/documentation", 'link' => true])
     </div>
 </div>
-<div class="mdl-grid home">     
-  <iframe width="560" height="400" src="https://www.youtube.com/embed/FY6lPuxlbOQ?rel=0" frameborder="0" allowfullscreen></iframe>       
+<div class="mdl-grid home">
 </div>
 <script>
     function clickTab(tab){
