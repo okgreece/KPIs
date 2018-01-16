@@ -25,8 +25,8 @@
 ?>
 @include('indicators.templates.gauge_script')
 @include('indicators.templates.number_script')
-<link rel="stylesheet" href="/css/materialize.css">
-<link rel="stylesheet" href="/css/indicators.css">
+<link rel="stylesheet" href="{{ asset('/css/materialize.css')}}">
+<link rel="stylesheet" href="{{ asset('/css/indicators.css')}}">
 
 <link href="{{ asset('/css/flag-icon.css') }}" rel="stylesheet" type="text/css" />
 <!-- Fonts -->
