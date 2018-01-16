@@ -28,7 +28,7 @@
 
 @section('page_title', $indicator->organization . " " . $indicator->year . " " . $indicator->phase . " " . "| KPI app | OpenBudgets.eu")
 
-@section('embed_title', "KPI Dashboard for " . $indicator->organization . " " . $indicator->year . " " . $indicator->phase)
+{{--@section('embed_title', "KPI Dashboard for " . $indicator->organization . " " . $indicator->year . " " . $indicator->phase)--}}
 
 @section('content')
     @if($form)
