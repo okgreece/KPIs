@@ -137,18 +137,19 @@ class DashboardController extends Controller {
     }
     
     public function getRudolfDataset($SPARQLdataset){        
-        $lastPart = $this->urlLast($SPARQLdataset);
-            $client = new \GuzzleHttp\Client();
-            try {
-                $result = $client->request("GET", env("RUDOLF"));
-            } catch (\GuzzleHttp\Exception\ConnectException $ex) {
-                return null;
-            }
-            $cubes = collect(json_decode($result->getBody()->getContents())->data);
-            $OSDataset = $cubes->filter(function ($cube) use ($lastPart) {
-                        return explode("__", $cube->name)[0] == $lastPart;
-                    })->first();
-            return $OSDataset;
+        $md5 = substr(md5($SPARQLdataset), 0 , 5);
+        $client = new \GuzzleHttp\Client();
+        try {
+            $result = $client->request("GET", env("RUDOLF"));
+        } catch (\GuzzleHttp\Exception\ConnectException $ex) {
+            return null;
+        }
+        $cubes = collect(json_decode($result->getBody()->getContents())->data);
+
+        $OSDataset = $cubes->filter(function ($cube) use ($md5) {
+                    return $cube->name !== "global" ? explode("__", $cube->name)[1] == $md5 : null;
+                })->first();
+        return $OSDataset;
     }
 
     public function getDataset($operation) {
@@ -158,7 +159,7 @@ class DashboardController extends Controller {
                 ->where("?dataset", 'rdf:type', 'qb:DataSet')
                 ->also('obeu-dimension:organization', "<" . $request->organization . ">")
                 ->also('obeu-dimension:fiscalYear', "<" . $request->year . ">")
-                ->optional("?dataset",'obeu-dimension:operationCharacter', 'obeu-operation:' . $operation);
+                ->also('obeu-dimension:operationCharacter', 'obeu-operation:' . $operation);
         $query = $sparqlBuilder->getSPARQL();
         $endpoint = new \EasyRdf_Sparql_Client(env("ENDPOINT"));
         $result = $endpoint->query($query);
