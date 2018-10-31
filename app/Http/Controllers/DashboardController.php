@@ -595,7 +595,13 @@ class DashboardController extends Controller {
     
     public function tinyURL(){
         $url = request()->url;
-        $shorten = file_get_contents('http://tinyurl.com/api-create.php?url='. $url);
-        return response()->json($shorten);
+        $shorten = file_get_contents('https://tinyurl.com/api-create.php?url='. $url);
+        $secure_url = $this->secureURL($shorten);
+        return response()->json($secure_url);
+    }
+
+    public function secureURL($url){
+        $secure_url = preg_replace("/^http:/i", "https:", $url);
+        return $secure_url;
     }
 }
